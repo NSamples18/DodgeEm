@@ -49,7 +49,7 @@ namespace DodgeEm.Model
         /// <param name="winTextBlock">The TextBlock to display win messages.</param>
         /// <param name="loseTextBlock">The TextBlock to display lose messages.</param>
         public GameManager(double backgroundHeight, double backgroundWidth, TextBlock winTextBlock,
-            TextBlock loseTextBlock)
+            TextBlock loseTextBlock, Canvas gameCanvas)
         {
             if (backgroundHeight <= 0)
             {
@@ -62,7 +62,7 @@ namespace DodgeEm.Model
             }
 
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth);
-            this.WaveManager = new WaveManager();
+            this.WaveManager = new WaveManager(gameCanvas);
             this.attackManager = new AttackManager();
 
             this.winTextBlock = winTextBlock;

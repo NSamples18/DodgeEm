@@ -40,9 +40,8 @@ namespace DodgeEm.View
             Window.Current.CoreWindow.KeyDown += this.CoreWindowOnKeyDown;
 
             // Pass win and lose TextBlocks to GameManager
-            this.gameManager = new GameManager(applicationHeight, applicationWidth, this.win, this.lose);
+            this.gameManager = new GameManager(applicationHeight, applicationWidth, this.win, this.lose, this.canvas);
             this.gameManager.PlayerManager.InitializeGame(this.canvas);
-            this.gameManager.WaveManager.InitializeWave(this.canvas);
         }
 
         #endregion

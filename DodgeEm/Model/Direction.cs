@@ -8,18 +8,18 @@
         /// <summary>
         /// Indicates upward movement.
         /// </summary>
-        Up,
+        TopToBottom,
         /// <summary>
         /// Indicates downward movement.
         /// </summary>
-        Down,
+        BottomToTop,
         /// <summary>
         /// Indicates movement to the left.
         /// </summary>
-        Left,
+        LeftToRight,
         /// <summary>
         /// Indicates movement to the right.
         /// </summary>
-        Right
+        RightToLeft
     }
 }

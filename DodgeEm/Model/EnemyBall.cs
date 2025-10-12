@@ -50,16 +50,16 @@ namespace DodgeEm.Model
         {
             switch (this.direction)
             {
-                case Direction.Up:
-                    MoveUp();
-                    break;
-                case Direction.Down:
+                case Direction.TopToBottom:
                     MoveDown();
                     break;
-                case Direction.Left:
+                case Direction.BottomToTop:
+                    MoveUp();
+                    break;
+                case Direction.LeftToRight:
                     MoveLeft();
                     break;
-                case Direction.Right:
+                case Direction.RightToLeft:
                     MoveRight();
                     break;
                 default:

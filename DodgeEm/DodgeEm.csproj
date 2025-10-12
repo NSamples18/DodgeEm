@@ -122,18 +122,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\AttackManager.cs" />
-    <Compile Include="Model\EastWave.cs" />
     <Compile Include="Model\EnemyBall.cs" />
     <Compile Include="Model\Direction.cs" />
+    <Compile Include="Model\EnemyWave.cs" />
     <Compile Include="Model\GameManager.cs" />
     <Compile Include="Model\GameObject.cs" />
-    <Compile Include="Model\NorthWave.cs" />
+    <Compile Include="Model\GameSettings.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\PlayerManager.cs" />
-    <Compile Include="Model\SouthWave.cs" />
-    <Compile Include="Model\Wave.cs" />
     <Compile Include="Model\WaveManager.cs" />
-    <Compile Include="Model\WestWave.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -141,8 +138,8 @@
     <Compile Include="View\Sprites\BaseSprite.xaml.cs">
       <DependentUpon>BaseSprite.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sprites\EnemySprite.xaml.cs">
-      <DependentUpon>EnemySprite.xaml</DependentUpon>
+    <Compile Include="View\Sprites\EnemyBallSprite.xaml.cs">
+      <DependentUpon>EnemyBallSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\ISpriteRenderer.cs" />
     <Compile Include="View\Sprites\PlayerSprite.xaml.cs">
@@ -177,7 +174,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\EnemySprite.xaml">
+    <Page Include="View\Sprites\EnemyBallSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Windows.UI;
 using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.Model
@@ -10,44 +11,34 @@ namespace DodgeEm.Model
     {
         #region Data members
 
+
         private const int WestWaveFiveSecDelay = 5000;
         private const int SouthWaveTenSecDelay = 10000;
         private const int EastWaveFifteenSecDelay = 15000;
 
-        private readonly NorthWave northWave;
-        private readonly WestWave westWave;
-        private readonly SouthWave southWave;
-        private readonly EastWave eastWave;
+        private EnemyWave northWave;
+        private EnemyWave southWave;
+        private EnemyWave eastWave;
+        private EnemyWave westWave;
 
-        #endregion
-
-        #region Constructors
-        /// <summary>
-        /// manages all four enemy waves.
-        /// </summary>
-        public WaveManager()
+        // In the constructor, after assigning canvasWidth, initialize northWaveXCord.
+        public WaveManager(Canvas gameCanvas)
         {
-            this.northWave = new NorthWave();
-            this.westWave = new WestWave();
-            this.southWave = new SouthWave();
-            this.eastWave = new EastWave();
+            this.createWaves(gameCanvas);
+        }
+
+        private void createWaves(Canvas gameCanvas)
+        {
+             this.northWave = new EnemyWave(Colors.Red, Direction.TopToBottom, 0, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+             this.southWave = new EnemyWave(Colors.Red, Direction.BottomToTop, SouthWaveTenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+             this.eastWave = new EnemyWave(Colors.Orange, Direction.LeftToRight, EastWaveFifteenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+             this.westWave = new EnemyWave(Colors.Orange, Direction.RightToLeft, WestWaveFiveSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
         }
 
         #endregion
+
 
         #region Methods
-        /// <summary>
-        /// Initializes all enemy waves on the provided game canvas.
-        /// </summary>
-        /// <param name="gameCanvas">takes in the games canvas</param>
-        public void InitializeWave(Canvas gameCanvas)
-        {
-            _ = this.northWave.StartAsync(gameCanvas, gameCanvas.Width, gameCanvas.Height);
-            _ = this.westWave.StartAsync(gameCanvas, gameCanvas.Width, gameCanvas.Height, WestWaveFiveSecDelay);
-            _ = this.southWave.StartAsync(gameCanvas, gameCanvas.Width, gameCanvas.Height, SouthWaveTenSecDelay);
-            _ = this.eastWave.StartAsync(gameCanvas, gameCanvas.Width, gameCanvas.Height, EastWaveFifteenSecDelay);
-        }
-
         /// <summary>
         /// Gets all enemy balls currently active in all waves.
         /// Precondition: None.
@@ -57,10 +48,10 @@ namespace DodgeEm.Model
         public IList<EnemyBall> GetCurrentWaveEnemies()
         {
             var allEnemies = new List<EnemyBall>();
-            allEnemies.AddRange(this.northWave.GetEnemyBalls());
-            allEnemies.AddRange(this.westWave.GetEnemyBalls());
-            allEnemies.AddRange(this.southWave.GetEnemyBalls());
-            allEnemies.AddRange(this.eastWave.GetEnemyBalls());
+            allEnemies.AddRange(this.northWave.EnemyBalls);
+            allEnemies.AddRange(this.westWave.EnemyBalls);
+            allEnemies.AddRange(this.southWave.EnemyBalls);
+            allEnemies.AddRange(this.eastWave.EnemyBalls);
             return allEnemies;
         }
 
@@ -72,9 +63,9 @@ namespace DodgeEm.Model
         public void StopAllWaves()
         {
             this.northWave.StopTimer();
-            this.westWave.StopTimer();
             this.southWave.StopTimer();
             this.eastWave.StopTimer();
+            this.westWave.StopTimer();
         }
 
         #endregion
