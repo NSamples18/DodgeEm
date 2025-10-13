@@ -23,7 +23,8 @@ namespace DodgeEm.Model
         private DispatcherTimer timer;
         private int tickCount;
         private int ticksUntilNextBall = 1;
-       private TimeSpan TickInterval { get; set; } = TimeSpan.FromMilliseconds(100);
+        private int delayMilliseconds;
+        private TimeSpan TickInterval { get; set; } = TimeSpan.FromMilliseconds(100);
 
         public IList<EnemyBall> EnemyBalls { get; } = new List<EnemyBall>();
 
@@ -32,25 +33,22 @@ namespace DodgeEm.Model
 
         public EnemyWave(Color color, Direction direction, int startWave, Canvas gameCanvas, double width, double height )
         {
+            this.timer = new DispatcherTimer { Interval = this.TickInterval };
+
             this.BallColor = color;
             this.BallDirection = direction;
 
             this.CurrentCanvas = gameCanvas;
             this.CanvasWidth = width;
             this.CanvasHeight = height;
+            this.delayMilliseconds = startWave;
 
 
-            this.StartAsync(startWave);
+            this.StartAsync();
         }
 
-        private async Task StartAsync( int initialDelayMs)
+        private async Task StartAsync()
         {
-            
-
-            if (initialDelayMs > 0)
-            {
-                await Task.Delay(initialDelayMs);
-            }
 
             this.StartTimer();
         }
@@ -68,7 +66,7 @@ namespace DodgeEm.Model
                 this.timer.Tick -= this.Timer_Tick;
             }
 
-            this.timer = new DispatcherTimer { Interval = this.TickInterval };
+            
             this.timer.Tick += this.Timer_Tick;
             this.timer.Start();
         }
@@ -80,11 +78,9 @@ namespace DodgeEm.Model
         /// </summary>
         public void StopTimer()
         {
-            if (this.timer != null)
-            {
-                this.timer.Stop();
-                this.timer.Tick -= this.Timer_Tick;
-            }
+            this.timer.Stop();
+            this.timer.Tick -= this.Timer_Tick;
+            
         }
 
         private void addRandomBallsToCanvas()
@@ -105,8 +101,15 @@ namespace DodgeEm.Model
         private void getRandomTick(Random random) => this.ticksUntilNextBall = random.Next(GameSettings.MinTicksUntilNextBall, GameSettings.MaxTicksUntilNextBall);
 
         private void Timer_Tick(object sender, object e)
-        {
-            this.OnTick();
+        { 
+            if (this.delayMilliseconds > 0)
+            {
+                this.delayMilliseconds -= (int)this.TickInterval.TotalMilliseconds;
+            }
+            else
+            {
+                this.OnTick();
+            }
         }
 
         private void OnTick()
@@ -140,9 +143,9 @@ namespace DodgeEm.Model
                 case Direction.TopToBottom:
                     return ball.Y > height;
                 case Direction.BottomToTop:
-                    return ball.Y < 0;
+                    return ball.Y + margin < 0;
                 case Direction.LeftToRight:
-                    return ball.X < 0;
+                    return ball.X + margin < 0;
                 case Direction.RightToLeft:
                     return ball.X > width;
                 default:

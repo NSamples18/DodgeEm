@@ -23,6 +23,10 @@ namespace DodgeEm.Model
         /// </summary>
         public const int MaxTicksUntilNextBall = 10;
 
+        public const int GameEnds = 20;
+
+        public const int TickIntervalMs = 20;
+
         /// <summary>
         /// The color for North and South enemy balls.
         /// </summary>

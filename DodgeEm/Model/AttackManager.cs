@@ -8,6 +8,8 @@ namespace DodgeEm.Model
     /// </summary>
     public class AttackManager
     {
+        
+
         #region Methods
 
         /// <summary>

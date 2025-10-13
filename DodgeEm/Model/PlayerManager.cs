@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.Model
@@ -32,31 +33,22 @@ namespace DodgeEm.Model
         /// </summary>
         /// <param name="backgroundHeight">The height of the game play window.</param>
         /// <param name="backgroundWidth">The width of the game play window.</param>
-        public PlayerManager(double backgroundHeight, double backgroundWidth)
+        public PlayerManager(double backgroundHeight, double backgroundWidth, Canvas background)
         {
             this.backgroundHeight = backgroundHeight;
             this.backgroundWidth = backgroundWidth;
+            this.createAndPlacePlayer(background);
+        }
+
+        public Player getPlayer()
+        {
+            return this.Player;
         }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        ///     Initializes the game placing player in the game
-        ///     Precondition: background != null
-        ///     Postcondition: Game is initialized and ready for play.
-        /// </summary>
-        /// <param name="background">The background canvas.</param>
-        public void InitializeGame(Canvas background)
-        {
-            if (background == null)
-            {
-                throw new ArgumentNullException(nameof(background));
-            }
-
-            this.createAndPlacePlayer(background);
-        }
 
         private void createAndPlacePlayer(Canvas background)
         {
@@ -134,17 +126,17 @@ namespace DodgeEm.Model
 
         private bool IsPlayerOnRightEdge()
         {
-            return this.Player.X + this.Player.Width >= this.backgroundWidth;
+            return this.Player.X + this.Player.Width + 1.5 >= this.backgroundWidth;
         }
 
         private bool IsPlayerOnLeftEdge()
         {
-            return this.Player.X <= 0;
+            return this.Player.X - 1.5 <= 0;
         }
 
         private bool IsPlayerOnTopEdge()
         {
-            return this.Player.Y <= 0;
+            return this.Player.Y  <= 0;
         }
 
         private bool IsPlayerOnBottomEdge()

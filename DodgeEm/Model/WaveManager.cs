@@ -21,7 +21,6 @@ namespace DodgeEm.Model
         private EnemyWave eastWave;
         private EnemyWave westWave;
 
-        // In the constructor, after assigning canvasWidth, initialize northWaveXCord.
         public WaveManager(Canvas gameCanvas)
         {
             this.createWaves(gameCanvas);
@@ -45,14 +44,17 @@ namespace DodgeEm.Model
         /// Postcondition: Returns a list of all active enemy balls.
         /// </summary>
         /// <returns>A list of all active enemy balls.</returns>
-        public IList<EnemyBall> GetCurrentWaveEnemies()
+            public IEnumerable<EnemyBall> EnemyBalls
         {
-            var allEnemies = new List<EnemyBall>();
-            allEnemies.AddRange(this.northWave.EnemyBalls);
-            allEnemies.AddRange(this.westWave.EnemyBalls);
-            allEnemies.AddRange(this.southWave.EnemyBalls);
-            allEnemies.AddRange(this.eastWave.EnemyBalls);
-            return allEnemies;
+            get
+            {
+                var allEnemies = new List<EnemyBall>();
+                allEnemies.AddRange(this.northWave.EnemyBalls);
+                allEnemies.AddRange(this.westWave.EnemyBalls);
+                allEnemies.AddRange(this.southWave.EnemyBalls);
+                allEnemies.AddRange(this.eastWave.EnemyBalls);
+                return allEnemies;
+            }
         }
 
         /// <summary>

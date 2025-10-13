@@ -61,7 +61,7 @@ namespace DodgeEm.Model
                 throw new ArgumentOutOfRangeException(nameof(backgroundWidth));
             }
 
-            this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth);
+            this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.WaveManager = new WaveManager(gameCanvas);
             this.attackManager = new AttackManager();
 
@@ -70,7 +70,7 @@ namespace DodgeEm.Model
 
             this.gameTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(20)
+                Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs)
             };
             this.gameTimer.Tick += (s, e) => this.OnGameOver();
             this.gameTimer.Start();
@@ -82,7 +82,7 @@ namespace DodgeEm.Model
         {
             this.winTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(22)
+                Interval = TimeSpan.FromSeconds(GameSettings.GameEnds)
             };
             this.winTimer.Tick += (s, e) => this.showWin();
             this.winTimer.Start();
@@ -94,9 +94,9 @@ namespace DodgeEm.Model
 
         private bool OnGameOver()
         {
-            if (this.attackManager.IsPlayerHit(this.PlayerManager.Player, this.WaveManager.GetCurrentWaveEnemies()))
+            if (this.attackManager.IsPlayerHit(this.PlayerManager.getPlayer(), this.WaveManager.EnemyBalls))
             {
-                this.WaveManager.StopAllWaves();
+                this.stopGame();
                 this.loseTextBlock.Visibility = Visibility.Visible;
                 return false;
             }
@@ -109,6 +109,12 @@ namespace DodgeEm.Model
             {
                 this.winTextBlock.Visibility = Visibility.Visible;
             }
+
+            this.stopGame();
+        }
+
+        private void stopGame()
+        {
             this.WaveManager.StopAllWaves();
             this.gameTimer.Stop();
             this.winTimer.Stop();
