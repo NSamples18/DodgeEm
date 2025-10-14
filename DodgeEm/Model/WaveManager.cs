@@ -11,11 +11,6 @@ namespace DodgeEm.Model
     {
         #region Data members
 
-
-        private const int WestWaveFiveSecDelay = 5000;
-        private const int SouthWaveTenSecDelay = 10000;
-        private const int EastWaveFifteenSecDelay = 15000;
-
         private EnemyWave northWave;
         private EnemyWave southWave;
         private EnemyWave eastWave;
@@ -28,10 +23,10 @@ namespace DodgeEm.Model
 
         private void createWaves(Canvas gameCanvas)
         {
-             this.northWave = new EnemyWave(Colors.Red, Direction.TopToBottom, 0, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-             this.southWave = new EnemyWave(Colors.Red, Direction.BottomToTop, SouthWaveTenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-             this.eastWave = new EnemyWave(Colors.Orange, Direction.LeftToRight, EastWaveFifteenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-             this.westWave = new EnemyWave(Colors.Orange, Direction.RightToLeft, WestWaveFiveSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+             this.northWave = new EnemyWave(GameSettings.NorthandSouthColor, Direction.TopToBottom, 0, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+             this.southWave = new EnemyWave(GameSettings.NorthandSouthColor, Direction.BottomToTop, GameSettings.SouthWaveTenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+             this.eastWave = new EnemyWave(GameSettings.EastandWestColor, Direction.LeftToRight, GameSettings.EastWaveFifteenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+             this.westWave = new EnemyWave(GameSettings.EastandWestColor, Direction.RightToLeft, GameSettings.WestWaveFiveSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
         }
 
         #endregion

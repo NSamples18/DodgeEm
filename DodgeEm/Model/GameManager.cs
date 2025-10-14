@@ -11,7 +11,6 @@ namespace DodgeEm.Model
     {
         #region Data members
 
-        private readonly AttackManager attackManager;
         private readonly DispatcherTimer gameTimer;
         private DispatcherTimer winTimer;
 
@@ -63,7 +62,6 @@ namespace DodgeEm.Model
 
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.WaveManager = new WaveManager(gameCanvas);
-            this.attackManager = new AttackManager();
 
             this.winTextBlock = winTextBlock;
             this.loseTextBlock = loseTextBlock;
@@ -94,7 +92,7 @@ namespace DodgeEm.Model
 
         private bool OnGameOver()
         {
-            if (this.attackManager.IsPlayerHit(this.PlayerManager.getPlayer(), this.WaveManager.EnemyBalls))
+            if (this.isHit())
             {
                 this.stopGame();
                 this.loseTextBlock.Visibility = Visibility.Visible;
@@ -118,6 +116,18 @@ namespace DodgeEm.Model
             this.WaveManager.StopAllWaves();
             this.gameTimer.Stop();
             this.winTimer.Stop();
+        }
+
+        private bool isHit()
+        {
+            foreach (var enemyBall in this.WaveManager.EnemyBalls)
+            {
+                if (this.PlayerManager.IsPlayerTouchingEnenmyBall(enemyBall))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion

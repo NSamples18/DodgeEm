@@ -1,4 +1,7 @@
 ﻿using DodgeEm.View.Sprites;
+using System;
+using Windows.Devices.Radios;
+using Windows.UI.Xaml;
 
 namespace DodgeEm.Model
 {
@@ -10,8 +13,7 @@ namespace DodgeEm.Model
     {
         #region Data members
 
-        private const int SpeedXDirection = 3;
-        private const int SpeedYDirection = 3;
+        
 
         #endregion
 
@@ -23,7 +25,7 @@ namespace DodgeEm.Model
         public Player()
         {
             Sprite = new PlayerSprite();
-            SetSpeed(SpeedXDirection, SpeedYDirection);
+            SetSpeed(GameSettings.PlayerSpeedXDirection, GameSettings.PlayerSpeedYDirection);
         }
 
         #endregion

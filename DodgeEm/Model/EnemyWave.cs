@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -11,10 +10,6 @@ namespace DodgeEm.Model
     {
         public Color BallColor { get; } = Colors.White;
         public Direction BallDirection { get; }
-        public int ySpawnCord { get; set; }
-        public int xSpawnCord { get; set; }
-        private const int margin = 30;
-
 
         private Canvas CurrentCanvas;
         private double CanvasWidth;
@@ -23,7 +18,7 @@ namespace DodgeEm.Model
         private DispatcherTimer timer;
         private int tickCount;
         private int ticksUntilNextBall = 1;
-        private int delayMilliseconds;
+        private int delayMilliseconds; 
         private TimeSpan TickInterval { get; set; } = TimeSpan.FromMilliseconds(100);
 
         public IList<EnemyBall> EnemyBalls { get; } = new List<EnemyBall>();
@@ -44,12 +39,6 @@ namespace DodgeEm.Model
             this.delayMilliseconds = startWave;
 
 
-            this.StartAsync();
-        }
-
-        private async Task StartAsync()
-        {
-
             this.StartTimer();
         }
 
@@ -58,7 +47,7 @@ namespace DodgeEm.Model
         /// Precondition: None.
         /// Postcondition: Timer is running and ticks will occur.
         /// </summary>
-        public void StartTimer()
+        private void StartTimer()
         {
             if (this.timer != null)
             {
@@ -143,9 +132,9 @@ namespace DodgeEm.Model
                 case Direction.TopToBottom:
                     return ball.Y > height;
                 case Direction.BottomToTop:
-                    return ball.Y + margin < 0;
+                    return ball.Y + GameSettings.PlayerBallMargin < 0;
                 case Direction.LeftToRight:
-                    return ball.X + margin < 0;
+                    return ball.X + GameSettings.PlayerBallMargin < 0;
                 case Direction.RightToLeft:
                     return ball.X > width;
                 default:
@@ -178,23 +167,23 @@ namespace DodgeEm.Model
             switch (this.BallDirection)
             {
                 case Direction.TopToBottom:
-                    ball.X = Rand.Next(margin, (int)(CanvasWidth - margin));
-                    ball.Y = -margin;
+                    ball.X = Rand.Next(GameSettings.PlayerBallMargin, (int)(CanvasWidth - GameSettings.PlayerBallMargin));
+                    ball.Y = -GameSettings.PlayerBallMargin;
                     break;
 
                 case Direction.BottomToTop:
-                    ball.X = Rand.Next(margin, (int)(this.CanvasWidth - margin ));
-                    ball.Y = this.CanvasHeight + margin;
+                    ball.X = Rand.Next(GameSettings.PlayerBallMargin, (int)(this.CanvasWidth - GameSettings.PlayerBallMargin));
+                    ball.Y = this.CanvasHeight + GameSettings.PlayerBallMargin;
                     break;
 
                 case Direction.RightToLeft:
-                    ball.X = -margin;
-                    ball.Y = Rand.Next(margin, (int)(CanvasHeight - margin));
+                    ball.X = -GameSettings.PlayerBallMargin;
+                    ball.Y = Rand.Next(GameSettings.PlayerBallMargin, (int)(CanvasHeight - GameSettings.PlayerBallMargin));
                     break;
 
                 case Direction.LeftToRight:
-                    ball.X = this.CanvasHeight + margin;
-                    ball.Y = Rand.Next(margin, (int)(CanvasHeight - margin));
+                    ball.X = this.CanvasHeight + GameSettings.PlayerBallMargin;
+                    ball.Y = Rand.Next(GameSettings.PlayerBallMargin, (int)(CanvasHeight - GameSettings.PlayerBallMargin));
                     break;
 
                 default:

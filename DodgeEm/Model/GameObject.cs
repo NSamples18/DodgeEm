@@ -157,7 +157,7 @@ namespace DodgeEm.Model
         /// </summary>
         /// <param name="speedX">The speed x.</param>
         /// <param name="speedY">The speed y.</param>
-        protected void SetSpeed(int speedX, int speedY)
+        public void SetSpeed(int speedX, int speedY)
         {
             if (speedX < 0)
             {
