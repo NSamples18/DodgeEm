@@ -120,6 +120,29 @@ namespace DodgeEm.Model
             this.Player.MoveDown();
         }
 
+        /// <summary>
+        ///     Checks if the player is touching an enemy ball.
+        ///     Precondition: enemyBall is not null.
+        ///     Postcondition: Returns true if the player is touching the enemy ball, otherwise false.
+        ///     Param name="enemyBall">The enemy ball to check for collision.</param>
+        /// </summary>
+        public bool IsPlayerTouchingEnemyBall(GameObject enemyBall)
+        {
+            var playerCenterX = this.Player.X + this.Player.Width / 2.0;
+            var playerCenterY = this.Player.Y + this.Player.Height / 2.0;
+            var enemyCenterX = enemyBall.X + enemyBall.Width / 2.0;
+            var enemyCenterY = enemyBall.Y + enemyBall.Height / 2.0;
+
+            var playerRadius = this.Player.Width / 2.0;
+            var enemyRadius = enemyBall.Width / 2.0;
+
+            var dx = playerCenterX - enemyCenterX;
+            var dy = playerCenterY - enemyCenterY;
+            var distance = Math.Sqrt(dx * dx + dy * dy);
+
+            return distance <= (playerRadius + enemyRadius);
+        }
+
         private bool IsPlayerOnRightEdge()
         {
             return Player.X + Player.Width + GameSettings.PlayerSpeedXDirection >= this.backgroundWidth;
@@ -139,25 +162,6 @@ namespace DodgeEm.Model
         {
             return this.Player.Y + this.Player.Height + GameSettings.PlayerSpeedYDirection >= this.backgroundHeight;
         }
-
-        public bool IsPlayerTouchingEnenmyBall(GameObject enemyBall)
-        {
-            var playerCenterX = this.Player.X + this.Player.Width / 2.0;
-            var playerCenterY = this.Player.Y + this.Player.Height / 2.0;
-            var enemyCenterX = enemyBall.X + enemyBall.Width / 2.0;
-            var enemyCenterY = enemyBall.Y + enemyBall.Height / 2.0;
-
-            var playerRadius = this.Player.Width / 2.0;
-            var enemyRadius = enemyBall.Width / 2.0;
-
-            var dx = playerCenterX - enemyCenterX;
-            var dy = playerCenterY - enemyCenterY;
-            var distance = Math.Sqrt(dx * dx + dy * dy);
-
-            return distance <= (playerRadius + enemyRadius);
-        }
-
-
 
         #endregion
     }

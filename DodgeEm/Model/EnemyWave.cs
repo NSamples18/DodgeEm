@@ -6,40 +6,51 @@ using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.Model
 {
+    /// <summary>
+    /// Represents a wave of enemy balls.
+    /// </summary>
     public class EnemyWave
     {
-        public Color BallColor { get; } = Colors.White;
-        public Direction BallDirection { get; }
+        private readonly Color ballColor;
+        private readonly Direction ballDirection;
 
-        private Canvas CurrentCanvas;
-        private double CanvasWidth;
-        private double CanvasHeight;
+        private readonly Canvas currentCanvas;
+        private readonly double canvasWidth;
+        private readonly double canvasHeight;
 
-        private DispatcherTimer timer;
+        private readonly DispatcherTimer timer;
         private int tickCount;
         private int ticksUntilNextBall = 1;
         private int delayMilliseconds; 
-        private TimeSpan TickInterval { get; set; } = TimeSpan.FromMilliseconds(100);
+        private TimeSpan tickInterval = TimeSpan.FromMilliseconds(100);
 
         public IList<EnemyBall> EnemyBalls { get; } = new List<EnemyBall>();
 
-        private readonly Random Rand = new Random();
+        private readonly Random random = new Random();
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnemyWave"/> class.
+        /// </summary>
+        /// <param name="color">The color of the enemy balls.</param>
+        /// <param name="direction">The direction of the enemy balls.</param>
+        /// <param name="startWave">The starting wave number.</param>
+        /// <param name="gameCanvas">The canvas to draw the enemy balls on.</param>
+        /// <param name="width">The width of the game area.</param>
+        /// <param name="height">The height of the game area.</param>
         public EnemyWave(Color color, Direction direction, int startWave, Canvas gameCanvas, double width, double height )
         {
-            this.timer = new DispatcherTimer { Interval = this.TickInterval };
+            this.timer = new DispatcherTimer { Interval = this.tickInterval };
 
-            this.BallColor = color;
-            this.BallDirection = direction;
+            this.ballColor = color;
+            this.ballDirection = direction;
 
-            this.CurrentCanvas = gameCanvas;
-            this.CanvasWidth = width;
-            this.CanvasHeight = height;
+            this.currentCanvas = gameCanvas;
+            this.canvasWidth = width;
+            this.canvasHeight = height;
             this.delayMilliseconds = startWave;
 
 
-            this.StartTimer();
+            this.startTimer();
         }
 
         /// <summary>
@@ -47,17 +58,13 @@ namespace DodgeEm.Model
         /// Precondition: None.
         /// Postcondition: Timer is running and ticks will occur.
         /// </summary>
-        private void StartTimer()
+        private void startTimer()
         {
             if (this.timer != null)
             {
-                this.timer.Stop();
-                this.timer.Tick -= this.Timer_Tick;
+                this.timer.Tick += this.Timer_Tick;
+                this.timer.Start();
             }
-
-            
-            this.timer.Tick += this.Timer_Tick;
-            this.timer.Start();
         }
 
         /// <summary>
@@ -76,9 +83,9 @@ namespace DodgeEm.Model
         {
             if (this.tickCount >= this.ticksUntilNextBall)
             {
-                this.GenerateEnemyBall();
+                this.generateEnemyBall();
 
-                this.getRandomTick(this.Rand);
+                this.getRandomTick(this.random);
                 this.tickCount = 0;
             }
             else
@@ -93,7 +100,7 @@ namespace DodgeEm.Model
         { 
             if (this.delayMilliseconds > 0)
             {
-                this.delayMilliseconds -= (int)this.TickInterval.TotalMilliseconds;
+                this.delayMilliseconds -= (int)this.tickInterval.TotalMilliseconds;
             }
             else
             {
@@ -104,22 +111,22 @@ namespace DodgeEm.Model
         private void OnTick()
         {
             this.addRandomBallsToCanvas();
-            this.MoveEnemyBalls();
+            this.moveEnemyBalls();
 
-            if (this.CurrentCanvas != null)
+            if (this.currentCanvas != null)
             {
-                this.RemoveOutOfBoundsBalls();
+                this.removeOutOfBoundsBalls();
             }
         }
 
-        private void RemoveOutOfBoundsBalls()
+        private void removeOutOfBoundsBalls()
         {
             for (var i = this.EnemyBalls.Count - 1; i >= 0; i--)
             {
                 var enemyBall = this.EnemyBalls[i];
-                if (this.isOutOfBounds(enemyBall, this.CanvasWidth, this.CanvasHeight))
+                if (this.isOutOfBounds(enemyBall, this.canvasWidth, this.canvasHeight))
                 {
-                    this.CurrentCanvas.Children.Remove(enemyBall.Sprite);
+                    this.currentCanvas.Children.Remove(enemyBall.Sprite);
                     this.EnemyBalls.RemoveAt(i);
                 }
             }
@@ -127,7 +134,7 @@ namespace DodgeEm.Model
 
         private bool isOutOfBounds(EnemyBall ball, double width, double height)
         {
-            switch (this.BallDirection)
+            switch (this.ballDirection)
             {
                 case Direction.TopToBottom:
                     return ball.Y > height;
@@ -142,7 +149,7 @@ namespace DodgeEm.Model
             }
         }
 
-        private void MoveEnemyBalls()
+        private void moveEnemyBalls()
         {
             foreach (var ball in this.EnemyBalls)
             {
@@ -150,40 +157,40 @@ namespace DodgeEm.Model
             }
         }
 
-        private void GenerateEnemyBall()
+        private void generateEnemyBall()
         {
 
-            var speed = this.Rand.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
+            var speed = this.random.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
 
-            var ball = new EnemyBall(this.BallColor, this.BallDirection, speed);
+            var ball = new EnemyBall(this.ballColor, this.ballDirection, speed);
 
             this.EnemyBalls.Add(ball);
-            this.SetInitialPositions(ball);
-            this.CurrentCanvas.Children.Add(ball.Sprite);
+            this.setInitialPositions(ball);
+            this.currentCanvas.Children.Add(ball.Sprite);
         }
 
-        private void SetInitialPositions(EnemyBall ball)
+        private void setInitialPositions(EnemyBall ball)
         {
-            switch (this.BallDirection)
+            switch (this.ballDirection)
             {
                 case Direction.TopToBottom:
-                    ball.X = Rand.Next(GameSettings.PlayerBallMargin, (int)(CanvasWidth - GameSettings.PlayerBallMargin));
+                    ball.X = this.random.Next(GameSettings.PlayerBallMargin, (int)(this.canvasWidth - GameSettings.PlayerBallMargin));
                     ball.Y = -GameSettings.PlayerBallMargin;
                     break;
 
                 case Direction.BottomToTop:
-                    ball.X = Rand.Next(GameSettings.PlayerBallMargin, (int)(this.CanvasWidth - GameSettings.PlayerBallMargin));
-                    ball.Y = this.CanvasHeight + GameSettings.PlayerBallMargin;
+                    ball.X = this.random.Next(GameSettings.PlayerBallMargin, (int)(this.canvasWidth - GameSettings.PlayerBallMargin));
+                    ball.Y = this.canvasHeight + GameSettings.PlayerBallMargin;
                     break;
 
                 case Direction.RightToLeft:
                     ball.X = -GameSettings.PlayerBallMargin;
-                    ball.Y = Rand.Next(GameSettings.PlayerBallMargin, (int)(CanvasHeight - GameSettings.PlayerBallMargin));
+                    ball.Y = this.random.Next(GameSettings.PlayerBallMargin, (int)(this.canvasHeight - GameSettings.PlayerBallMargin));
                     break;
 
                 case Direction.LeftToRight:
-                    ball.X = this.CanvasHeight + GameSettings.PlayerBallMargin;
-                    ball.Y = Rand.Next(GameSettings.PlayerBallMargin, (int)(CanvasHeight - GameSettings.PlayerBallMargin));
+                    ball.X = this.canvasHeight + GameSettings.PlayerBallMargin;
+                    ball.Y = this.random.Next(GameSettings.PlayerBallMargin, (int)(this.canvasHeight - GameSettings.PlayerBallMargin));
                     break;
 
                 default:

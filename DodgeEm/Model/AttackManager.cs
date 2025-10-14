@@ -14,7 +14,7 @@ namespace DodgeEm.Model
 
         /// <summary>
         /// Determines whether the player has been hit by any enemy ball.
-        /// Precondition: player is not null; enemyBalls is not null.
+        /// Precondition: player is not null; EnemyBalls is not null.
         /// Postcondition: Returns true if any enemy ball is touching the player, otherwise false.
         /// </summary>
         /// <param name="player">The player to check for collisions.</param>

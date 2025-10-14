@@ -33,7 +33,7 @@ namespace DodgeEm.Model
         /// Precondition: None.
         /// Postcondition: Returns the WaveManager instance.
         /// </summary>
-        public WaveManager WaveManager { get; }
+        private WaveManager WaveManager { get; }
 
         #endregion
 
@@ -92,7 +92,7 @@ namespace DodgeEm.Model
 
         private bool OnGameOver()
         {
-            if (this.isHit())
+            if (this.ballCollision())
             {
                 this.stopGame();
                 this.loseTextBlock.Visibility = Visibility.Visible;
@@ -118,11 +118,11 @@ namespace DodgeEm.Model
             this.winTimer.Stop();
         }
 
-        private bool isHit()
+        private bool ballCollision()
         {
             foreach (var enemyBall in this.WaveManager.EnemyBalls)
             {
-                if (this.PlayerManager.IsPlayerTouchingEnenmyBall(enemyBall))
+                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall))
                 {
                     return true;
                 }
