@@ -20,6 +20,10 @@
         /// <summary>
         /// Indicates movement to the right.
         /// </summary>
-        RightToLeft
+        RightToLeft,
+        /// <summary>
+        /// Indicates all directions.
+        /// </summary>
+        All
     }
 }

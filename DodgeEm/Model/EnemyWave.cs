@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -105,6 +106,7 @@ namespace DodgeEm.Model
             else
             {
                 this.OnTick();
+                Debug.WriteLine(">>> Wave start " + DateTime.Now + this.ballDirection);
             }
         }
 
@@ -134,7 +136,7 @@ namespace DodgeEm.Model
 
         private bool isOutOfBounds(EnemyBall ball, double width, double height)
         {
-            switch (this.ballDirection)
+            switch (ball.direction)
             {
                 case Direction.TopToBottom:
                     return ball.Y > height;
@@ -159,19 +161,33 @@ namespace DodgeEm.Model
 
         private void generateEnemyBall()
         {
-
+            var direction2 = this.ballDirection;
             var speed = this.random.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
+            if (this.ballDirection == Direction.All)
+            {
+                direction2 = randomBlitzDirection();
+                speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
 
-            var ball = new EnemyBall(this.ballColor, this.ballDirection, speed);
+            }
+            var ball = new EnemyBall(this.ballColor, direction2, speed);
 
             this.EnemyBalls.Add(ball);
             this.setInitialPositions(ball);
             this.currentCanvas.Children.Add(ball.Sprite);
         }
 
+
+        private Direction randomBlitzDirection()
+        {
+            Direction[] blitzDirections = { Direction.TopToBottom, Direction.BottomToTop };
+
+           return blitzDirections[this.random.Next(blitzDirections.Length)];
+
+        }
+
         private void setInitialPositions(EnemyBall ball)
         {
-            switch (this.ballDirection)
+            switch (ball.direction)
             {
                 case Direction.TopToBottom:
                     ball.X = this.random.Next(GameSettings.PlayerBallMargin, (int)(this.canvasWidth - GameSettings.PlayerBallMargin));

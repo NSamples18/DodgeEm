@@ -12,11 +12,13 @@ namespace DodgeEm.Model
         /// <summary>
         /// The minimum speed for enemy balls in a wave.
         /// </summary>
-        public static readonly int MinSpeed = 1;
+        public static readonly int MinSpeed = 2;
         /// <summary>
         /// The Max speed for enemy balls in a wave.
         /// </summary>
         public static readonly int MaxSpeed = 5;
+
+        public static readonly int BlitzSpeed = 10;
         /// <summary>
         /// The speed of the player ball in the X direction.
         /// </summary>
@@ -58,6 +60,10 @@ namespace DodgeEm.Model
         /// The delay for the East wave (15 seconds).
         /// </summary>
         public static readonly int EastWaveFifteenSecDelay = 15000;
+        /// <summary>
+        /// The delay for the Final Blitz wave (20 seconds).
+        /// </summary>
+        public static readonly int FinalBlitzDelay = 20000;
 
         /// <summary>
         /// The color for North and South enemy balls.
@@ -67,5 +73,9 @@ namespace DodgeEm.Model
         /// The color for East and West enemy balls.
         /// </summary>
         public static readonly Color EastAndWestColor = Colors.Orange;
+        /// <summary>
+        /// The final blitz color
+        /// </summary>
+        public static readonly Color FinalBlitzColor = Colors.Purple;
     }
 }

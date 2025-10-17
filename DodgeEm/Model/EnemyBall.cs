@@ -12,7 +12,7 @@ namespace DodgeEm.Model
     {
         #region Data members
 
-        private readonly Direction direction;
+        public Direction direction { get; }
 
         #endregion
 
