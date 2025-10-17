@@ -62,6 +62,9 @@ namespace DodgeEm.View
                 case VirtualKey.Down:
                     this.gameManager.PlayerManager.MovePlayerDown();
                     break;
+                case VirtualKey.Space:
+                    this.gameManager.PlayerManager.SwapPlayerBallColor();
+                    break;
             }
         }
 

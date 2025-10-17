@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.Model
@@ -14,22 +13,14 @@ namespace DodgeEm.Model
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
 
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the player instance.
-        /// Precondition: None.
-        /// Postcondition: Returns the Player instance.
-        /// </summary>
         private Player Player;
 
         #endregion
 
         #region Constructors
+
         /// <summary>
-        /// Manages the player in the game.
+        ///     Manages the player in the game.
         /// </summary>
         /// <param name="backgroundHeight">The height of the game play window.</param>
         /// <param name="backgroundWidth">The width of the game play window.</param>
@@ -40,11 +31,9 @@ namespace DodgeEm.Model
             this.createAndPlacePlayer(background);
         }
 
-
         #endregion
 
         #region Methods
-
 
         private void createAndPlacePlayer(Canvas background)
         {
@@ -120,6 +109,11 @@ namespace DodgeEm.Model
             this.Player.MoveDown();
         }
 
+        public void SwapPlayerBallColor()
+        {
+            this.Player.SwapBallColor();
+        }
+
         /// <summary>
         ///     Checks if the player is touching an enemy ball.
         ///     Precondition: enemyBall is not null.
@@ -140,12 +134,12 @@ namespace DodgeEm.Model
             var dy = playerCenterY - enemyCenterY;
             var distance = Math.Sqrt(dx * dx + dy * dy);
 
-            return distance <= (playerRadius + enemyRadius);
+            return distance <= playerRadius + enemyRadius;
         }
 
         private bool IsPlayerOnRightEdge()
         {
-            return Player.X + Player.Width + GameSettings.PlayerSpeedXDirection >= this.backgroundWidth;
+            return this.Player.X + this.Player.Width + GameSettings.PlayerSpeedXDirection >= this.backgroundWidth;
         }
 
         private bool IsPlayerOnLeftEdge()

@@ -1,7 +1,7 @@
 ﻿using DodgeEm.View.Sprites;
-using System;
-using Windows.Devices.Radios;
-using Windows.UI.Xaml;
+using System.Xml.Serialization;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace DodgeEm.Model
 {
@@ -11,12 +11,7 @@ namespace DodgeEm.Model
     /// <seealso cref="GameObject" />
     public class Player : GameObject
     {
-        #region Data members
-
-        
-
-        #endregion
-
+        private bool swapColor = true;
         #region Constructors
 
         /// <summary>
@@ -26,6 +21,25 @@ namespace DodgeEm.Model
         {
             Sprite = new PlayerSprite();
             SetSpeed(GameSettings.PlayerSpeedXDirection, GameSettings.PlayerSpeedYDirection);
+        }
+
+        public void SwapBallColor()
+        {
+            if (Sprite is PlayerSprite playerSprite)
+            {
+                if (swapColor)
+                {
+                    playerSprite.InnerFill = new SolidColorBrush(Colors.Red);
+                    playerSprite.OuterFill = new SolidColorBrush(Colors.Orange);
+                    this.swapColor = false;
+                }
+                else
+                {
+                    playerSprite.InnerFill = new SolidColorBrush(Colors.Orange);
+                    playerSprite.OuterFill = new SolidColorBrush(Colors.Red);
+                    this.swapColor = true;
+                }
+            }
         }
 
         #endregion

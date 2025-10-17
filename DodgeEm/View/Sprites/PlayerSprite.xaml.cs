@@ -1,5 +1,7 @@
 ﻿// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
+using Windows.UI.Xaml.Media;
+
 namespace DodgeEm.View.Sprites
 {
     /// <summary>
@@ -8,6 +10,18 @@ namespace DodgeEm.View.Sprites
     /// <seealso cref="Windows.UI.Xaml.Controls.UserControl" />
     public sealed partial class PlayerSprite
     {
+        public Brush InnerFill
+        {
+            get => this.InnerEllipse.Fill;
+            set => this.InnerEllipse.Fill = value;
+        }
+
+        public Brush OuterFill
+        {
+            get => this.OuterEllipse.Fill;
+            set => this.OuterEllipse.Fill = value;
+        }
+
         #region Constructors
 
         /// <summary>

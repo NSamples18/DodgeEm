@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;using Windows.UI.Xaml.Controls;
+﻿using System.Collections.Generic;
+using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.Model
 {
     /// <summary>
-    /// Manages all enemy waves in the game.
+    ///     Manages all enemy waves in the game.
     /// </summary>
     public class WaveManager
     {
@@ -14,27 +15,14 @@ namespace DodgeEm.Model
         private EnemyWave eastWave;
         private EnemyWave westWave;
 
-        public WaveManager(Canvas gameCanvas)
-        {
-            this.createWaves(gameCanvas);
-        }
-
-        private void createWaves(Canvas gameCanvas)
-        {
-             this.northWave = new EnemyWave(GameSettings.NorthAndSouthColor, Direction.TopToBottom, 0, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-             this.southWave = new EnemyWave(GameSettings.NorthAndSouthColor, Direction.BottomToTop, GameSettings.SouthWaveTenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-             this.eastWave = new EnemyWave(GameSettings.EastAndWestColor, Direction.LeftToRight, GameSettings.EastWaveFifteenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-             this.westWave = new EnemyWave(GameSettings.EastAndWestColor, Direction.RightToLeft, GameSettings.WestWaveFiveSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-        }
-
         #endregion
 
+        #region Properties
 
-        #region Methods
         /// <summary>
-        /// Gets all enemy balls currently active in all waves.
-        /// Precondition: None.
-        /// Postcondition: Returns a list of all active enemy balls.
+        ///     Gets all enemy balls currently active in all waves.
+        ///     Precondition: None.
+        ///     Postcondition: Returns a list of all active enemy balls.
         /// </summary>
         /// <returns>A list of all active enemy balls.</returns>
         public IEnumerable<EnemyBall> EnemyBalls
@@ -50,10 +38,35 @@ namespace DodgeEm.Model
             }
         }
 
+        #endregion
+
+        #region Constructors
+
+        public WaveManager(Canvas gameCanvas)
+        {
+            this.createWaves(gameCanvas);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void createWaves(Canvas gameCanvas)
+        {
+            this.northWave = new EnemyWave(GameSettings.NorthAndSouthColor, Direction.TopToBottom, 0, gameCanvas,
+                gameCanvas.Width, gameCanvas.Height);
+            this.southWave = new EnemyWave(GameSettings.NorthAndSouthColor, Direction.BottomToTop,
+                GameSettings.SouthWaveTenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+            this.eastWave = new EnemyWave(GameSettings.EastAndWestColor, Direction.LeftToRight,
+                GameSettings.EastWaveFifteenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+            this.westWave = new EnemyWave(GameSettings.EastAndWestColor, Direction.RightToLeft,
+                GameSettings.WestWaveFiveSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+        }
+
         /// <summary>
-        /// Stops all enemy waves.
-        /// Precondition: None.
-        /// Postcondition: All waves are stopped and no new enemies will spawn.
+        ///     Stops all enemy waves.
+        ///     Precondition: None.
+        ///     Postcondition: All waves are stopped and no new enemies will spawn.
         /// </summary>
         public void StopAllWaves()
         {

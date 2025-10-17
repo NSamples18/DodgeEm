@@ -12,6 +12,16 @@
     Width="30">
 
     <Canvas>
-        <Ellipse Width="30" Height="30" Fill="Blue" />
+        <Ellipse x:Name="OuterEllipse"
+                 Width="30"
+                 Height="30"
+                 Fill="Red"/>
+
+        <Ellipse x:Name="InnerEllipse"
+                 Width="15"
+                 Height="15"
+                 Canvas.Left="7.5"
+                 Canvas.Top="7.5"
+                 Fill="Orange"/>
     </Canvas>
 </sprites:BaseSprite>
