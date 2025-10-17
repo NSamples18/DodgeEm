@@ -1,5 +1,8 @@
-﻿using System;
+﻿using DodgeEm.View.Sprites;
+using System;
+using Windows.UI;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace DodgeEm.Model
 {
@@ -13,7 +16,7 @@ namespace DodgeEm.Model
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
 
-        private Player Player;
+        private Player player;
 
         #endregion
 
@@ -37,16 +40,16 @@ namespace DodgeEm.Model
 
         private void createAndPlacePlayer(Canvas background)
         {
-            this.Player = new Player();
-            background.Children.Add(this.Player.Sprite);
+            this.player = new Player();
+            background.Children.Add(this.player.Sprite);
 
             this.placePlayerCenteredInGameArena();
         }
 
         private void placePlayerCenteredInGameArena()
         {
-            this.Player.X = this.backgroundWidth / 2 - this.Player.Width / 2.0;
-            this.Player.Y = this.backgroundHeight / 2 - this.Player.Height / 2.0;
+            this.player.X = this.backgroundWidth / 2 - this.player.Width / 2.0;
+            this.player.Y = this.backgroundHeight / 2 - this.player.Height / 2.0;
         }
 
         /// <summary>
@@ -61,7 +64,7 @@ namespace DodgeEm.Model
                 return;
             }
 
-            this.Player.MoveLeft();
+            this.player.MoveLeft();
         }
 
         /// <summary>
@@ -76,7 +79,7 @@ namespace DodgeEm.Model
                 return;
             }
 
-            this.Player.MoveRight();
+            this.player.MoveRight();
         }
 
         /// <summary>
@@ -91,7 +94,7 @@ namespace DodgeEm.Model
                 return;
             }
 
-            this.Player.MoveUp();
+            this.player.MoveUp();
         }
 
         /// <summary>
@@ -106,12 +109,12 @@ namespace DodgeEm.Model
                 return;
             }
 
-            this.Player.MoveDown();
+            this.player.MoveDown();
         }
 
         public void SwapPlayerBallColor()
         {
-            this.Player.SwapBallColor();
+            this.player.SwapBallColor();
         }
 
         /// <summary>
@@ -122,12 +125,12 @@ namespace DodgeEm.Model
         /// </summary>
         public bool IsPlayerTouchingEnemyBall(GameObject enemyBall)
         {
-            var playerCenterX = this.Player.X + this.Player.Width / 2.0;
-            var playerCenterY = this.Player.Y + this.Player.Height / 2.0;
+            var playerCenterX = this.player.X + this.player.Width / 2.0;
+            var playerCenterY = this.player.Y + this.player.Height / 2.0;
             var enemyCenterX = enemyBall.X + enemyBall.Width / 2.0;
             var enemyCenterY = enemyBall.Y + enemyBall.Height / 2.0;
 
-            var playerRadius = this.Player.Width / 2.0;
+            var playerRadius = this.player.Width / 2.0;
             var enemyRadius = enemyBall.Width / 2.0;
 
             var dx = playerCenterX - enemyCenterX;
@@ -137,24 +140,31 @@ namespace DodgeEm.Model
             return distance <= playerRadius + enemyRadius;
         }
 
+       
+
         private bool IsPlayerOnRightEdge()
         {
-            return this.Player.X + this.Player.Width + GameSettings.PlayerSpeedXDirection >= this.backgroundWidth;
+            return this.player.X + this.player.Width + GameSettings.PlayerSpeedXDirection >= this.backgroundWidth;
         }
 
         private bool IsPlayerOnLeftEdge()
         {
-            return this.Player.X - GameSettings.PlayerSpeedXDirection <= 0;
+            return this.player.X - GameSettings.PlayerSpeedXDirection <= 0;
         }
 
         private bool IsPlayerOnTopEdge()
         {
-            return this.Player.Y - GameSettings.PlayerSpeedYDirection <= 0;
+            return this.player.Y - GameSettings.PlayerSpeedYDirection <= 0;
         }
 
         private bool IsPlayerOnBottomEdge()
         {
-            return this.Player.Y + this.Player.Height + GameSettings.PlayerSpeedYDirection >= this.backgroundHeight;
+            return this.player.Y + this.player.Height + GameSettings.PlayerSpeedYDirection >= this.backgroundHeight;
+        }
+
+        public bool HasSameColors(EnemyBall enemyBall)
+        {
+            return this.player.HasSameColors(enemyBall);
         }
 
         #endregion

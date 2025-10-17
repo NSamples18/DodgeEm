@@ -122,13 +122,15 @@ namespace DodgeEm.Model
         {
             foreach (var enemyBall in this.WaveManager.EnemyBalls)
             {
-                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall))
+                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) && !this.PlayerManager.HasSameColors(enemyBall))
                 {
                     return true;
                 }
             }
             return false;
         }
+
+        
 
         #endregion
     }

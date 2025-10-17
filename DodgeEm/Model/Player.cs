@@ -41,6 +41,21 @@ namespace DodgeEm.Model
                 }
             }
         }
+        public bool HasSameColors(GameObject otherBall)
+        {
+            if (Sprite is PlayerSprite playerSprite)
+            {
+                var playerOuterColor = ((SolidColorBrush)playerSprite.OuterFill).Color;
+
+                if (otherBall.Sprite is EnemySprite enemySprite)
+                {
+                    var enemyColor = ((SolidColorBrush)enemySprite.Fill).Color;
+                    return playerOuterColor == enemyColor;
+                }
+            }
+
+            return false;
+        }
 
         #endregion
     }
