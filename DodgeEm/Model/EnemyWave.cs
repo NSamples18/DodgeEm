@@ -22,8 +22,9 @@ namespace DodgeEm.Model
         private readonly DispatcherTimer timer;
         private int tickCount;
         private int ticksUntilNextBall = 1;
-        private int delayMilliseconds; 
-        private TimeSpan tickInterval = TimeSpan.FromMilliseconds(100);
+        private int delayMilliseconds;
+        private DateTime lastTickTime = DateTime.Now;
+        private TimeSpan tickInterval = TimeSpan.FromMilliseconds(20);
 
         public IList<EnemyBall> EnemyBalls { get; } = new List<EnemyBall>();
 
@@ -98,15 +99,19 @@ namespace DodgeEm.Model
         private void getRandomTick(Random random) => this.ticksUntilNextBall = random.Next(GameSettings.MinTicksUntilNextBall, GameSettings.MaxTicksUntilNextBall);
 
         private void Timer_Tick(object sender, object e)
-        { 
+        {
+            var currTime = DateTime.Now;
+            var timerTotalMilliseconds = (currTime - this.lastTickTime).TotalMilliseconds;
+            this.lastTickTime = currTime;
+
             if (this.delayMilliseconds > 0)
             {
-                this.delayMilliseconds -= (int)this.tickInterval.TotalMilliseconds;
+                this.delayMilliseconds -= (int)timerTotalMilliseconds;
             }
             else
             {
                 this.OnTick();
-                Debug.WriteLine(">>> Wave start " + DateTime.Now + this.ballDirection);
+                
             }
         }
 
