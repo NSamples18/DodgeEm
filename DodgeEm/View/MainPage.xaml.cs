@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -38,13 +37,25 @@ namespace DodgeEm.View
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(applicationWidth, applicationHeight));
 
             Window.Current.CoreWindow.KeyDown += this.CoreWindowOnKeyDown;
-
-            this.gameManager = new GameManager(applicationHeight, applicationWidth, this.win, this.lose, this.canvas);
+            this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
+            this.gameManager.GameOver += this.onGameOverEvent;
         }
 
         #endregion
 
         #region Methods
+
+        private void onGameOverEvent(object sender, bool didWin)
+        {
+            if (didWin)
+            {
+                this.win.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.lose.Visibility = Visibility.Visible;
+            }
+        }
 
         private void CoreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {

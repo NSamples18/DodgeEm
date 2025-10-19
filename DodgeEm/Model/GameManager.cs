@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -10,29 +9,37 @@ namespace DodgeEm.Model
     /// </summary>
     public class GameManager
     {
+        #region Types and Delegates
+
+        /// <summary>
+        ///     Delegate for the GameOver event.
+        /// </summary>
+        public delegate void GameOverHandler(object sender, bool didWin);
+
+        #endregion
+
         #region Data members
 
         private readonly DispatcherTimer gameTimer;
         private DispatcherTimer winTimer;
 
-        private readonly TextBlock winTextBlock;
-        private readonly TextBlock loseTextBlock;
+        private bool gameOverTriggered;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets the player manager.
-        /// Precondition: None.
-        /// Postcondition: Returns the PlayerManager instance.
+        ///     Gets the player manager.
+        ///     Precondition: None.
+        ///     Postcondition: Returns the PlayerManager instance.
         /// </summary>
         public PlayerManager PlayerManager { get; }
 
         /// <summary>
-        /// Gets the wave manager.
-        /// Precondition: None.
-        /// Postcondition: Returns the WaveManager instance.
+        ///     Gets the wave manager.
+        ///     Precondition: None.
+        ///     Postcondition: Returns the WaveManager instance.
         /// </summary>
         private WaveManager WaveManager { get; }
 
@@ -46,10 +53,8 @@ namespace DodgeEm.Model
         /// </summary>
         /// <param name="backgroundHeight">The backgroundHeight of the game play window.</param>
         /// <param name="backgroundWidth">The backgroundWidth of the game play window.</param>
-        /// <param name="winTextBlock">The TextBlock to display win messages.</param>
-        /// <param name="loseTextBlock">The TextBlock to display lose messages.</param>
-        public GameManager(double backgroundHeight, double backgroundWidth, TextBlock winTextBlock,
-            TextBlock loseTextBlock, Canvas gameCanvas)
+        /// <param name="gameCanvas">The Canvas element for the game.</param>
+        public GameManager(double backgroundHeight, double backgroundWidth, Canvas gameCanvas)
         {
             if (backgroundHeight <= 0)
             {
@@ -64,18 +69,24 @@ namespace DodgeEm.Model
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.WaveManager = new WaveManager(gameCanvas);
 
-            this.winTextBlock = winTextBlock;
-            this.loseTextBlock = loseTextBlock;
-
             this.gameTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs)
             };
-            this.gameTimer.Tick += (s, e) => this.OnGameOver();
+            this.gameTimer.Tick += (s, e) => this.checkGameOverShowLose();
             this.gameTimer.Start();
 
             this.setUpWinTimer();
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Event raised when the game is over.
+        /// </summary>
+        public event GameOverHandler GameOver;
 
         private void setUpWinTimer()
         {
@@ -87,29 +98,32 @@ namespace DodgeEm.Model
             this.winTimer.Start();
         }
 
-        #endregion
+        private void triggerGameOver(bool didWin)
+        {
+            if (this.gameOverTriggered)
+            {
+                return;
+            }
 
-        #region Methods
+            this.stopGame();
+            this.gameOverTriggered = true;
+            this.GameOver?.Invoke(this, didWin);
+        }
 
-        private bool OnGameOver()
+        private void checkGameOverShowLose()
         {
             if (this.ballCollision())
             {
-                this.stopGame();
-                this.loseTextBlock.Visibility = Visibility.Visible;
-                return false;
+                this.triggerGameOver(false);
             }
-            return true;
         }
 
         private void showWin()
         {
-            if(this.OnGameOver())
+            if (!this.ballCollision())
             {
-                this.winTextBlock.Visibility = Visibility.Visible;
+                this.triggerGameOver(true);
             }
-
-            this.stopGame();
         }
 
         private void stopGame()
@@ -123,15 +137,15 @@ namespace DodgeEm.Model
         {
             foreach (var enemyBall in this.WaveManager.EnemyBalls)
             {
-                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) && !this.PlayerManager.HasSameColors(enemyBall))
+                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) &&
+                    !this.PlayerManager.HasSameColors(enemyBall))
                 {
                     return true;
                 }
             }
+
             return false;
         }
-
-        
 
         #endregion
     }
