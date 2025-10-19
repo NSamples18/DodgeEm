@@ -12,13 +12,15 @@ namespace DodgeEm.Model
         /// <summary>
         /// The minimum speed for enemy balls in a wave.
         /// </summary>
-        public static readonly int MinSpeed = 2;
+        public static readonly int MinSpeed = 1;
         /// <summary>
         /// The Max speed for enemy balls in a wave.
         /// </summary>
-        public static readonly int MaxSpeed = 5;
-
-        public static readonly int BlitzSpeed = 10;
+        public static readonly int MaxSpeed = 4;
+        /// <summary>
+        /// The speed of enemy balls during the blitz phase.
+        /// </summary>
+        public static readonly int BlitzSpeed = 8;
         /// <summary>
         /// The speed of the player ball in the X direction.
         /// </summary>
@@ -34,12 +36,12 @@ namespace DodgeEm.Model
         /// <summary>
         /// The minimum number of ticks until the next ball is generated.
         /// </summary>
-        public static readonly int MinTicksUntilNextBall = 10;
+        public static readonly int MinTicksUntilNextBall = 15;
 
         /// <summary>
         /// The maximum number of ticks until the next ball is generated (exclusive).
         /// </summary>
-        public static readonly int MaxTicksUntilNextBall = 15;
+        public static readonly int MaxTicksUntilNextBall = 20;
         /// <summary>
         /// The number of ticks until the game ends.
         /// </summary>

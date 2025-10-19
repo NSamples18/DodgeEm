@@ -1,9 +1,10 @@
-﻿using Windows.Foundation;
+﻿using DodgeEm.Model;
+using System;
+using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using DodgeEm.Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -39,6 +40,7 @@ namespace DodgeEm.View
             Window.Current.CoreWindow.KeyDown += this.CoreWindowOnKeyDown;
             this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
             this.gameManager.GameOver += this.onGameOverEvent;
+            this.gameManager.GameTimerTick += this.updateUIGameTimer;
         }
 
         #endregion
@@ -55,6 +57,12 @@ namespace DodgeEm.View
             {
                 this.lose.Visibility = Visibility.Visible;
             }
+        }
+
+        private void updateUIGameTimer(object sender, TimeSpan remainingTime)
+        {
+            double secondsLeft = remainingTime.TotalSeconds;
+            this.gameTimer.Text = $"Time: {secondsLeft:0.00}";
         }
 
         private void CoreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)

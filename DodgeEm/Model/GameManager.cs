@@ -15,13 +15,17 @@ namespace DodgeEm.Model
         ///     Delegate for the GameOver event.
         /// </summary>
         public delegate void GameOverHandler(object sender, bool didWin);
+        /// <summary>
+        ///     Delegate for the GameTimerTick event.
+        /// </summary>
+        public delegate void GameTimerTickHandler(object sender, TimeSpan remainingTime);
 
         #endregion
 
         #region Data members
 
-        private readonly DispatcherTimer gameTimer;
-        private DispatcherTimer winTimer;
+        private readonly DispatcherTimer mainTimer;
+        private readonly DateTime gameEndTimeUtc;
 
         private bool gameOverTriggered;
 
@@ -69,14 +73,14 @@ namespace DodgeEm.Model
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.WaveManager = new WaveManager(gameCanvas);
 
-            this.gameTimer = new DispatcherTimer
+            this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(GameSettings.GameEnds);
+
+            this.mainTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs)
             };
-            this.gameTimer.Tick += (s, e) => this.checkGameOverShowLose();
-            this.gameTimer.Start();
-
-            this.setUpWinTimer();
+            this.mainTimer.Tick += (s, e) => this.onMainTick();
+            this.mainTimer.Start();
         }
 
         #endregion
@@ -87,53 +91,72 @@ namespace DodgeEm.Model
         ///     Event raised when the game is over.
         /// </summary>
         public event GameOverHandler GameOver;
+        /// <summary>
+        ///     Event raised on each game timer tick.
+        /// </summary>
+        public event GameTimerTickHandler GameTimerTick;
 
-        private void setUpWinTimer()
-        {
-            this.winTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromSeconds(GameSettings.GameEnds)
-            };
-            this.winTimer.Tick += (s, e) => this.showWin();
-            this.winTimer.Start();
-        }
-
-        private void triggerGameOver(bool didWin)
+        private void onMainTick()
         {
             if (this.gameOverTriggered)
             {
                 return;
             }
 
-            this.stopGame();
+            this.updateTimerUi();
+            this.handleGameEndConditions();
+        }
+
+        private void updateTimerUi()
+        {
+            var remaining = this.getRemainingTime();
+            this.GameTimerTick?.Invoke(this, remaining);
+        }
+
+        private void handleGameEndConditions()
+        {
+            if (this.hasBallCollision() && !this.hasTimeExpired())
+            {
+                this.endGame(false);
+                return;
+            }
+
+            if (!this.hasBallCollision() && this.hasTimeExpired())
+            {
+                this.endGame(true);
+            }
+        }
+
+        private bool hasTimeExpired()
+        {
+            return this.getRemainingTime() <= TimeSpan.Zero;
+        }
+
+        private TimeSpan getRemainingTime()
+        {
+            var remaining = this.gameEndTimeUtc - DateTime.UtcNow;
+            return remaining < TimeSpan.Zero ? TimeSpan.Zero : remaining;
+        }
+
+        private void endGame(bool didWin)
+        {
+            if (this.gameOverTriggered)
+            {
+                return;
+            }
+
             this.gameOverTriggered = true;
+            this.stopGame();
             this.GameOver?.Invoke(this, didWin);
-        }
-
-        private void checkGameOverShowLose()
-        {
-            if (this.ballCollision())
-            {
-                this.triggerGameOver(false);
-            }
-        }
-
-        private void showWin()
-        {
-            if (!this.ballCollision())
-            {
-                this.triggerGameOver(true);
-            }
         }
 
         private void stopGame()
         {
             this.WaveManager.StopAllWaves();
-            this.gameTimer.Stop();
-            this.winTimer.Stop();
+            this.mainTimer.Stop();
         }
 
-        private bool ballCollision()
+        private bool hasBallCollision()
         {
             foreach (var enemyBall in this.WaveManager.EnemyBalls)
             {

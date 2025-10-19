@@ -15,5 +15,7 @@
         <TextBlock x:Name="lose" Width="84" Height="40" Canvas.Left="158" Canvas.Top="178" Canvas.ZIndex="100" Text="You Lose!"
                    FontSize="20" Foreground="Red" Visibility="Collapsed"
                    HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock x:Name="gameTimer" Width="100" Height="26" Canvas.Left="340" Canvas.Top="10" Text="Time: 25.00"
+                   FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
     </Canvas>
 </Page>
