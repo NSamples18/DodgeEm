@@ -26,8 +26,8 @@
         LeftToRight,
 
         /// <summary>
-        ///     Indicates all directions.
+        ///    Indicates mixed vertical movement.
         /// </summary>
-        All
+        VerticalMixed
     }
 }

@@ -1,5 +1,4 @@
-﻿using DodgeEm.Model;
-using System;
+﻿using System;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
@@ -41,7 +40,7 @@ namespace DodgeEm.View
             Window.Current.CoreWindow.KeyDown += this.CoreWindowOnKeyDown;
             this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
             this.gameManager.GameOver += this.onGameOverEvent;
-            this.gameManager.GameTimerTick += this.updateUIGameTimer;
+            this.gameManager.GameTimerTick += this.updateUiGameTimer;
         }
 
         #endregion
@@ -60,9 +59,9 @@ namespace DodgeEm.View
             }
         }
 
-        private void updateUIGameTimer(object sender, TimeSpan remainingTime)
+        private void updateUiGameTimer(object sender, TimeSpan remainingTime)
         {
-            double secondsLeft = remainingTime.TotalSeconds;
+            var secondsLeft = remainingTime.TotalSeconds;
             this.gameTimer.Text = $"Time: {secondsLeft:0.00}";
         }
 

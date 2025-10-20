@@ -150,7 +150,7 @@ namespace DodgeEm.Model.Enemies
             for (var i = this.EnemyBalls.Count - 1; i >= 0; i--)
             {
                 var enemyBall = this.EnemyBalls[i];
-                if (this.isOutOfBounds(enemyBall, this.canvasWidth, this.canvasHeight))
+                if (isOutOfBounds(enemyBall, this.canvasWidth, this.canvasHeight))
                 {
                     this.currentCanvas.Children.Remove(enemyBall.Sprite);
                     this.EnemyBalls.RemoveAt(i);
@@ -158,7 +158,7 @@ namespace DodgeEm.Model.Enemies
             }
         }
 
-        private bool isOutOfBounds(EnemyBall ball, double width, double height)
+        private static bool isOutOfBounds(EnemyBall ball, double width, double height)
         {
             switch (ball.Direction)
             {
@@ -173,6 +173,9 @@ namespace DodgeEm.Model.Enemies
 
                 case Direction.RightToLeft:
                     return ball.X + ball.Width < 0;
+                case Direction.VerticalMixed:
+                    throw new InvalidOperationException(
+                        "VerticalMixed should be replaced with a specific direction before calling Move().");
 
                 default:
                     throw new InvalidOperationException("Unknown Direction");
@@ -191,7 +194,7 @@ namespace DodgeEm.Model.Enemies
         {
             var direction2 = this.ballDirection;
             var speed = this.random.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
-            if (this.ballDirection == Direction.All)
+            if (this.ballDirection == Direction.VerticalMixed)
             {
                 direction2 = this.randomBlitzDirection();
                 speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
@@ -237,6 +240,9 @@ namespace DodgeEm.Model.Enemies
                     ball.X = -ball.Width;
                     ball.Y = this.random.Next((int)ball.Height, (int)marginY);
                     break;
+                case Direction.VerticalMixed:
+                    throw new InvalidOperationException(
+                        "VerticalMixed should be replaced with a specific direction before calling Move().");
 
                 default:
                     throw new InvalidOperationException("Unknown Direction");

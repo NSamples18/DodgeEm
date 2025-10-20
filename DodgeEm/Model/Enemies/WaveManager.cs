@@ -48,7 +48,7 @@ namespace DodgeEm.Model.Enemies
         /// <summary>
         ///     Stops all enemy waves.
         ///     Precondition: None.
-        ///     Postcondition: All waves are stopped and no new enemies will spawn.
+        ///     Postcondition: VerticalMixed waves are stopped and no new enemies will spawn.
         /// </summary>
         public void StopAllWaves()
         {
@@ -69,7 +69,7 @@ namespace DodgeEm.Model.Enemies
                 (GameSettings.EastAndWestColor, Direction.LeftToRight),
                 (GameSettings.NorthAndSouthColor, Direction.BottomToTop),
                 (GameSettings.EastAndWestColor, Direction.RightToLeft),
-                (GameSettings.FinalBlitzColor, Direction.All)
+                (GameSettings.FinalBlitzColor, Direction.VerticalMixed)
             };
         }
 

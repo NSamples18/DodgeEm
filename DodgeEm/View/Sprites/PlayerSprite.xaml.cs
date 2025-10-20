@@ -14,24 +14,24 @@ namespace DodgeEm.View.Sprites
 
         /// <summary>
         ///     Gets or sets the fill brush of the inner ellipse.
-        ///     Precondition: InnerEllipse is initialized.
+        ///     Precondition: innerEllipse is initialized.
         ///     Postcondition: The inner ellipse's fill color is updated.
         /// </summary>
         public Brush InnerFill
         {
-            get => this.InnerEllipse.Fill;
-            set => this.InnerEllipse.Fill = value;
+            get => this.innerEllipse.Fill;
+            set => this.innerEllipse.Fill = value;
         }
 
         /// <summary>
         ///     Gets or sets the fill brush of the outer ellipse.
-        ///     Precondition: OuterEllipse is initialized.
+        ///     Precondition: outerEllipse is initialized.
         ///     Postcondition: The outer ellipse's fill color is updated.
         /// </summary>
         public Brush OuterFill
         {
-            get => this.OuterEllipse.Fill;
-            set => this.OuterEllipse.Fill = value;
+            get => this.outerEllipse.Fill;
+            set => this.outerEllipse.Fill = value;
         }
 
         #endregion
