@@ -1,6 +1,7 @@
-﻿using Windows.UI;
+﻿using DodgeEm.View.Sprites;
+using System;
+using Windows.UI;
 using Windows.UI.Xaml.Media;
-using DodgeEm.View.Sprites;
 
 namespace DodgeEm.Model
 {
@@ -36,7 +37,7 @@ namespace DodgeEm.Model
         ///     Precondition: None.
         ///     Postcondition: The player's ball color is swapped.
         /// </summary>
-        public void SwapBallColor()
+        public void SwitchBallColor()
         {
             if (Sprite is PlayerSprite playerSprite)
             {
@@ -59,7 +60,7 @@ namespace DodgeEm.Model
         ///     Precondition: enemyBall is not null.
         ///     Postcondition: Returns true if the player has the same color as the enemy ball, otherwise false.
         /// </summary>
-        public bool HasSameColors(GameObject otherBall)
+        public bool IsSameColor(GameObject otherBall)
         {
             if (Sprite is PlayerSprite playerSprite)
             {
@@ -74,8 +75,19 @@ namespace DodgeEm.Model
 
             return false;
         }
-
-
+        /// <summary>
+        ///     Checks if the player is touching an enemy ball.
+        ///     Precondition: enemyBall is not null.
+        ///     Postcondition: Returns true if the player is touching the enemy ball, otherwise false.
+        ///     <param name="enemyBall">The enemy ball to check for collision.</param>
+        /// </summary>
+        public override bool IsTouchingEnemyBall(GameObject enemyBall)
+        {
+            return !(X + Width < enemyBall.X ||
+                     X > enemyBall.X + enemyBall.Width ||
+                     Y + Height < enemyBall.Y ||
+                     Y > enemyBall.Y + enemyBall.Height);
+        }
         #endregion
     }
 }

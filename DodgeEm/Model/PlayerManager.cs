@@ -35,19 +35,6 @@ namespace DodgeEm.Model
 
         #region Methods
 
-        private void createAndPlacePlayer(Canvas background)
-        {
-            this.player = new Player();
-            background.Children.Add(this.player.Sprite);
-
-            this.placePlayerCenteredInGameArena();
-        }
-
-        private void placePlayerCenteredInGameArena()
-        {
-            this.player.X = this.backgroundWidth / 2 - this.player.Width / 2.0;
-            this.player.Y = this.backgroundHeight / 2 - this.player.Height / 2.0;
-        }
 
         /// <summary>
         ///     Moves the player to the left.
@@ -114,33 +101,21 @@ namespace DodgeEm.Model
         ///     Precondition: None.
         ///     Postcondition: The player's ball color is swapped.
         /// </summary>
-        public void SwapPlayerBallColor()
-        {
-            this.player.SwapBallColor();
-        }
+        public void SwapPlayerBallColor() => this.player.SwitchBallColor();
 
         /// <summary>
         ///     Checks if the player is touching an enemy ball.
         ///     Precondition: enemyBall is not null.
         ///     Postcondition: Returns true if the player is touching the enemy ball, otherwise false.
-        ///     Param name="enemyBall">The enemy ball to check for collision.</param>
         /// </summary>
-        public bool IsPlayerTouchingEnemyBall(GameObject enemyBall)
-        {
-            var playerCenterX = this.player.X + this.player.Width / 2.0;
-            var playerCenterY = this.player.Y + this.player.Height / 2.0;
-            var enemyCenterX = enemyBall.X + enemyBall.Width / 2.0;
-            var enemyCenterY = enemyBall.Y + enemyBall.Height / 2.0;
+        public bool IsPlayerTouchingEnemyBall(GameObject enemyBall) => this.player.IsTouchingEnemyBall(enemyBall);
 
-            var playerRadius = this.player.Width / 2.0;
-            var enemyRadius = enemyBall.Width / 2.0;
-
-            var dx = playerCenterX - enemyCenterX;
-            var dy = playerCenterY - enemyCenterY;
-            var distance = Math.Sqrt(dx * dx + dy * dy);
-
-            return distance <= playerRadius + enemyRadius;
-        }
+        /// <summary>
+        ///     Checks if the player has the same color as the enemy ball.
+        ///     Precondition: enemyBall is not null.
+        ///     Postcondition: Returns true if the player has the same color as the enemy ball, otherwise false.
+        /// </summary>
+        public bool HasSameColors(EnemyBall enemyBall) => this.player.IsSameColor(enemyBall);
 
         private bool IsPlayerOnRightEdge()
         {
@@ -162,14 +137,18 @@ namespace DodgeEm.Model
             return this.player.Y + this.player.Height + GameSettings.PlayerSpeedYDirection >= this.backgroundHeight;
         }
 
-        /// <summary>
-        ///     Checks if the player has the same color as the enemy ball.
-        ///     Precondition: enemyBall is not null.
-        ///     Postcondition: Returns true if the player has the same color as the enemy ball, otherwise false.
-        /// </summary>
-        public bool HasSameColors(EnemyBall enemyBall)
+        private void createAndPlacePlayer(Canvas background)
         {
-            return this.player.HasSameColors(enemyBall);
+            this.player = new Player();
+            background.Children.Add(this.player.Sprite);
+
+            this.placePlayerCenteredInGameArena();
+        }
+
+        private void placePlayerCenteredInGameArena()
+        {
+            this.player.X = this.backgroundWidth / 2 - this.player.Width / 2.0;
+            this.player.Y = this.backgroundHeight / 2 - this.player.Height / 2.0;
         }
 
         #endregion

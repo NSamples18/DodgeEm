@@ -173,6 +173,29 @@ namespace DodgeEm.Model
             this.SpeedY = speedY;
         }
 
+        /// <summary>
+        ///     Checks if the player is touching an enemy ball.
+        ///     Precondition: enemyBall is not null.
+        ///     Postcondition: Returns true if the player is touching the enemy ball, otherwise false.
+        ///     <param name="enemyBall">The enemy ball to check for collision.</param>
+        /// </summary>
+        public virtual bool IsTouchingEnemyBall(GameObject enemyBall)
+        {
+            var playerCenterX = this.X + this.Width / 2.0;
+            var playerCenterY = this.Y + this.Height / 2.0;
+            var enemyCenterX = enemyBall.X + enemyBall.Width / 2.0;
+            var enemyCenterY = enemyBall.Y + enemyBall.Height / 2.0;
+
+            var playerRadius = this.Width / 2.0;
+            var enemyRadius = enemyBall.Width / 2.0;
+
+            var dx = playerCenterX - enemyCenterX;
+            var dy = playerCenterY - enemyCenterY;
+            var distance = Math.Sqrt(dx * dx + dy * dy);
+
+            return distance <= playerRadius + enemyRadius;
+        }
+
         #endregion
     }
 }
