@@ -1,28 +1,32 @@
 ﻿namespace DodgeEm.Model.Game
 {
     /// <summary>
-    /// Represents the possible movement directions for game objects.
+    ///     Represents the possible movement directions for game objects.
     /// </summary>
     public enum Direction
     {
         /// <summary>
-        /// Indicates upward movement.
+        ///     Indicates upward movement.
         /// </summary>
         TopToBottom,
+
         /// <summary>
-        /// Indicates downward movement.
+        ///     Indicates downward movement.
         /// </summary>
         BottomToTop,
+
         /// <summary>
-        /// Indicates movement to the left.
+        ///     Indicates movement to the left.
         /// </summary>
         LeftToRight,
+
         /// <summary>
-        /// Indicates movement to the right.
+        ///     Indicates movement to the right.
         /// </summary>
         RightToLeft,
+
         /// <summary>
-        /// Indicates all directions.
+        ///     Indicates all directions.
         /// </summary>
         All
     }

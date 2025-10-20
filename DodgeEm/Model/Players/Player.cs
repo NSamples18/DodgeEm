@@ -1,9 +1,7 @@
-﻿using DodgeEm.View.Sprites;
-using System;
-using Windows.UI;
-using Windows.UI.Xaml.Media;
+﻿using Windows.UI.Xaml.Media;
 using DodgeEm.Model.Core;
 using DodgeEm.Model.Game;
+using DodgeEm.View.Sprites;
 
 namespace DodgeEm.Model.Players
 {
@@ -45,18 +43,19 @@ namespace DodgeEm.Model.Players
             {
                 if (this.swapColor)
                 {
-                    playerSprite.InnerFill = new SolidColorBrush(Colors.Red);
-                    playerSprite.OuterFill = new SolidColorBrush(Colors.Orange);
+                    playerSprite.InnerFill = new SolidColorBrush(GameSettings.PrimaryPlayerBallColor);
+                    playerSprite.OuterFill = new SolidColorBrush(GameSettings.SecondaryPlayerBallColor);
                     this.swapColor = false;
                 }
                 else
                 {
-                    playerSprite.InnerFill = new SolidColorBrush(Colors.Orange);
-                    playerSprite.OuterFill = new SolidColorBrush(Colors.Red);
+                    playerSprite.InnerFill = new SolidColorBrush(GameSettings.SecondaryPlayerBallColor);
+                    playerSprite.OuterFill = new SolidColorBrush(GameSettings.PrimaryPlayerBallColor);
                     this.swapColor = true;
                 }
             }
         }
+
         /// <summary>
         ///     Checks if the player has the same color as the enemy ball.
         ///     Precondition: enemyBall is not null.
@@ -77,6 +76,7 @@ namespace DodgeEm.Model.Players
 
             return false;
         }
+
         /// <summary>
         ///     Checks if the player is touching an enemy ball.
         ///     Precondition: enemyBall is not null.
@@ -90,6 +90,7 @@ namespace DodgeEm.Model.Players
                      Y + Height < enemyBall.Y ||
                      Y > enemyBall.Y + enemyBall.Height);
         }
+
         #endregion
     }
 }

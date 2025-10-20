@@ -10,17 +10,31 @@ namespace DodgeEm.View.Sprites
     /// <seealso cref="Windows.UI.Xaml.Controls.UserControl" />
     public sealed partial class PlayerSprite
     {
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets the fill brush of the inner ellipse.
+        ///     Precondition: InnerEllipse is initialized.
+        ///     Postcondition: The inner ellipse's fill color is updated.
+        /// </summary>
         public Brush InnerFill
         {
             get => this.InnerEllipse.Fill;
             set => this.InnerEllipse.Fill = value;
         }
 
+        /// <summary>
+        ///     Gets or sets the fill brush of the outer ellipse.
+        ///     Precondition: OuterEllipse is initialized.
+        ///     Postcondition: The outer ellipse's fill color is updated.
+        /// </summary>
         public Brush OuterFill
         {
             get => this.OuterEllipse.Fill;
             set => this.OuterEllipse.Fill = value;
         }
+
+        #endregion
 
         #region Constructors
 

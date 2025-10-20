@@ -1,7 +1,7 @@
-﻿using DodgeEm.Model.Enemies;
-using System;
+﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using DodgeEm.Model.Enemies;
 using DodgeEm.Model.Players;
 
 namespace DodgeEm.Model.Game

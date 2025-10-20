@@ -47,7 +47,7 @@ namespace DodgeEm.Model.Enemies
         ///     Initializes a new instance of the <see cref="EnemyWave" /> class.
         /// </summary>
         /// <param name="color">The color of the enemy balls.</param>
-        /// <param name="direction">The direction of the enemy balls.</param>
+        /// <param name="direction">The Direction of the enemy balls.</param>
         /// <param name="startWave">The starting wave number.</param>
         /// <param name="gameCanvas">The canvas to draw the enemy balls on.</param>
         /// <param name="width">The width of the game area.</param>
@@ -73,6 +73,17 @@ namespace DodgeEm.Model.Enemies
         #region Methods
 
         /// <summary>
+        ///     Stops the internal timer for the wave.
+        ///     Precondition: None.
+        ///     Postcondition: Timer is stopped and no further ticks will occur.
+        /// </summary>
+        public void StopTimer()
+        {
+            this.timer.Stop();
+            this.timer.Tick -= this.Timer_Tick;
+        }
+
+        /// <summary>
         ///     Starts the internal timer for the wave.
         ///     Precondition: None.
         ///     Postcondition: Timer is running and ticks will occur.
@@ -84,17 +95,6 @@ namespace DodgeEm.Model.Enemies
                 this.timer.Tick += this.Timer_Tick;
                 this.timer.Start();
             }
-        }
-
-        /// <summary>
-        ///     Stops the internal timer for the wave.
-        ///     Precondition: None.
-        ///     Postcondition: Timer is stopped and no further ticks will occur.
-        /// </summary>
-        public void StopTimer()
-        {
-            this.timer.Stop();
-            this.timer.Tick -= this.Timer_Tick;
         }
 
         private void addRandomBallsToCanvas()
@@ -112,10 +112,10 @@ namespace DodgeEm.Model.Enemies
             }
         }
 
-        private void getRandomTick(Random random)
+        private void getRandomTick(Random randomTick)
         {
             this.ticksUntilNextBall =
-                random.Next(GameSettings.MinTicksUntilNextBall, GameSettings.MaxTicksUntilNextBall);
+                randomTick.Next(GameSettings.MinTicksUntilNextBall, GameSettings.MaxTicksUntilNextBall);
         }
 
         private void Timer_Tick(object sender, object e)
@@ -163,7 +163,7 @@ namespace DodgeEm.Model.Enemies
             var halfWidth = ball.Width / 2.0;
             var halfHeight = ball.Height / 2.0;
 
-            switch (ball.direction)
+            switch (ball.Direction)
             {
                 case Direction.TopToBottom:
                     return ball.Y - halfHeight > height;
@@ -178,7 +178,7 @@ namespace DodgeEm.Model.Enemies
                     return ball.X + halfWidth < 0;
 
                 default:
-                    throw new InvalidOperationException("Unknown direction");
+                    throw new InvalidOperationException("Unknown Direction");
             }
         }
 
@@ -219,10 +219,10 @@ namespace DodgeEm.Model.Enemies
             var halfWidth = ball.Width / 2.0;
             var halfHeight = ball.Height / 2.0;
 
-            var marginX = this.canvasWidth -halfWidth;
+            var marginX = this.canvasWidth - halfWidth;
             var marginY = this.canvasHeight - halfHeight;
 
-            switch (ball.direction)
+            switch (ball.Direction)
             {
                 case Direction.TopToBottom:
                     ball.X = this.random.Next((int)halfWidth, (int)marginX);
@@ -245,7 +245,7 @@ namespace DodgeEm.Model.Enemies
                     break;
 
                 default:
-                    throw new InvalidOperationException("Unknown direction");
+                    throw new InvalidOperationException("Unknown Direction");
             }
         }
 

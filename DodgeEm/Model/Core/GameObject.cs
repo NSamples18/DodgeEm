@@ -195,6 +195,7 @@ namespace DodgeEm.Model.Core
 
             render?.RenderAt(this.X, this.Y);
         }
+
         #endregion
     }
 }

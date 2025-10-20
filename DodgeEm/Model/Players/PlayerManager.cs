@@ -1,6 +1,6 @@
-﻿using DodgeEm.Model.Core;
+﻿using Windows.UI.Xaml.Controls;
+using DodgeEm.Model.Core;
 using DodgeEm.Model.Game;
-using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.Model.Players
 {
@@ -25,6 +25,7 @@ namespace DodgeEm.Model.Players
         /// </summary>
         /// <param name="backgroundHeight">The height of the game play window.</param>
         /// <param name="backgroundWidth">The width of the game play window.</param>
+        /// <param name="background">The canvas representing the game background.</param>
         public PlayerManager(double backgroundHeight, double backgroundWidth, Canvas background)
         {
             this.backgroundHeight = backgroundHeight;
@@ -35,7 +36,6 @@ namespace DodgeEm.Model.Players
         #endregion
 
         #region Methods
-
 
         /// <summary>
         ///     Moves the player to the left.
@@ -102,21 +102,30 @@ namespace DodgeEm.Model.Players
         ///     Precondition: None.
         ///     Postcondition: The player's ball color is swapped.
         /// </summary>
-        public void SwapPlayerBallColor() => this.player.SwitchBallColor();
+        public void SwapPlayerBallColor()
+        {
+            this.player.SwitchBallColor();
+        }
 
         /// <summary>
         ///     Checks if the player is touching an enemy ball.
         ///     Precondition: enemyBall is not null.
         ///     Postcondition: Returns true if the player is touching the enemy ball, otherwise false.
         /// </summary>
-        public bool IsPlayerTouchingEnemyBall(GameObject enemyBall) => this.player.IsTouchingEnemyBall(enemyBall);
+        public bool IsPlayerTouchingEnemyBall(GameObject enemyBall)
+        {
+            return this.player.IsTouchingEnemyBall(enemyBall);
+        }
 
         /// <summary>
         ///     Checks if the player has the same color as the enemy ball.
         ///     Precondition: enemyBall is not null.
         ///     Postcondition: Returns true if the player has the same color as the enemy ball, otherwise false.
         /// </summary>
-        public bool HasSameColors(GameObject enemyBall) => this.player.IsSameColor(enemyBall);
+        public bool HasSameColors(GameObject enemyBall)
+        {
+            return this.player.IsSameColor(enemyBall);
+        }
 
         private bool IsPlayerOnRightEdge()
         {
