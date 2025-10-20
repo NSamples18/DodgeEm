@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using DodgeEm.Model.Enemies;
+using DodgeEm.Model.Players;
 
 namespace DodgeEm.Model
 {

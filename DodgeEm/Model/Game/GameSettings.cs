@@ -30,10 +30,6 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public static readonly int PlayerSpeedYDirection = 3;
         /// <summary>
-        /// The margin around the player ball.
-        /// </summary>
-        public static readonly int PlayerBallMargin = 30;
-        /// <summary>
         /// The minimum number of ticks until the next ball is generated.
         /// </summary>
         public static readonly int MinTicksUntilNextBall = 15;

@@ -34,6 +34,9 @@ namespace DodgeEm.Model.Enemies
 
         #region Properties
 
+        /// <summary>
+        ///     Gets the list of enemy balls in the wave.
+        /// </summary>
         public IList<EnemyBall> EnemyBalls { get; } = new List<EnemyBall>();
 
         #endregion
@@ -157,16 +160,23 @@ namespace DodgeEm.Model.Enemies
 
         private bool isOutOfBounds(EnemyBall ball, double width, double height)
         {
+            var halfWidth = ball.Width / 2.0;
+            var halfHeight = ball.Height / 2.0;
+
             switch (ball.direction)
             {
                 case Direction.TopToBottom:
-                    return ball.Y > height;
+                    return ball.Y - halfHeight > height;
+
                 case Direction.BottomToTop:
-                    return ball.Y + GameSettings.PlayerBallMargin < 0;
+                    return ball.Y + halfHeight < 0;
+
                 case Direction.LeftToRight:
-                    return ball.X + GameSettings.PlayerBallMargin < 0;
+                    return ball.X - halfWidth > width;
+
                 case Direction.RightToLeft:
-                    return ball.X > width;
+                    return ball.X + halfWidth < 0;
+
                 default:
                     throw new InvalidOperationException("Unknown direction");
             }
@@ -206,30 +216,32 @@ namespace DodgeEm.Model.Enemies
 
         private void setInitialPositions(EnemyBall ball)
         {
+            var halfWidth = ball.Width / 2.0;
+            var halfHeight = ball.Height / 2.0;
+
+            var marginX = this.canvasWidth -halfWidth;
+            var marginY = this.canvasHeight - halfHeight;
+
             switch (ball.direction)
             {
                 case Direction.TopToBottom:
-                    ball.X = this.random.Next(GameSettings.PlayerBallMargin,
-                        (int)(this.canvasWidth - GameSettings.PlayerBallMargin));
-                    ball.Y = -GameSettings.PlayerBallMargin;
+                    ball.X = this.random.Next((int)halfWidth, (int)marginX);
+                    ball.Y = -halfHeight;
                     break;
 
                 case Direction.BottomToTop:
-                    ball.X = this.random.Next(GameSettings.PlayerBallMargin,
-                        (int)(this.canvasWidth - GameSettings.PlayerBallMargin));
-                    ball.Y = this.canvasHeight + GameSettings.PlayerBallMargin;
+                    ball.X = this.random.Next((int)halfWidth, (int)marginX);
+                    ball.Y = this.canvasHeight + halfHeight;
                     break;
 
                 case Direction.RightToLeft:
-                    ball.X = -GameSettings.PlayerBallMargin;
-                    ball.Y = this.random.Next(GameSettings.PlayerBallMargin,
-                        (int)(this.canvasHeight - GameSettings.PlayerBallMargin));
+                    ball.X = -halfWidth;
+                    ball.Y = this.random.Next((int)halfHeight, (int)marginY);
                     break;
 
                 case Direction.LeftToRight:
-                    ball.X = this.canvasHeight + GameSettings.PlayerBallMargin;
-                    ball.Y = this.random.Next(GameSettings.PlayerBallMargin,
-                        (int)(this.canvasHeight - GameSettings.PlayerBallMargin));
+                    ball.X = this.canvasWidth + halfWidth;
+                    ball.Y = this.random.Next((int)halfHeight, (int)marginY);
                     break;
 
                 default:
