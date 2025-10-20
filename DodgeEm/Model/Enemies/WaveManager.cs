@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Windows.UI;
 using Windows.UI.Xaml.Controls;
 using DodgeEm.Model.Game;
 
@@ -36,7 +37,8 @@ namespace DodgeEm.Model.Enemies
         public WaveManager(Canvas gameCanvas)
         {
             this.waves = new List<EnemyWave>();
-            this.createWaves(gameCanvas);
+            var waveDefinitions = getWaveDefinitions();
+            this.addWaves(gameCanvas, waveDefinitions);
         }
 
         #endregion
@@ -57,50 +59,47 @@ namespace DodgeEm.Model.Enemies
         }
 
         /// <summary>
-        ///     Creates and initializes all enemy waves.
+        ///     Returns the definitions for all waves (color + direction).
         /// </summary>
-        /// <param name="gameCanvas">The canvas on which the game is rendered.</param>
-        private void createWaves(Canvas gameCanvas)
+        private static (Color color, Direction direction)[] getWaveDefinitions()
         {
-            this.waves.Add(new EnemyWave(
-                GameSettings.NorthAndSouthColor,
-                Direction.TopToBottom,
-                0,
-                gameCanvas,
-                gameCanvas.Width,
-                gameCanvas.Height));
+            return new[]
+            {
+                (GameSettings.NorthAndSouthColor, Direction.TopToBottom),
+                (GameSettings.EastAndWestColor, Direction.RightToLeft),
+                (GameSettings.NorthAndSouthColor, Direction.BottomToTop),
+                (GameSettings.EastAndWestColor, Direction.LeftToRight),
+                (GameSettings.FinalBlitzColor, Direction.All)
+            };
+        }
 
-            this.waves.Add(new EnemyWave(
-                GameSettings.NorthAndSouthColor,
-                Direction.BottomToTop,
-                GameSettings.SouthWaveTenSecDelay,
-                gameCanvas,
-                gameCanvas.Width,
-                gameCanvas.Height));
+        /// <summary>
+        ///     Creates and adds waves based on definitions and calculated delays.
+        /// </summary>
+        private void addWaves(Canvas gameCanvas, (Color color, Direction direction)[] waveDefinitions)
+        {
+            for (var i = 0; i < waveDefinitions.Length; i++)
+            {
+                var (color, direction) = waveDefinitions[i];
+                var delay = GameSettings.DelayInterval * i;
 
-            this.waves.Add(new EnemyWave(
-                GameSettings.EastAndWestColor,
-                Direction.LeftToRight,
-                GameSettings.EastWaveFifteenSecDelay,
-                gameCanvas,
-                gameCanvas.Width,
-                gameCanvas.Height));
+                var wave = createWave(gameCanvas, color, direction, delay);
+                this.waves.Add(wave);
+            }
+        }
 
-            this.waves.Add(new EnemyWave(
-                GameSettings.EastAndWestColor,
-                Direction.RightToLeft,
-                GameSettings.WestWaveFiveSecDelay,
+        /// <summary>
+        ///     Creates an individual enemy wave.
+        /// </summary>
+        private static EnemyWave createWave(Canvas gameCanvas, Color color, Direction direction, int delay)
+        {
+            return new EnemyWave(
+                color,
+                direction,
+                delay,
                 gameCanvas,
                 gameCanvas.Width,
-                gameCanvas.Height));
-
-            this.waves.Add(new EnemyWave(
-                GameSettings.FinalBlitzColor,
-                Direction.All,
-                GameSettings.FinalBlitzDelay,
-                gameCanvas,
-                gameCanvas.Width,
-                gameCanvas.Height));
+                gameCanvas.Height);
         }
 
         #endregion

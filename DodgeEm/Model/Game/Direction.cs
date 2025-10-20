@@ -18,12 +18,12 @@
         /// <summary>
         ///     Indicates movement to the left.
         /// </summary>
-        LeftToRight,
+        RightToLeft,
 
         /// <summary>
         ///     Indicates movement to the right.
         /// </summary>
-        RightToLeft,
+        LeftToRight,
 
         /// <summary>
         ///     Indicates all directions.

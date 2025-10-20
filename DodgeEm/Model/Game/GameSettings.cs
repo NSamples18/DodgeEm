@@ -55,24 +55,9 @@ namespace DodgeEm.Model.Game
         public static readonly int TickIntervalMs = 20;
 
         /// <summary>
-        ///     The delay for the West wave (5 seconds).
+        ///     The delay for enemy waves.
         /// </summary>
-        public static readonly int WestWaveFiveSecDelay = 5000;
-
-        /// <summary>
-        ///     The delay for the South wave (10 seconds).
-        /// </summary>
-        public static readonly int SouthWaveTenSecDelay = 10000;
-
-        /// <summary>
-        ///     The delay for the East wave (15 seconds).
-        /// </summary>
-        public static readonly int EastWaveFifteenSecDelay = 15000;
-
-        /// <summary>
-        ///     The delay for the Final Blitz wave (20 seconds).
-        /// </summary>
-        public static readonly int FinalBlitzDelay = 20000;
+        public static readonly int DelayInterval = 5000;
 
         /// <summary>
         ///     The color for North and South enemy balls.
