@@ -2,8 +2,10 @@
 using System;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
+using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
 
-namespace DodgeEm.Model
+namespace DodgeEm.Model.Players
 {
     /// <summary>
     ///     Manages the player.

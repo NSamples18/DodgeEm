@@ -122,15 +122,15 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\AttackManager.cs" />
-    <Compile Include="Model\EnemyBall.cs" />
-    <Compile Include="Model\Direction.cs" />
-    <Compile Include="Model\EnemyWave.cs" />
-    <Compile Include="Model\GameManager.cs" />
-    <Compile Include="Model\GameObject.cs" />
-    <Compile Include="Model\GameSettings.cs" />
-    <Compile Include="Model\Player.cs" />
-    <Compile Include="Model\PlayerManager.cs" />
-    <Compile Include="Model\WaveManager.cs" />
+    <Compile Include="Model\Enemies\EnemyBall.cs" />
+    <Compile Include="Model\Game\Direction.cs" />
+    <Compile Include="Model\Enemies\EnemyWave.cs" />
+    <Compile Include="Model\Game\GameManager.cs" />
+    <Compile Include="Model\Core\GameObject.cs" />
+    <Compile Include="Model\Game\GameSettings.cs" />
+    <Compile Include="Model\Players\Player.cs" />
+    <Compile Include="Model\Players\PlayerManager.cs" />
+    <Compile Include="Model\Enemies\WaveManager.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

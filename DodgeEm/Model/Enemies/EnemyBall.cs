@@ -1,9 +1,11 @@
 ﻿using System;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
+using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
 using DodgeEm.View.Sprites;
 
-namespace DodgeEm.Model
+namespace DodgeEm.Model.Enemies
 {
     /// <summary>
     /// Represents an enemy ball in the game.

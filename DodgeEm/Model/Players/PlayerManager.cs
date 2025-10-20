@@ -1,7 +1,8 @@
-﻿using System;
+﻿using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
 using Windows.UI.Xaml.Controls;
 
-namespace DodgeEm.Model
+namespace DodgeEm.Model.Players
 {
     /**
      * Manages the player in the game.
@@ -115,7 +116,7 @@ namespace DodgeEm.Model
         ///     Precondition: enemyBall is not null.
         ///     Postcondition: Returns true if the player has the same color as the enemy ball, otherwise false.
         /// </summary>
-        public bool HasSameColors(EnemyBall enemyBall) => this.player.IsSameColor(enemyBall);
+        public bool HasSameColors(GameObject enemyBall) => this.player.IsSameColor(enemyBall);
 
         private bool IsPlayerOnRightEdge()
         {

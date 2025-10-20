@@ -1,4 +1,4 @@
-﻿namespace DodgeEm.Model
+﻿namespace DodgeEm.Model.Game
 {
     /// <summary>
     /// Represents the possible movement directions for game objects.

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
+using DodgeEm.Model.Game;
 
-namespace DodgeEm.Model
+namespace DodgeEm.Model.Enemies
 {
     /// <summary>
     ///     Manages all enemy waves in the game.

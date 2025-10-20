@@ -1,7 +1,7 @@
 ﻿
 using Windows.UI;
 
-namespace DodgeEm.Model
+namespace DodgeEm.Model.Game
 {
     /// <summary>
     /// Game settings for the DodgeEm game.

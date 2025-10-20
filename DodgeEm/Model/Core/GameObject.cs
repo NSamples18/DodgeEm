@@ -2,7 +2,7 @@
 using Windows.Foundation;
 using DodgeEm.View.Sprites;
 
-namespace DodgeEm.Model
+namespace DodgeEm.Model.Core
 {
     /// <summary>
     ///     Defines basics of every game object.
@@ -133,23 +133,6 @@ namespace DodgeEm.Model
             this.moveY(this.SpeedY);
         }
 
-        private void moveX(int x)
-        {
-            this.X += x;
-        }
-
-        private void moveY(int y)
-        {
-            this.Y += y;
-        }
-
-        private void render()
-        {
-            ISpriteRenderer render = this.Sprite;
-
-            render?.RenderAt(this.X, this.Y);
-        }
-
         /// <summary>
         ///     Sets the speed of the game object.
         ///     Precondition: speedX >= 0 AND speedY >=0
@@ -196,6 +179,22 @@ namespace DodgeEm.Model
             return distance <= playerRadius + enemyRadius;
         }
 
+        private void moveX(int x)
+        {
+            this.X += x;
+        }
+
+        private void moveY(int y)
+        {
+            this.Y += y;
+        }
+
+        private void render()
+        {
+            ISpriteRenderer render = this.Sprite;
+
+            render?.RenderAt(this.X, this.Y);
+        }
         #endregion
     }
 }

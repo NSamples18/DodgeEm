@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DodgeEm.Model.Enemies;
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using DodgeEm.Model.Players;
 
-namespace DodgeEm.Model
+namespace DodgeEm.Model.Game
 {
     /// <summary>
     ///     Manages the entire game.

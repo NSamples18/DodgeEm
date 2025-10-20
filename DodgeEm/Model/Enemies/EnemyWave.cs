@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using DodgeEm.Model.Game;
 
-namespace DodgeEm.Model
+namespace DodgeEm.Model.Enemies
 {
     /// <summary>
     ///     Represents a wave of enemy balls.
