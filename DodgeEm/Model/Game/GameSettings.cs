@@ -37,12 +37,12 @@ namespace DodgeEm.Model.Game
         /// <summary>
         ///     The minimum number of ticks until the next ball is generated.
         /// </summary>
-        public static readonly int MinTicksUntilNextBall = 15;
+        public static readonly int MinTicksUntilNextBall = 20;
 
         /// <summary>
         ///     The maximum number of ticks until the next ball is generated (exclusive).
         /// </summary>
-        public static readonly int MaxTicksUntilNextBall = 20;
+        public static readonly int MaxTicksUntilNextBall = 25;
 
         /// <summary>
         ///     The number of ticks until the game ends.
