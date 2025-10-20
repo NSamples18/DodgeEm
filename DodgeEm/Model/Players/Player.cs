@@ -77,20 +77,6 @@ namespace DodgeEm.Model.Players
             return false;
         }
 
-        /// <summary>
-        ///     Checks if the player is touching an enemy ball.
-        ///     Precondition: enemyBall is not null.
-        ///     Postcondition: Returns true if the player is touching the enemy ball, otherwise false.
-        ///     <param name="enemyBall">The enemy ball to check for collision.</param>
-        /// </summary>
-        public override bool IsTouchingEnemyBall(GameObject enemyBall)
-        {
-            return !(X + Width < enemyBall.X ||
-                     X > enemyBall.X + enemyBall.Width ||
-                     Y + Height < enemyBall.Y ||
-                     Y > enemyBall.Y + enemyBall.Height);
-        }
-
         #endregion
     }
 }

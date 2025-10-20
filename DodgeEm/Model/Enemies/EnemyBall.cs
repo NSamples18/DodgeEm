@@ -62,10 +62,10 @@ namespace DodgeEm.Model.Enemies
                     MoveUp();
                     break;
                 case Direction.LeftToRight:
-                    MoveLeft();
+                    MoveRight();
                     break;
                 case Direction.RightToLeft:
-                    MoveRight();
+                    MoveLeft();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

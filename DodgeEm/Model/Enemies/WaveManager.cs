@@ -66,9 +66,9 @@ namespace DodgeEm.Model.Enemies
             return new[]
             {
                 (GameSettings.NorthAndSouthColor, Direction.TopToBottom),
-                (GameSettings.EastAndWestColor, Direction.RightToLeft),
-                (GameSettings.NorthAndSouthColor, Direction.BottomToTop),
                 (GameSettings.EastAndWestColor, Direction.LeftToRight),
+                (GameSettings.NorthAndSouthColor, Direction.BottomToTop),
+                (GameSettings.EastAndWestColor, Direction.RightToLeft),
                 (GameSettings.FinalBlitzColor, Direction.All)
             };
         }
