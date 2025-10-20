@@ -44,6 +44,10 @@ namespace DodgeEm.Model
 
         #region Constructors
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WaveManager" /> class.
+        /// </summary>
+        /// <param name="gameCanvas">The canvas on which the game is rendered.</param>
         public WaveManager(Canvas gameCanvas)
         {
             this.createWaves(gameCanvas);
@@ -55,11 +59,16 @@ namespace DodgeEm.Model
 
         private void createWaves(Canvas gameCanvas)
         {
-            this.northWave = new EnemyWave(GameSettings.NorthAndSouthColor, Direction.TopToBottom, 0, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-            this.southWave = new EnemyWave(GameSettings.NorthAndSouthColor, Direction.BottomToTop, GameSettings.SouthWaveTenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-            this.eastWave = new EnemyWave(GameSettings.EastAndWestColor, Direction.LeftToRight, GameSettings.EastWaveFifteenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-            this.westWave = new EnemyWave(GameSettings.EastAndWestColor, Direction.RightToLeft, GameSettings.WestWaveFiveSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
-            this.finalBlitz = new EnemyWave(GameSettings.FinalBlitzColor, Direction.All, GameSettings.FinalBlitzDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+            this.northWave = new EnemyWave(GameSettings.NorthAndSouthColor, Direction.TopToBottom, 0, gameCanvas,
+                gameCanvas.Width, gameCanvas.Height);
+            this.southWave = new EnemyWave(GameSettings.NorthAndSouthColor, Direction.BottomToTop,
+                GameSettings.SouthWaveTenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+            this.eastWave = new EnemyWave(GameSettings.EastAndWestColor, Direction.LeftToRight,
+                GameSettings.EastWaveFifteenSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+            this.westWave = new EnemyWave(GameSettings.EastAndWestColor, Direction.RightToLeft,
+                GameSettings.WestWaveFiveSecDelay, gameCanvas, gameCanvas.Width, gameCanvas.Height);
+            this.finalBlitz = new EnemyWave(GameSettings.FinalBlitzColor, Direction.All, GameSettings.FinalBlitzDelay,
+                gameCanvas, gameCanvas.Width, gameCanvas.Height);
         }
 
         /// <summary>

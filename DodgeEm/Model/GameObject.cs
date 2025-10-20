@@ -1,8 +1,6 @@
-﻿using DodgeEm.View.Sprites;
-using System;
+﻿using System;
 using Windows.Foundation;
-using Windows.UI;
-using Windows.UI.Xaml.Media;
+using DodgeEm.View.Sprites;
 
 namespace DodgeEm.Model
 {

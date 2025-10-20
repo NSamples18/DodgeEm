@@ -1,8 +1,5 @@
-﻿using DodgeEm.View.Sprites;
-using System;
-using Windows.UI;
+﻿using System;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 
 namespace DodgeEm.Model
 {
@@ -112,6 +109,11 @@ namespace DodgeEm.Model
             this.player.MoveDown();
         }
 
+        /// <summary>
+        ///     Swaps the color of the player's ball.
+        ///     Precondition: None.
+        ///     Postcondition: The player's ball color is swapped.
+        /// </summary>
         public void SwapPlayerBallColor()
         {
             this.player.SwapBallColor();
@@ -140,8 +142,6 @@ namespace DodgeEm.Model
             return distance <= playerRadius + enemyRadius;
         }
 
-       
-
         private bool IsPlayerOnRightEdge()
         {
             return this.player.X + this.player.Width + GameSettings.PlayerSpeedXDirection >= this.backgroundWidth;
@@ -162,6 +162,11 @@ namespace DodgeEm.Model
             return this.player.Y + this.player.Height + GameSettings.PlayerSpeedYDirection >= this.backgroundHeight;
         }
 
+        /// <summary>
+        ///     Checks if the player has the same color as the enemy ball.
+        ///     Precondition: enemyBall is not null.
+        ///     Postcondition: Returns true if the player has the same color as the enemy ball, otherwise false.
+        /// </summary>
         public bool HasSameColors(EnemyBall enemyBall)
         {
             return this.player.HasSameColors(enemyBall);

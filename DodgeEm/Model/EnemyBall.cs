@@ -11,7 +11,9 @@ namespace DodgeEm.Model
     public class EnemyBall : GameObject
     {
         #region Data members
-
+        /// <summary>
+        /// Gets the direction the enemy ball is moving.
+        /// </summary>
         public Direction direction { get; }
 
         #endregion

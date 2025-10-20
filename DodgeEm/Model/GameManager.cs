@@ -15,6 +15,7 @@ namespace DodgeEm.Model
         ///     Delegate for the GameOver event.
         /// </summary>
         public delegate void GameOverHandler(object sender, bool didWin);
+
         /// <summary>
         ///     Delegate for the GameTimerTick event.
         /// </summary>
@@ -91,6 +92,7 @@ namespace DodgeEm.Model
         ///     Event raised when the game is over.
         /// </summary>
         public event GameOverHandler GameOver;
+
         /// <summary>
         ///     Event raised on each game timer tick.
         /// </summary>
