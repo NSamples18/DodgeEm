@@ -41,6 +41,7 @@ namespace DodgeEm.View
             this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
             this.gameManager.GameOver += this.onGameOverEvent;
             this.gameManager.GameTimerTick += this.updateUiGameTimer;
+            this.gameManager.PlayerLivesChanged += this.updateLifeCount;
         }
 
         #endregion
@@ -63,6 +64,11 @@ namespace DodgeEm.View
         {
             var secondsLeft = remainingTime.TotalSeconds;
             this.gameTimer.Text = $"Time: {secondsLeft:0.00}";
+        }
+
+        private void updateLifeCount(object sender, int playerLives)
+        {
+            this.playerLives.Text = $"Lives: {playerLives}";
         }
 
         private void CoreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)

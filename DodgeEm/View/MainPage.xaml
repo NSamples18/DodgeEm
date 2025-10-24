@@ -17,5 +17,7 @@
                    HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBlock x:Name="gameTimer" Width="100" Height="26" Canvas.Left="340" Canvas.Top="10" Text="Time: 25.00"
                    FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
+        <TextBlock x:Name="playerLives" Width="75" Height="26" Canvas.Left="10" Canvas.Top="10" Text="Score: 3"
+                   FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
     </Canvas>
 </Page>

@@ -16,12 +16,22 @@ namespace DodgeEm.Model.Game
         /// <summary>
         ///     Delegate for the GameOver event.
         /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="didWin">Indicates if the player won.</param>
         public delegate void GameOverHandler(object sender, bool didWin);
 
         /// <summary>
         ///     Delegate for the GameTimerTick event.
         /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="remainingTime">The remaining time.</param>
         public delegate void GameTimerTickHandler(object sender, TimeSpan remainingTime);
+        /// <summary>
+        ///     Delegate for the PlayerLivesChanged event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="playerLives">The player lives.</param>
+        public delegate void PlayerLivesChangedHandler(object sender, int playerLives);
 
         #endregion
 
@@ -99,6 +109,10 @@ namespace DodgeEm.Model.Game
         ///     Event raised on each game timer tick.
         /// </summary>
         public event GameTimerTickHandler GameTimerTick;
+        /// <summary>
+        ///     Event raised when the player lives change.
+        /// </summary>
+        public event PlayerLivesChangedHandler PlayerLivesChanged;
 
         private void onMainTick()
         {
@@ -109,6 +123,7 @@ namespace DodgeEm.Model.Game
 
             this.updateTimerUi();
             this.handleGameEndConditions();
+            this.updatePlayerLives();
         }
 
         private void updateTimerUi()
@@ -119,7 +134,7 @@ namespace DodgeEm.Model.Game
 
         private void handleGameEndConditions()
         {
-            if (this.hasBallCollision() && !this.hasTimeExpired())
+            if (this.hasBallCollision() && !this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() == 0)
             {
                 this.endGame(false);
                 return;
@@ -172,6 +187,20 @@ namespace DodgeEm.Model.Game
             }
 
             return false;
+        }
+
+        private void updatePlayerLives()
+        {
+            if (this.hasBallCollision())
+            {
+                this.PlayerManager.PlayerLosesLife();
+                this.onPlayerLivesChanged(this.PlayerManager.GetPlayerLives());
+            }
+        }
+
+        private void onPlayerLivesChanged(int playerLives)
+        {
+            this.PlayerLivesChanged?.Invoke(this, playerLives);
         }
 
         #endregion

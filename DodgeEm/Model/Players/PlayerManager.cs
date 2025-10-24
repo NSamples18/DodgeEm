@@ -127,6 +127,16 @@ namespace DodgeEm.Model.Players
             return this.player.IsSameColor(enemyBall);
         }
 
+        public void PlayerLosesLife()
+        {
+            this.player.PlayerLosesLife();
+        }
+
+        public int GetPlayerLives()
+        {
+           return  this.player.GetPlayerLives();
+        }
+
         private bool IsPlayerOnRightEdge()
         {
             return this.player.X + this.player.Width + GameSettings.PlayerSpeedXDirection >= this.backgroundWidth;

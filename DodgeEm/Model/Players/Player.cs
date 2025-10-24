@@ -14,6 +14,7 @@ namespace DodgeEm.Model.Players
         #region Data members
 
         private bool swapColor = true;
+        private int playerLives = 3;
 
         #endregion
 
@@ -77,6 +78,15 @@ namespace DodgeEm.Model.Players
             return false;
         }
 
+        public void PlayerLosesLife()
+        { 
+            this.playerLives--;
+        }
+
+        public int GetPlayerLives()
+        {
+            return this.playerLives;
+        }
         #endregion
     }
 }
