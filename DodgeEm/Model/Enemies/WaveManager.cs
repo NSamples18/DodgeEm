@@ -57,43 +57,81 @@ namespace DodgeEm.Model.Enemies
                 wave.StopTimer();
             }
         }
+        /// <summary>
+        ///     Ends all enemy waves.
+        ///
+        /// this is dumb find a better way to do it
+        /// </summary>
+        public void EndCurrentWaves(LevelId level)
+        {
+            foreach (var wave in this.waves)
+            {
+                if (wave.levelId == level)
+                {
+                    wave.endWave(true);
+                }
+            }
+        }
+
+        public void RestartWavesInLevel(LevelId level)
+        {
+            foreach (var wave in this.waves)
+            {
+                if (wave.levelId == level)
+                {
+                    wave.resetWaveTimer();
+                }
+            }
+        }
+
+        public void startWaveWithLevel(LevelId level)
+        {
+            foreach (var enemyWave in this.waves)
+            {
+                if(enemyWave.levelId == level)
+                {
+                    enemyWave.StartWave();
+                }
+            }
+        }
 
         /// <summary>
         ///     Returns the definitions for all waves (color + direction).
         /// </summary>
-        private static (Color color, Direction direction)[] getWaveDefinitions()
+        private static (LevelId levelId, Color color, Direction direction)[] getWaveDefinitions()
         {
             return new[]
             {
-                (GameSettings.NorthAndSouthColor, Direction.TopToBottom),
-                (GameSettings.EastAndWestColor, Direction.LeftToRight),
-                (GameSettings.NorthAndSouthColor, Direction.BottomToTop),
-                (GameSettings.EastAndWestColor, Direction.RightToLeft),
-                (GameSettings.FinalBlitzColor, Direction.VerticalMixed)
+                (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.TopToBottom),
+                (LevelId.Level1, GameSettings.EastAndWestColor, Direction.LeftToRight),
+                (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.BottomToTop),
+                (LevelId.Level1, GameSettings.EastAndWestColor, Direction.RightToLeft),
+                (LevelId.Level1, GameSettings.FinalBlitzColor, Direction.VerticalMixed)
             };
         }
 
         /// <summary>
         ///     Creates and adds waves based on definitions and calculated delays.
         /// </summary>
-        private void addWaves(Canvas gameCanvas, (Color color, Direction direction)[] waveDefinitions)
+        private void addWaves(Canvas gameCanvas, (LevelId levelId, Color color, Direction direction)[] waveDefinitions)
         {
             for (var i = 0; i < waveDefinitions.Length; i++)
             {
-                var (color, direction) = waveDefinitions[i];
+                var (levelId, color, direction) = waveDefinitions[i];
                 var delay = GameSettings.DelayInterval * i;
 
-                var wave = createWave(gameCanvas, color, direction, delay);
+                var wave = createWave(levelId, gameCanvas, color, direction, delay);
                 this.waves.Add(wave);
             }
-        }
+        } 
 
         /// <summary>
         ///     Creates an individual enemy wave.
         /// </summary>
-        private static EnemyWave createWave(Canvas gameCanvas, Color color, Direction direction, int delay)
+        private static EnemyWave createWave(LevelId level, Canvas gameCanvas, Color color, Direction direction, int delay)
         {
             return new EnemyWave(
+                level,
                 color,
                 direction,
                 delay,

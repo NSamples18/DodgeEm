@@ -16,17 +16,21 @@ namespace DodgeEm.Model.Enemies
 
         private readonly Color ballColor;
         private readonly Direction ballDirection;
+        public readonly LevelId levelId;
 
         private readonly Canvas currentCanvas;
         private readonly double canvasWidth;
         private readonly double canvasHeight;
 
-        private readonly DispatcherTimer timer;
+        private DispatcherTimer timer;
         private int tickCount;
         private int ticksUntilNextBall = 1;
         private int delayMilliseconds;
+        private int currentDelay;
         private DateTime lastTickTime = DateTime.Now;
         private readonly TimeSpan tickInterval = TimeSpan.FromMilliseconds(20);
+
+        private bool stopGeneratingBalls = false;
 
         private readonly Random random = new Random();
 
@@ -52,25 +56,40 @@ namespace DodgeEm.Model.Enemies
         /// <param name="gameCanvas">The canvas to draw the enemy balls on.</param>
         /// <param name="width">The width of the game area.</param>
         /// <param name="height">The height of the game area.</param>
-        public EnemyWave(Color color, Direction direction, int startWave, Canvas gameCanvas, double width,
+        public EnemyWave(LevelId levelId,Color color, Direction direction, int startWave, Canvas gameCanvas, double width,
             double height)
         {
             this.timer = new DispatcherTimer { Interval = this.tickInterval };
 
             this.ballColor = color;
             this.ballDirection = direction;
+            this.levelId = levelId;
 
             this.currentCanvas = gameCanvas;
             this.canvasWidth = width;
             this.canvasHeight = height;
             this.delayMilliseconds = startWave;
-
-            this.startTimer();
+            this.currentDelay = startWave;
         }
 
         #endregion
 
         #region Methods
+
+        public void resetWaveTimer()
+        {
+            this.currentDelay = this.delayMilliseconds;
+            this.ticksUntilNextBall = 1;
+            this.lastTickTime = DateTime.Now;
+            this.timer = new DispatcherTimer { Interval = this.tickInterval };
+        }
+        /// <summary>
+        ///     Ends the current wave.
+        /// </summary>
+        public void endWave(bool endWave)
+        {
+            this.stopGeneratingBalls = endWave;
+        }
 
         /// <summary>
         ///     Stops the internal timer for the wave.
@@ -83,12 +102,14 @@ namespace DodgeEm.Model.Enemies
             this.timer.Tick -= this.Timer_Tick;
         }
 
+
+
         /// <summary>
         ///     Starts the internal timer for the wave.
         ///     Precondition: None.
         ///     Postcondition: Timer is running and ticks will occur.
         /// </summary>
-        private void startTimer()
+        public void StartWave()
         {
             if (this.timer != null)
             {
@@ -124,9 +145,9 @@ namespace DodgeEm.Model.Enemies
             var timerTotalMilliseconds = (currTime - this.lastTickTime).TotalMilliseconds;
             this.lastTickTime = currTime;
 
-            if (this.delayMilliseconds > 0)
+            if (this.currentDelay > 0)
             {
-                this.delayMilliseconds -= (int)timerTotalMilliseconds;
+                this.currentDelay -= (int)timerTotalMilliseconds;
             }
             else
             {
@@ -192,19 +213,22 @@ namespace DodgeEm.Model.Enemies
 
         private void generateEnemyBall()
         {
-            var direction2 = this.ballDirection;
-            var speed = this.random.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
-            if (this.ballDirection == Direction.VerticalMixed)
+            if (this.stopGeneratingBalls)
             {
-                direction2 = this.randomBlitzDirection();
-                speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
+                var direction2 = this.ballDirection;
+                var speed = this.random.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
+                if (this.ballDirection == Direction.VerticalMixed)
+                {
+                    direction2 = this.randomBlitzDirection();
+                    speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
+                }
+
+                var ball = new EnemyBall(this.ballColor, direction2, speed);
+
+                this.EnemyBalls.Add(ball);
+                this.setInitialPositions(ball);
+                this.currentCanvas.Children.Add(ball.Sprite);
             }
-
-            var ball = new EnemyBall(this.ballColor, direction2, speed);
-
-            this.EnemyBalls.Add(ball);
-            this.setInitialPositions(ball);
-            this.currentCanvas.Children.Add(ball.Sprite);
         }
 
         private Direction randomBlitzDirection()

@@ -59,6 +59,7 @@ namespace DodgeEm.Model.Game
         ///     Postcondition: Returns the WaveManager instance.
         /// </summary>
         private WaveManager WaveManager { get; }
+        private LevelManager LevelManager { get; }
 
         #endregion
 
@@ -85,6 +86,10 @@ namespace DodgeEm.Model.Game
 
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.WaveManager = new WaveManager(gameCanvas);
+            this.LevelManager = new LevelManager(gameCanvas);
+            this.LevelManager.LevelEnded += onLevelEnd;
+
+            this.LevelManager.StartCurrentLevel();
 
             this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(GameSettings.GameEnds);
 
@@ -193,6 +198,7 @@ namespace DodgeEm.Model.Game
         {
             if (this.hasBallCollision())
             {
+               // this.LevelManager.
                 this.PlayerManager.PlayerLosesLife();
                 this.onPlayerLivesChanged(this.PlayerManager.GetPlayerLives());
             }
@@ -201,6 +207,11 @@ namespace DodgeEm.Model.Game
         private void onPlayerLivesChanged(int playerLives)
         {
             this.PlayerLivesChanged?.Invoke(this, playerLives);
+        }
+
+        private void onLevelEnd(LevelId finishedLevel)
+        {
+            this.LevelManager.StartCurrentLevel();
         }
 
         #endregion
