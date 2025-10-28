@@ -25,12 +25,13 @@ namespace DodgeEm.Model.Enemies
             this.addLevels(gameCanvas);
             this.timer = new DispatcherTimer { Interval = this.tickInterval };
             this.StartAllLevels();
+
         }
-        
+
         public void StopLevel()
         {
             this.timer.Tick -= this.Timer_Tick;
-
+            this.levels[this.currentLevelIndex].StopLevel();
             this.timer.Stop();
         }
 
@@ -42,24 +43,40 @@ namespace DodgeEm.Model.Enemies
                 var currentLevel = this.levels[this.currentLevelIndex];
                 if (this.elapsedMilliseconds >= currentLevel.stopLevel)
                 {
-                    currentLevel.StopAllLevels();
+                    this.resartTimer();
+
+                    currentLevel.StopLevel();
                     this.currentLevelIndex++;
-                    currentLevel.StartLevel();
                 }
             }
+        }
+
+        private void resartTimer()
+        {
+            this.timer = new DispatcherTimer { Interval = this.tickInterval };
+            this.elapsedMilliseconds = 0;
         }
 
         public void StartAllLevels()
         {
             this.timer.Tick += this.Timer_Tick;
             this.timer.Start();
+            this.levels[this.currentLevelIndex].StartLevel();
+
+        }
+
+        public void RestartCurrentLevel()
+        {
+            this.levels[this.currentLevelIndex].ResetLevel();
+            this.resartTimer();
+
         }
 
         private void addLevels(Canvas gameCanvas)
         {
-            this.levels.Add(new Level(LevelId.Level1, 0, 60000, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level2, 60001, 120000, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level3, 120001, 180000, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level1, 5000, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level2, 30000, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level3, 35000, gameCanvas));
         }
 
     }

@@ -213,8 +213,7 @@ namespace DodgeEm.Model.Enemies
 
         private void generateEnemyBall()
         {
-            if (this.stopGeneratingBalls)
-            {
+            
                 var direction2 = this.ballDirection;
                 var speed = this.random.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
                 if (this.ballDirection == Direction.VerticalMixed)
@@ -228,7 +227,7 @@ namespace DodgeEm.Model.Enemies
                 this.EnemyBalls.Add(ball);
                 this.setInitialPositions(ball);
                 this.currentCanvas.Children.Add(ball.Sprite);
-            }
+            
         }
 
         private Direction randomBlitzDirection()

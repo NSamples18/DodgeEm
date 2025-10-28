@@ -23,7 +23,6 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         private readonly LevelId LevelNumber;
 
-        private int startLevelTime;
         public int stopLevel { get; }
         private DispatcherTimer timer;
         private readonly TimeSpan tickInterval = TimeSpan.FromMilliseconds(20);
@@ -36,20 +35,19 @@ namespace DodgeEm.Model.Enemies
         /// <param name="levelNumber">The level number.</param>
         /// <param name="startLevelTime">The start level.</param>
         /// <param name="stopLevel">The stop level.</param>
-        public Level(LevelId levelNumber, int startLevelTime, int stopLevel, Canvas gameCanvas)
+        public Level(LevelId levelNumber, int stopLevel, Canvas gameCanvas)
         {
             this.waveManager = new WaveManager(gameCanvas);
             this.LevelNumber = levelNumber;
-            this.startLevelTime = startLevelTime;
             this.stopLevel = stopLevel;
             this.timer = new DispatcherTimer { Interval = this.tickInterval };
         }
 
 
-        public void StopAllLevels()
-        {
-           this.waveManager.StopAllWaves();
-           this.timer.Stop();
+        public void StopLevel()
+        { 
+            this.waveManager.StopAllWaves(this.LevelNumber); 
+            this.timer.Stop();
         }
 
         public void StopTimer()
@@ -77,10 +75,6 @@ namespace DodgeEm.Model.Enemies
         {
             this.elapsedMilliseconds += (int)this.timer.Interval.TotalMilliseconds;
 
-            if (this.startLevelTime > 0)
-            {
-                this.startLevelTime -= (int)this.timer.Interval.TotalMilliseconds;
-            }
             if (this.elapsedMilliseconds >= this.stopLevel)
             {
                 this.waveManager.EndCurrentWaves(this.LevelNumber);

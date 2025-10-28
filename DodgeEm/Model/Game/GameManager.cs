@@ -42,6 +42,8 @@ namespace DodgeEm.Model.Game
 
         private bool gameOverTriggered;
 
+        private int level = 1;
+
         #endregion
 
         #region Properties
@@ -87,9 +89,6 @@ namespace DodgeEm.Model.Game
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.WaveManager = new WaveManager(gameCanvas);
             this.LevelManager = new LevelManager(gameCanvas);
-            this.LevelManager.LevelEnded += onLevelEnd;
-
-            this.LevelManager.StartCurrentLevel();
 
             this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(GameSettings.GameEnds);
 
@@ -129,6 +128,26 @@ namespace DodgeEm.Model.Game
             this.updateTimerUi();
             this.handleGameEndConditions();
             this.updatePlayerLives();
+        }
+
+        private int getLevelTime()
+        {
+            if (this.level == 1)
+            {
+                this.level++;
+                return 25;
+            }
+            else if (this.level == 2)
+            {
+                this.level++;
+                return 30;
+            }
+            else
+            {
+                this.level++;
+                return 35;
+            }
+            
         }
 
         private void updateTimerUi()
@@ -176,7 +195,7 @@ namespace DodgeEm.Model.Game
 
         private void stopGame()
         {
-            this.WaveManager.StopAllWaves();
+            this.LevelManager.StopLevel();
             this.mainTimer.Stop();
         }
 
@@ -198,7 +217,7 @@ namespace DodgeEm.Model.Game
         {
             if (this.hasBallCollision())
             {
-               // this.LevelManager.
+                this.LevelManager.RestartCurrentLevel();
                 this.PlayerManager.PlayerLosesLife();
                 this.onPlayerLivesChanged(this.PlayerManager.GetPlayerLives());
             }
@@ -207,11 +226,6 @@ namespace DodgeEm.Model.Game
         private void onPlayerLivesChanged(int playerLives)
         {
             this.PlayerLivesChanged?.Invoke(this, playerLives);
-        }
-
-        private void onLevelEnd(LevelId finishedLevel)
-        {
-            this.LevelManager.StartCurrentLevel();
         }
 
         #endregion

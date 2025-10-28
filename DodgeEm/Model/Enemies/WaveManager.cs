@@ -50,11 +50,14 @@ namespace DodgeEm.Model.Enemies
         ///     Precondition: None.
         ///     Postcondition: VerticalMixed waves are stopped and no new enemies will spawn.
         /// </summary>
-        public void StopAllWaves()
+        public void StopAllWaves(LevelId level)
         {
             foreach (var wave in this.waves)
             {
-                wave.StopTimer();
+                if (wave.levelId == level)
+                {
+                    wave.StopTimer();
+                }
             }
         }
         /// <summary>
@@ -104,9 +107,9 @@ namespace DodgeEm.Model.Enemies
             {
                 (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.TopToBottom),
                 (LevelId.Level1, GameSettings.EastAndWestColor, Direction.LeftToRight),
-                (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.BottomToTop),
-                (LevelId.Level1, GameSettings.EastAndWestColor, Direction.RightToLeft),
-                (LevelId.Level1, GameSettings.FinalBlitzColor, Direction.VerticalMixed)
+                (LevelId.Level2, GameSettings.NorthAndSouthColor, Direction.BottomToTop),
+                (LevelId.Level3, GameSettings.EastAndWestColor, Direction.RightToLeft),
+                (LevelId.Level3, GameSettings.FinalBlitzColor, Direction.VerticalMixed)
             };
         }
 
