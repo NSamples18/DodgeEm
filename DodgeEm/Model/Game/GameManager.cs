@@ -126,7 +126,6 @@ namespace DodgeEm.Model.Game
 
             this.updateTimerUi();
             this.handleGameEndConditions();
-            this.updatePlayerLives();
         }
 
         private void updateTimerUi()
@@ -140,12 +139,6 @@ namespace DodgeEm.Model.Game
             if (this.hasBallCollision() && !this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() == 0)
             {
                 this.endGame(false);
-                return;
-            }
-            if(this.hasBallCollision() && !this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() <= LevelId.Level3) 
-            {
-                this.LevelManager.RestartCurrentLevel();
-                this.restartGameTimer();
                 return;
             }
 
@@ -204,24 +197,21 @@ namespace DodgeEm.Model.Game
         {
             foreach (var enemyBall in this.LevelManager.GetEnemyBalls())
             {
-                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) &&
-                    !this.PlayerManager.HasSameColors(enemyBall))
+                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) && !this.PlayerManager.HasSameColors(enemyBall))
                 {
+                    this.LevelManager.RestartCurrentLevel();
+                    this.restartGameTimer();
+                    updatePlayerLives();
                     return true;
                 }
             }
-
             return false;
         }
 
         private void updatePlayerLives()
         {
-            if (this.hasBallCollision())
-            {
-                this.LevelManager.RestartCurrentLevel();
-                this.PlayerManager.PlayerLosesLife();
-                this.onPlayerLivesChanged(this.PlayerManager.GetPlayerLives());
-            }
+            this.PlayerManager.PlayerLosesLife();
+            this.onPlayerLivesChanged(this.PlayerManager.GetPlayerLives());
         }
 
         private void onPlayerLivesChanged(int playerLives)
