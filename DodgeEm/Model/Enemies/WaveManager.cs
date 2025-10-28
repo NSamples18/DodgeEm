@@ -14,6 +14,7 @@ namespace DodgeEm.Model.Enemies
         #region Data members
 
         private readonly List<EnemyWave> waves;
+        private LevelId level;
 
         #endregion
 
@@ -34,60 +35,60 @@ namespace DodgeEm.Model.Enemies
         ///     Initializes a new instance of the <see cref="WaveManager" /> class.
         /// </summary>
         /// <param name="gameCanvas">The canvas on which the game is rendered.</param>
-        public WaveManager(Canvas gameCanvas)
+        public WaveManager(Canvas gameCanvas, LevelId level)
         {
             this.waves = new List<EnemyWave>();
             var waveDefinitions = getWaveDefinitions();
             this.addWaves(gameCanvas, waveDefinitions);
+            this.level = level;
         }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        ///     Stops all enemy waves.
-        ///     Precondition: None.
-        ///     Postcondition: VerticalMixed waves are stopped and no new enemies will spawn.
-        /// </summary>
-        public void StopAllWaves(LevelId level)
+        public void RemoveBallsFromAllWaves()
         {
             foreach (var wave in this.waves)
             {
                 if (wave.levelId == level)
                 {
                     wave.StopTimer();
-                }
-            }
-        }
-        /// <summary>
-        ///     Ends all enemy waves.
-        ///
-        /// this is dumb find a better way to do it
-        /// </summary>
-        public void EndCurrentWaves(LevelId level)
-        {
-            foreach (var wave in this.waves)
-            {
-                if (wave.levelId == level)
-                {
-                    wave.endWave(true);
+                    wave.RemoveAllBalls();
                 }
             }
         }
 
-        public void RestartWavesInLevel(LevelId level)
+
+        /// <summary>
+        ///     Stops all enemy waves.
+        ///     Precondition: None.
+        ///     Postcondition: VerticalMixed waves are stopped and no new enemies will spawn.
+        /// </summary>
+        public void StopWave()
+        {
+            foreach (var wave in this.waves)
+            {
+                if (wave.levelId == this.level)
+                {
+                    wave.StopTimer();
+                }
+            }
+        }
+
+        public void RestartWavesInLevel()
         {
             foreach (var wave in this.waves)
             {
                 if (wave.levelId == level)
                 {
                     wave.resetWaveTimer();
+                    wave.RemoveAllBalls();
                 }
             }
         }
 
-        public void startWaveWithLevel(LevelId level)
+        public void startWaveWithLevel()
         {
             foreach (var enemyWave in this.waves)
             {
@@ -121,9 +122,9 @@ namespace DodgeEm.Model.Enemies
             for (var i = 0; i < waveDefinitions.Length; i++)
             {
                 var (levelId, color, direction) = waveDefinitions[i];
-                var delay = GameSettings.DelayInterval * i;
+              //  var delay = GameSettings.DelayInterval * i;
 
-                var wave = createWave(levelId, gameCanvas, color, direction, delay);
+                var wave = createWave(levelId, gameCanvas, color, direction, 0);
                 this.waves.Add(wave);
             }
         } 

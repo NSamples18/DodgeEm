@@ -24,8 +24,11 @@ namespace DodgeEm.Model.Enemies
         private readonly LevelId LevelNumber;
 
         public int stopLevel { get; }
-        private DispatcherTimer timer;
-        private readonly TimeSpan tickInterval = TimeSpan.FromMilliseconds(20);
+
+        public IEnumerable<EnemyBall> GetEnemyBalls()
+        {
+            return this.waveManager.EnemyBalls;
+        }
 
         private int elapsedMilliseconds;
 
@@ -37,24 +40,29 @@ namespace DodgeEm.Model.Enemies
         /// <param name="stopLevel">The stop level.</param>
         public Level(LevelId levelNumber, int stopLevel, Canvas gameCanvas)
         {
-            this.waveManager = new WaveManager(gameCanvas);
+            this.waveManager = new WaveManager(gameCanvas, levelNumber);
             this.LevelNumber = levelNumber;
             this.stopLevel = stopLevel;
-            this.timer = new DispatcherTimer { Interval = this.tickInterval };
+        }
+
+        public LevelId GetLevelId()
+        {
+            return this.LevelNumber;
+        }
+
+        public void NextLevel()
+        {
+            this.StopLevel();
+            this.waveManager.RemoveBallsFromAllWaves();
         }
 
 
         public void StopLevel()
         { 
-            this.waveManager.StopAllWaves(this.LevelNumber); 
-            this.timer.Stop();
+            this.waveManager.StopWave();
         }
 
-        public void StopTimer()
-        {
-            this.timer.Stop();
-            this.timer.Tick -= this.Timer_Tick;
-        }
+
 
         /// <summary>
         ///     Starts the internal timer for the wave.
@@ -63,29 +71,12 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         public void StartLevel()
         {
-            if (this.timer != null)
-            {
-                this.timer.Tick += this.Timer_Tick;
-                this.timer.Start();
-                this.waveManager.startWaveWithLevel(this.LevelNumber);
-            }
-        }
-
-        private void Timer_Tick(object sender, object e)
-        {
-            this.elapsedMilliseconds += (int)this.timer.Interval.TotalMilliseconds;
-
-            if (this.elapsedMilliseconds >= this.stopLevel)
-            {
-                this.waveManager.EndCurrentWaves(this.LevelNumber);
-                this.StopTimer();
-            }
+               this.waveManager.startWaveWithLevel();
         }
 
         public void ResetLevel()
         {
-            this.timer = new DispatcherTimer { Interval = this.tickInterval };
-            this.waveManager.RestartWavesInLevel(this.LevelNumber);
+            this.waveManager.RestartWavesInLevel();
 
         }
     }

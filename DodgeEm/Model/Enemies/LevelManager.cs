@@ -14,69 +14,62 @@ namespace DodgeEm.Model.Enemies
     {
         private readonly List<Level> levels;
         private int currentLevelIndex = 0;
-
-        private DispatcherTimer timer;
-        private readonly TimeSpan tickInterval = TimeSpan.FromMilliseconds(20);
-        private int elapsedMilliseconds = 0;
+        public IEnumerable<EnemyBall> GetEnemyBalls()
+        {
+            return this.levels[this.currentLevelIndex].GetEnemyBalls();
+        }
 
         public LevelManager(Canvas gameCanvas)
         {
             this.levels = new List<Level>();
             this.addLevels(gameCanvas);
-            this.timer = new DispatcherTimer { Interval = this.tickInterval };
-            this.StartAllLevels();
+            this.StartLevel();
+
+        }
+
+        public LevelId GetLevelId()
+        {
+            return this.levels[this.currentLevelIndex].GetLevelId();
+        }
+
+        public int GetLevelDuration()
+        {
+            if (this.currentLevelIndex < this.levels.Count)
+            {
+                return this.levels[this.currentLevelIndex].stopLevel;
+            }
+            return 0;
+        }
+
+        public void NextLevel()
+        {
+            this.levels[this.currentLevelIndex].NextLevel();
+            this.currentLevelIndex++;
+            this.StartLevel();
 
         }
 
         public void StopLevel()
         {
-            this.timer.Tick -= this.Timer_Tick;
             this.levels[this.currentLevelIndex].StopLevel();
-            this.timer.Stop();
         }
 
-        private void Timer_Tick(object sender, object e)
+        public void StartLevel()
         {
-            this.elapsedMilliseconds += (int)this.tickInterval.TotalMilliseconds;
-            if (this.currentLevelIndex < this.levels.Count)
-            {
-                var currentLevel = this.levels[this.currentLevelIndex];
-                if (this.elapsedMilliseconds >= currentLevel.stopLevel)
-                {
-                    this.resartTimer();
-
-                    currentLevel.StopLevel();
-                    this.currentLevelIndex++;
-                }
-            }
-        }
-
-        private void resartTimer()
-        {
-            this.timer = new DispatcherTimer { Interval = this.tickInterval };
-            this.elapsedMilliseconds = 0;
-        }
-
-        public void StartAllLevels()
-        {
-            this.timer.Tick += this.Timer_Tick;
-            this.timer.Start();
             this.levels[this.currentLevelIndex].StartLevel();
-
         }
 
         public void RestartCurrentLevel()
         {
             this.levels[this.currentLevelIndex].ResetLevel();
-            this.resartTimer();
 
         }
 
         private void addLevels(Canvas gameCanvas)
         {
-            this.levels.Add(new Level(LevelId.Level1, 5000, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level2, 30000, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level3, 35000, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level1, 10, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level2, 10, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level3, 10, gameCanvas));
         }
 
     }

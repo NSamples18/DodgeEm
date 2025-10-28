@@ -76,19 +76,23 @@ namespace DodgeEm.Model.Enemies
 
         #region Methods
 
+        public void RemoveAllBalls()
+        {
+            foreach (var enemyBall in this.EnemyBalls)
+            {
+                this.currentCanvas.Children.Remove(enemyBall.Sprite);
+            }
+            this.EnemyBalls.Clear();
+        }
+
         public void resetWaveTimer()
         {
+            this.StopTimer();
             this.currentDelay = this.delayMilliseconds;
             this.ticksUntilNextBall = 1;
             this.lastTickTime = DateTime.Now;
             this.timer = new DispatcherTimer { Interval = this.tickInterval };
-        }
-        /// <summary>
-        ///     Ends the current wave.
-        /// </summary>
-        public void endWave(bool endWave)
-        {
-            this.stopGeneratingBalls = endWave;
+            this.StartWave();
         }
 
         /// <summary>
@@ -213,7 +217,6 @@ namespace DodgeEm.Model.Enemies
 
         private void generateEnemyBall()
         {
-            
                 var direction2 = this.ballDirection;
                 var speed = this.random.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
                 if (this.ballDirection == Direction.VerticalMixed)

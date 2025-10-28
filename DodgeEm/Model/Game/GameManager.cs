@@ -38,7 +38,7 @@ namespace DodgeEm.Model.Game
         #region Data members
 
         private readonly DispatcherTimer mainTimer;
-        private readonly DateTime gameEndTimeUtc;
+        private DateTime gameEndTimeUtc;
 
         private bool gameOverTriggered;
 
@@ -87,10 +87,9 @@ namespace DodgeEm.Model.Game
             }
 
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
-            this.WaveManager = new WaveManager(gameCanvas);
             this.LevelManager = new LevelManager(gameCanvas);
 
-            this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(GameSettings.GameEnds);
+            this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(this.LevelManager.GetLevelDuration());
 
             this.mainTimer = new DispatcherTimer
             {
@@ -130,26 +129,6 @@ namespace DodgeEm.Model.Game
             this.updatePlayerLives();
         }
 
-        private int getLevelTime()
-        {
-            if (this.level == 1)
-            {
-                this.level++;
-                return 25;
-            }
-            else if (this.level == 2)
-            {
-                this.level++;
-                return 30;
-            }
-            else
-            {
-                this.level++;
-                return 35;
-            }
-            
-        }
-
         private void updateTimerUi()
         {
             var remaining = this.getRemainingTime();
@@ -163,11 +142,33 @@ namespace DodgeEm.Model.Game
                 this.endGame(false);
                 return;
             }
-
-            if (!this.hasBallCollision() && this.hasTimeExpired())
+            if(this.hasBallCollision() && !this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() <= LevelId.Level3) 
             {
+                this.LevelManager.RestartCurrentLevel();
+                this.restartGameTimer();
+                return;
+            }
+
+            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() < LevelId.Level3)
+            { 
+
+                this.LevelManager.NextLevel();
+                this.restartGameTimer();
+            }
+
+            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() == LevelId.Level3)
+            {
+                this.mainTimer.Stop();
+                this.LevelManager.StopLevel();
                 this.endGame(true);
             }
+        }
+
+        private void restartGameTimer()
+        {
+            this.mainTimer.Stop();
+            this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(this.LevelManager.GetLevelDuration());
+            this.mainTimer.Start();
         }
 
         private bool hasTimeExpired()
@@ -201,7 +202,7 @@ namespace DodgeEm.Model.Game
 
         private bool hasBallCollision()
         {
-            foreach (var enemyBall in this.WaveManager.EnemyBalls)
+            foreach (var enemyBall in this.LevelManager.GetEnemyBalls())
             {
                 if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) &&
                     !this.PlayerManager.HasSameColors(enemyBall))
