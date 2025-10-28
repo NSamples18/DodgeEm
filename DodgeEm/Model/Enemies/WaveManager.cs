@@ -108,7 +108,19 @@ namespace DodgeEm.Model.Enemies
             {
                 (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.TopToBottom),
                 (LevelId.Level1, GameSettings.EastAndWestColor, Direction.LeftToRight),
-                (LevelId.Level2, GameSettings.NorthAndSouthColor, Direction.BottomToTop),
+                (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.BottomToTop),
+                (LevelId.Level1, GameSettings.EastAndWestColor, Direction.RightToLeft),
+                (LevelId.Level1, GameSettings.FinalBlitzColor, Direction.VerticalMixed),
+
+                (LevelId.Level2, Colors.Pink, Direction.TopToBottom),
+                (LevelId.Level2, Colors.Purple, Direction.LeftToRight),
+                (LevelId.Level2, Colors.Yellow, Direction.BottomToTop),
+                (LevelId.Level2, GameSettings.EastAndWestColor, Direction.RightToLeft),
+                (LevelId.Level2, GameSettings.FinalBlitzColor, Direction.VerticalMixed),
+
+                (LevelId.Level3, Colors.Blue, Direction.TopToBottom),
+                (LevelId.Level3, Colors.Green, Direction.LeftToRight),
+                (LevelId.Level3, Colors.Gray, Direction.BottomToTop),
                 (LevelId.Level3, GameSettings.EastAndWestColor, Direction.RightToLeft),
                 (LevelId.Level3, GameSettings.FinalBlitzColor, Direction.VerticalMixed)
             };
@@ -119,13 +131,20 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         private void addWaves(Canvas gameCanvas, (LevelId levelId, Color color, Direction direction)[] waveDefinitions)
         {
-            for (var i = 0; i < waveDefinitions.Length; i++)
-            {
-                var (levelId, color, direction) = waveDefinitions[i];
-              //  var delay = GameSettings.DelayInterval * i;
+            var groupedByLevel = waveDefinitions.GroupBy(w => w.levelId);
 
-                var wave = createWave(levelId, gameCanvas, color, direction, 0);
-                this.waves.Add(wave);
+            foreach (var levelGroup in groupedByLevel)
+            {
+                var index = 0; 
+
+                foreach (var (levelId, color, direction) in levelGroup)
+                {
+                    var delay = GameSettings.DelayInterval * index;
+                    var wave = createWave(levelId, gameCanvas, color, direction, delay);
+
+                    this.waves.Add(wave);
+                    index++;
+                }
             }
         } 
 

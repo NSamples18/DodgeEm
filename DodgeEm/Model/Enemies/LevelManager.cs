@@ -67,9 +67,9 @@ namespace DodgeEm.Model.Enemies
 
         private void addLevels(Canvas gameCanvas)
         {
-            this.levels.Add(new Level(LevelId.Level1, 10, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level2, 10, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level3, 10, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level1, 25, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level2, 30, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level3, 35, gameCanvas));
         }
 
     }
