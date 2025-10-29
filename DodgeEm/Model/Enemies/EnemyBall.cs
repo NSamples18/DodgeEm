@@ -67,9 +67,31 @@ namespace DodgeEm.Model.Enemies
                 case Direction.RightToLeft:
                     MoveLeft();
                     break;
+                case Direction.NorthEast:
+                    MoveUp();
+                    MoveRight();
+                    break;
+
+                case Direction.NorthWest:
+                    MoveUp();
+                    MoveLeft();
+                    break;
+
+                case Direction.SouthEast:
+                    MoveDown();
+                    MoveRight();
+                    break;
+
+                case Direction.SouthWest:
+                    MoveDown();
+                    MoveLeft();
+                    break;
+
                 case Direction.VerticalMixed:
+                case Direction.DiagonalMixed:
                     throw new InvalidOperationException(
-                        "VerticalMixed should be replaced with a specific direction before calling Move().");
+                        $"{this.Direction} should be replaced with a specific direction before calling Move().");
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }

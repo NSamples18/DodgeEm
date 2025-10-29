@@ -1,11 +1,6 @@
 ﻿using DodgeEm.Model.Game;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.Model.Enemies
@@ -45,8 +40,7 @@ namespace DodgeEm.Model.Enemies
         {
             this.levels[this.currentLevelIndex].NextLevel();
             this.currentLevelIndex++;
-            this.StartLevel();
-
+            this.levels[this.currentLevelIndex].StartLevel();
         }
 
         public void StopLevel()

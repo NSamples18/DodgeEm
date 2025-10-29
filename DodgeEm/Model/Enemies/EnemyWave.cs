@@ -85,14 +85,19 @@ namespace DodgeEm.Model.Enemies
             this.EnemyBalls.Clear();
         }
 
-        public void resetWaveTimer()
+        public void resetWave()
         {
             this.StopTimer();
+            this.RestartWaveTimer();
+            this.StartWave();
+        }
+
+        public void RestartWaveTimer()
+        {
             this.currentDelay = this.delayMilliseconds;
             this.ticksUntilNextBall = 1;
             this.lastTickTime = DateTime.Now;
             this.timer = new DispatcherTimer { Interval = this.tickInterval };
-            this.StartWave();
         }
 
         /// <summary>
@@ -198,9 +203,19 @@ namespace DodgeEm.Model.Enemies
 
                 case Direction.RightToLeft:
                     return ball.X + ball.Width < 0;
+                case Direction.NorthEast:
+                    return ball.Y + ball.Height < 0 || ball.X > width;
+                case Direction.NorthWest:
+                    return ball.Y + ball.Height < 0 || ball.X + ball.Width < 0;
+                case Direction.SouthEast:
+                    return ball.Y > height || ball.X > width;
+                case Direction.SouthWest:
+                    return ball.Y > height || ball.X + ball.Width < 0;
+
                 case Direction.VerticalMixed:
+                case Direction.DiagonalMixed:
                     throw new InvalidOperationException(
-                        "VerticalMixed should be replaced with a specific direction before calling Move().");
+                        $"{ball.Direction} should be replaced with a specific direction before calling Move().");
 
                 default:
                     throw new InvalidOperationException("Unknown Direction");
@@ -224,7 +239,12 @@ namespace DodgeEm.Model.Enemies
                     direction2 = this.randomBlitzDirection();
                     speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
                 }
-
+                else if (this.ballDirection == Direction.DiagonalMixed)
+                {
+                    direction2 = this.randomDiagonalDirection();
+                    speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
+                }
+                
                 var ball = new EnemyBall(this.ballColor, direction2, speed);
 
                 this.EnemyBalls.Add(ball);
@@ -240,11 +260,22 @@ namespace DodgeEm.Model.Enemies
             return blitzDirections[this.random.Next(blitzDirections.Length)];
         }
 
+        private Direction randomDiagonalDirection()
+        {
+            Direction[] diagonalDirections = {
+                Direction.NorthEast,
+                Direction.NorthWest,
+                Direction.SouthEast,
+                Direction.SouthWest
+            };
+            return diagonalDirections[this.random.Next(diagonalDirections.Length)];
+        }
+
         private void setInitialPositions(EnemyBall ball)
         {
             var marginX = this.canvasWidth - ball.Width;
             var marginY = this.canvasHeight - ball.Height;
-
+            const int spawnOffset = 30;
             switch (ball.Direction)
             {
                 case Direction.TopToBottom:
@@ -266,9 +297,34 @@ namespace DodgeEm.Model.Enemies
                     ball.X = -ball.Width;
                     ball.Y = this.random.Next((int)ball.Height, (int)marginY);
                     break;
+                case Direction.NorthEast:
+                    // Bottom-left → move up-right
+                    ball.X = -ball.Width - this.random.Next(0, (int)ball.Width);                 // off-screen to the left
+                    ball.Y = this.canvasHeight + this.random.Next(0, (int)ball.Height);         // off-screen below
+                    break;
+
+                case Direction.NorthWest:
+                    // Bottom-right → move up-left
+                    ball.X = this.canvasWidth + this.random.Next(0, (int)ball.Width);           // off-screen to the right
+                    ball.Y = this.canvasHeight + this.random.Next(0, (int)ball.Height);         // off-screen below
+                    break;
+
+                case Direction.SouthEast:
+                    // Top-left → move down-right
+                    ball.X = -ball.Width - this.random.Next(0, (int)ball.Width);                // off-screen to the left
+                    ball.Y = -ball.Height - this.random.Next(0, (int)ball.Height);              // off-screen above
+                    break;
+
+                case Direction.SouthWest:
+                    // Top-right → move down-left
+                    ball.X = this.canvasWidth + this.random.Next(0, (int)ball.Width);           // off-screen to the right
+                    ball.Y = -ball.Height - this.random.Next(0, (int)ball.Height);              // off-screen above
+                    break;
+
                 case Direction.VerticalMixed:
+                case Direction.DiagonalMixed:
                     throw new InvalidOperationException(
-                        "VerticalMixed should be replaced with a specific direction before calling Move().");
+                        $"{ball.Direction} should be replaced with a specific direction before calling Move().");
 
                 default:
                     throw new InvalidOperationException("Unknown Direction");

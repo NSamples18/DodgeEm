@@ -77,7 +77,6 @@ namespace DodgeEm.Model.Enemies
         public void ResetLevel()
         {
             this.waveManager.RestartWavesInLevel();
-
         }
     }
 }

@@ -53,7 +53,6 @@ namespace DodgeEm.Model.Enemies
             {
                 if (wave.levelId == level)
                 {
-                    wave.StopTimer();
                     wave.RemoveAllBalls();
                 }
             }
@@ -69,7 +68,7 @@ namespace DodgeEm.Model.Enemies
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == this.level)
+                if (wave.levelId == level)
                 {
                     wave.StopTimer();
                 }
@@ -82,7 +81,7 @@ namespace DodgeEm.Model.Enemies
             {
                 if (wave.levelId == level)
                 {
-                    wave.resetWaveTimer();
+                    wave.resetWave();
                     wave.RemoveAllBalls();
                 }
             }
@@ -90,11 +89,11 @@ namespace DodgeEm.Model.Enemies
 
         public void startWaveWithLevel()
         {
-            foreach (var enemyWave in this.waves)
+            foreach (var wave in this.waves)
             {
-                if(enemyWave.levelId == level)
+                if (wave.levelId == level)
                 {
-                    enemyWave.StartWave();
+                    wave.StartWave();
                 }
             }
         }
@@ -113,16 +112,16 @@ namespace DodgeEm.Model.Enemies
                 (LevelId.Level1, GameSettings.FinalBlitzColor, Direction.VerticalMixed),
 
                 (LevelId.Level2, Colors.Pink, Direction.TopToBottom),
-                (LevelId.Level2, Colors.Purple, Direction.LeftToRight),
-                (LevelId.Level2, Colors.Yellow, Direction.BottomToTop),
-                (LevelId.Level2, GameSettings.EastAndWestColor, Direction.RightToLeft),
-                (LevelId.Level2, GameSettings.FinalBlitzColor, Direction.VerticalMixed),
+                (LevelId.Level2, Colors.Brown, Direction.LeftToRight),
+                (LevelId.Level2, Colors.CadetBlue, Direction.BottomToTop),
+                (LevelId.Level2, Colors.Bisque, Direction.RightToLeft),
+                (LevelId.Level2, Colors.Aqua, Direction.VerticalMixed),
 
                 (LevelId.Level3, Colors.Blue, Direction.TopToBottom),
                 (LevelId.Level3, Colors.Green, Direction.LeftToRight),
                 (LevelId.Level3, Colors.Gray, Direction.BottomToTop),
                 (LevelId.Level3, GameSettings.EastAndWestColor, Direction.RightToLeft),
-                (LevelId.Level3, GameSettings.FinalBlitzColor, Direction.VerticalMixed)
+                (LevelId.Level3, GameSettings.FinalBlitzColor, Direction.DiagonalMixed)
             };
         }
 
@@ -139,7 +138,7 @@ namespace DodgeEm.Model.Enemies
 
                 foreach (var (levelId, color, direction) in levelGroup)
                 {
-                    var delay = GameSettings.DelayInterval * index;
+                    var delay = 3000 * index;
                     var wave = createWave(levelId, gameCanvas, color, direction, delay);
 
                     this.waves.Add(wave);
