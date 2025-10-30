@@ -126,6 +126,7 @@
     <Compile Include="Model\Enemies\EnemyWave.cs" />
     <Compile Include="Model\Game\GameManager.cs" />
     <Compile Include="Model\Core\GameObject.cs" />
+    <Compile Include="Model\Game\GamePoint.cs" />
     <Compile Include="Model\Game\GameSettings.cs" />
     <Compile Include="Model\Players\Player.cs" />
     <Compile Include="Model\Players\PlayerManager.cs" />
@@ -139,6 +140,12 @@
     </Compile>
     <Compile Include="View\Sprites\EnemyBallSprite.xaml.cs">
       <DependentUpon>EnemyBallSprite.xaml</DependentUpon>
+    </Compile>
+    <Page Include="View\Sprites\GamePointSprite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="View\Sprites\GamePointSprite.xaml.cs">
+      <DependentUpon>GamePointSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\ISpriteRenderer.cs" />
     <Compile Include="View\Sprites\PlayerSprite.xaml.cs">

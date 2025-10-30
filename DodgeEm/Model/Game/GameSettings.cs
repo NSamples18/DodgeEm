@@ -75,6 +75,11 @@ namespace DodgeEm.Model.Game
         public static readonly Color FinalBlitzColor = Colors.Purple;
 
         /// <summary>
+        /// The game point color
+        /// </summary>
+        public static readonly Color GamePointColor = Colors.DarkGray;
+
+        /// <summary>
         ///     The color for the primary player ball.
         /// </summary>
         public static readonly Color PrimaryPlayerBallColor = NorthAndSouthColor;
