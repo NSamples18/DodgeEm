@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
@@ -19,6 +20,15 @@ namespace DodgeEm.View
 
         private readonly GameManager gameManager;
 
+        
+        private readonly HashSet<VirtualKey> keysDown = new HashSet<VirtualKey>();
+
+        
+        private bool swapHandledOnCurrentSpacePress;
+
+        // Timer that moves the player while an arrow key is held
+        private readonly DispatcherTimer moveTimer;
+
         #endregion
 
         #region Constructors
@@ -38,6 +48,13 @@ namespace DodgeEm.View
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(applicationWidth, applicationHeight));
 
             Window.Current.CoreWindow.KeyDown += this.CoreWindowOnKeyDown;
+            Window.Current.CoreWindow.KeyUp += this.CoreWindowOnKeyUp;
+
+        
+            this.moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs) };
+            this.moveTimer.Tick += this.MoveTimerOnTick;
+            this.moveTimer.Start();
+
             this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
             this.gameManager.GameOver += this.onGameOverEvent;
             this.gameManager.GameTimerTick += this.updateUiGameTimer;
@@ -71,25 +88,59 @@ namespace DodgeEm.View
             this.playerLives.Text = $"Lives: {playerLives}";
         }
 
+        private void CoreWindowOnKeyUp(CoreWindow sender, KeyEventArgs args)
+        {
+            this.keysDown.Remove(args.VirtualKey);
+
+            if (args.VirtualKey == VirtualKey.Space)
+            {
+                this.swapHandledOnCurrentSpacePress = false;
+            }
+        }
+
         private void CoreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
-            switch (args.VirtualKey)
+            this.keysDown.Add(args.VirtualKey);
+
+            if (args.VirtualKey == VirtualKey.Space)
             {
-                case VirtualKey.Left:
-                    this.gameManager.PlayerManager.MovePlayerLeft();
-                    break;
-                case VirtualKey.Right:
-                    this.gameManager.PlayerManager.MovePlayerRight();
-                    break;
-                case VirtualKey.Up:
-                    this.gameManager.PlayerManager.MovePlayerUp();
-                    break;
-                case VirtualKey.Down:
-                    this.gameManager.PlayerManager.MovePlayerDown();
-                    break;
-                case VirtualKey.Space:
+                if (!this.swapHandledOnCurrentSpacePress)
+                {
                     this.gameManager.PlayerManager.SwapPlayerBallColor();
-                    break;
+                    this.swapHandledOnCurrentSpacePress = true;
+                }
+
+            }
+
+        }
+
+        private void MoveTimerOnTick(object sender, object e)
+        {
+            this.moveLeftOrRight();
+            this.moveUpOrDown();
+        }
+
+        private void moveUpOrDown()
+        {
+            if (this.keysDown.Contains(VirtualKey.Up))
+            {
+                this.gameManager.PlayerManager.MovePlayerUp();
+            }
+            else if (this.keysDown.Contains(VirtualKey.Down))
+            {
+                this.gameManager.PlayerManager.MovePlayerDown();
+            }
+        }
+
+        private void moveLeftOrRight()
+        {
+            if (this.keysDown.Contains(VirtualKey.Left))
+            {
+                this.gameManager.PlayerManager.MovePlayerLeft();
+            }
+            else if (this.keysDown.Contains(VirtualKey.Right))
+            {
+                this.gameManager.PlayerManager.MovePlayerRight();
             }
         }
 

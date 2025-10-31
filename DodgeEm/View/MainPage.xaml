@@ -9,13 +9,13 @@
 
     <Canvas x:Name="canvas" Background="Black" Width="{StaticResource CanvasWidth}"
             Height="{StaticResource CanvasHeight}">
-        <TextBlock x:Name="win" Width="200" Height="40" Canvas.Left="158" Canvas.Top="178" Text="You Win!"
-                   FontSize="20" Foreground="Gold" Visibility="Collapsed"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="99" />
-        <TextBlock x:Name="lose" Width="84" Height="40" Canvas.Left="158" Canvas.Top="178" Canvas.ZIndex="100" Text="You Lose!"
+        <TextBlock x:Name="win" Width="200" Height="40" Canvas.Left="146" Canvas.Top="228" Text="You Win!"
+                   FontSize="20" Foreground="Gold" Visibility="Collapsed" TextAlignment="Center"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="99" RenderTransformOrigin="0.525,0" />
+        <TextBlock x:Name="lose" Width="84" Height="40" Canvas.Left="208" Canvas.Top="228" Canvas.ZIndex="100" Text="You Lose!"
                    FontSize="20" Foreground="Red" Visibility="Collapsed"
                    HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBlock x:Name="gameTimer" Width="100" Height="26" Canvas.Left="340" Canvas.Top="10" Text="Time: 25.00"
+        <TextBlock x:Name="gameTimer" Width="100" Height="26" Canvas.Left="390" Canvas.Top="10" Text="Time: 25.00"
                    FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
         <TextBlock x:Name="playerLives" Width="75" Height="26" Canvas.Left="10" Canvas.Top="10" Text="Score: 3"
                    FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
