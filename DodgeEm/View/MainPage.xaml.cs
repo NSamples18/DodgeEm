@@ -51,7 +51,7 @@ namespace DodgeEm.View
             Window.Current.CoreWindow.KeyUp += this.CoreWindowOnKeyUp;
 
         
-            this.moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(40) };
+            this.moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs) };
             this.moveTimer.Tick += this.MoveTimerOnTick;
             this.moveTimer.Start();
 
@@ -119,7 +119,9 @@ namespace DodgeEm.View
             {
                 this.gameManager.PlayerManager.MovePlayerRight();
             }
-            else if (this.keysDown.Contains(VirtualKey.Up))
+
+            
+            if (this.keysDown.Contains(VirtualKey.Up))
             {
                 this.gameManager.PlayerManager.MovePlayerUp();
             }
