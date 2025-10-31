@@ -110,17 +110,12 @@ namespace DodgeEm.View
 
         private void MoveTimerOnTick(object sender, object e)
         {
-            
-            if (this.keysDown.Contains(VirtualKey.Left))
-            {
-                this.gameManager.PlayerManager.MovePlayerLeft();
-            }
-            else if (this.keysDown.Contains(VirtualKey.Right))
-            {
-                this.gameManager.PlayerManager.MovePlayerRight();
-            }
+            this.moveLeftOrRight();
+            this.moveUpOrDown();
+        }
 
-            
+        private void moveUpOrDown()
+        {
             if (this.keysDown.Contains(VirtualKey.Up))
             {
                 this.gameManager.PlayerManager.MovePlayerUp();
@@ -128,6 +123,18 @@ namespace DodgeEm.View
             else if (this.keysDown.Contains(VirtualKey.Down))
             {
                 this.gameManager.PlayerManager.MovePlayerDown();
+            }
+        }
+
+        private void moveLeftOrRight()
+        {
+            if (this.keysDown.Contains(VirtualKey.Left))
+            {
+                this.gameManager.PlayerManager.MovePlayerLeft();
+            }
+            else if (this.keysDown.Contains(VirtualKey.Right))
+            {
+                this.gameManager.PlayerManager.MovePlayerRight();
             }
         }
 
