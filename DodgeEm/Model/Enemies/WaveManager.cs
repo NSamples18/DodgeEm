@@ -27,6 +27,13 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         public IEnumerable<EnemyBall> EnemyBalls => this.waves.SelectMany(w => w.EnemyBalls);
 
+        public IEnumerable<Color> GetCurrentLevelWaveColors(LevelId levelId)
+        {
+            return this.waves
+                .Where(w => w.levelId == this.level)
+                .Select(w => w.BallColor)
+                .Distinct();
+        }
         #endregion
 
         #region Constructors

@@ -43,6 +43,7 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         public IList<EnemyBall> EnemyBalls { get; } = new List<EnemyBall>();
 
+        public Color BallColor => this.ballColor;
         #endregion
 
         #region Constructors
@@ -232,6 +233,8 @@ namespace DodgeEm.Model.Enemies
 
         private void generateEnemyBall()
         {
+            if (!this.stopGeneratingBalls)
+            {
                 var direction2 = this.ballDirection;
                 var speed = this.random.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
                 if (this.ballDirection == Direction.VerticalMixed)
@@ -244,13 +247,14 @@ namespace DodgeEm.Model.Enemies
                     direction2 = this.randomDiagonalDirection();
                     speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
                 }
-                
+
                 var ball = new EnemyBall(this.ballColor, direction2, speed);
 
                 this.EnemyBalls.Add(ball);
                 this.setInitialPositions(ball);
                 this.currentCanvas.Children.Add(ball.Sprite);
-            
+            }
+
         }
 
         private Direction randomBlitzDirection()

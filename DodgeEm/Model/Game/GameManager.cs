@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DodgeEm.Model.Enemies;
+using DodgeEm.Model.Players;
+using System;
+using Windows.Media.PlayTo;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using DodgeEm.Model.Enemies;
-using DodgeEm.Model.Players;
 
 namespace DodgeEm.Model.Game
 {
@@ -95,6 +96,7 @@ namespace DodgeEm.Model.Game
             {
                 Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs)
             };
+            OnLevelChanged();
             this.mainTimer.Tick += (s, e) => this.onMainTick();
             this.mainTimer.Start();
         }
@@ -102,6 +104,12 @@ namespace DodgeEm.Model.Game
         #endregion
 
         #region Methods
+
+        public void OnLevelChanged()
+        {
+            var colors = this.LevelManager.GetCurrentLevelWaveColors();
+            this.PlayerManager.UpdatePlayerColors(colors);
+        }
 
         /// <summary>
         ///     Event raised when the game is over.
@@ -147,6 +155,7 @@ namespace DodgeEm.Model.Game
 
                 this.LevelManager.NextLevel();
                 this.restartGameTimer();
+                this.OnLevelChanged();
             }
 
             if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() == LevelId.Level3)
@@ -218,6 +227,8 @@ namespace DodgeEm.Model.Game
         {
             this.PlayerLivesChanged?.Invoke(this, playerLives);
         }
+
+        
 
         #endregion
     }

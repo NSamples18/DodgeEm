@@ -30,6 +30,11 @@ namespace DodgeEm.Model.Enemies
             return this.waveManager.EnemyBalls;
         }
 
+        public IEnumerable<Color> GetWaveColors()
+        {
+            return this.waveManager.GetCurrentLevelWaveColors(this.LevelNumber);
+        }
+
         private int elapsedMilliseconds;
 
         /// <summary>

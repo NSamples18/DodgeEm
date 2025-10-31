@@ -1,6 +1,8 @@
-﻿using Windows.UI.Xaml.Controls;
-using DodgeEm.Model.Core;
+﻿using DodgeEm.Model.Core;
 using DodgeEm.Model.Game;
+using System.Collections.Generic;
+using Windows.UI;
+using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.Model.Players
 {
@@ -17,6 +19,11 @@ namespace DodgeEm.Model.Players
         private Player player;
 
         #endregion
+
+        public void UpdatePlayerColors(IEnumerable<Color> colors)
+        {
+            this.player.SetAvailableColors(colors);
+        }
 
         #region Constructors
 
@@ -104,7 +111,7 @@ namespace DodgeEm.Model.Players
         /// </summary>
         public void SwapPlayerBallColor()
         {
-            this.player.SwitchBallColor();
+            this.player.SwapToNextColor();
         }
 
         /// <summary>

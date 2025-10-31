@@ -1,6 +1,7 @@
 ﻿using DodgeEm.Model.Game;
 using System;
 using System.Collections.Generic;
+using Windows.UI;
 using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.Model.Enemies
@@ -12,6 +13,11 @@ namespace DodgeEm.Model.Enemies
         public IEnumerable<EnemyBall> GetEnemyBalls()
         {
             return this.levels[this.currentLevelIndex].GetEnemyBalls();
+        }
+
+        public IEnumerable<Color> GetCurrentLevelWaveColors()
+        {
+            return this.levels[this.currentLevelIndex].GetWaveColors();
         }
 
         public LevelManager(Canvas gameCanvas)

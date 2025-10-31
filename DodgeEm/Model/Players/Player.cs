@@ -1,7 +1,10 @@
-﻿using Windows.UI.Xaml.Media;
-using DodgeEm.Model.Core;
+﻿using DodgeEm.Model.Core;
 using DodgeEm.Model.Game;
 using DodgeEm.View.Sprites;
+using System.Collections.Generic;
+using System.Linq;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace DodgeEm.Model.Players
 {
@@ -15,6 +18,8 @@ namespace DodgeEm.Model.Players
 
         private bool swapColor = true;
         private int playerLives = 3;
+        private List<Color> availableColors = new List<Color>();
+        private int currentColorIndex = 0;
 
         #endregion
 
@@ -33,27 +38,27 @@ namespace DodgeEm.Model.Players
 
         #region Methods
 
-        /// <summary>
-        ///     Swaps the color of the player's ball.
-        ///     Precondition: None.
-        ///     Postcondition: The player's ball color is swapped.
-        /// </summary>
-        public void SwitchBallColor()
+        public void SetAvailableColors(IEnumerable<Color> colors)
+        {
+            availableColors = colors.ToList();
+            availableColors.RemoveAt(availableColors.Count - 1);
+            currentColorIndex = 0;
+            SetPlayerColor(availableColors[currentColorIndex]);
+        }
+
+        public void SwapToNextColor()
+         {
+            if (availableColors.Count == 0) return;
+            currentColorIndex = (currentColorIndex + 1) % availableColors.Count;
+            SetPlayerColor(availableColors[currentColorIndex]);
+        }
+
+        private void SetPlayerColor(Color color)
         {
             if (Sprite is PlayerSprite playerSprite)
             {
-                if (this.swapColor)
-                {
-                    playerSprite.InnerFill = new SolidColorBrush(GameSettings.PrimaryPlayerBallColor);
-                    playerSprite.OuterFill = new SolidColorBrush(GameSettings.SecondaryPlayerBallColor);
-                    this.swapColor = false;
-                }
-                else
-                {
-                    playerSprite.InnerFill = new SolidColorBrush(GameSettings.SecondaryPlayerBallColor);
-                    playerSprite.OuterFill = new SolidColorBrush(GameSettings.PrimaryPlayerBallColor);
-                    this.swapColor = true;
-                }
+                playerSprite.InnerFill = new SolidColorBrush(Colors.Blue);
+                playerSprite.OuterFill = new SolidColorBrush(color);
             }
         }
 
