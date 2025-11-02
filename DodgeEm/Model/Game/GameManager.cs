@@ -65,6 +65,8 @@ namespace DodgeEm.Model.Game
         private LevelManager LevelManager { get; }
         private GamePointManager GamePointManager { get; }
 
+        private PowerUp PowerUp { get; }
+
         #endregion
 
         #region Constructors
@@ -91,6 +93,7 @@ namespace DodgeEm.Model.Game
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.LevelManager = new LevelManager(gameCanvas);
             this.GamePointManager = new GamePointManager(gameCanvas, backgroundWidth, backgroundHeight);
+            this.PowerUp = new PowerUp(gameCanvas, backgroundWidth, backgroundHeight);
 
             this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(this.LevelManager.GetLevelDuration());
 
