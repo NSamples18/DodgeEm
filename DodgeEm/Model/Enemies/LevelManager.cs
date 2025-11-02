@@ -42,6 +42,11 @@ namespace DodgeEm.Model.Enemies
             return 0;
         }
 
+        public int GetCurrentLevelGamePoints()
+        {
+            return this.levels[this.currentLevelIndex].gamePoint;
+        }
+
         public void NextLevel()
         {
             this.levels[this.currentLevelIndex].NextLevel();
@@ -67,9 +72,9 @@ namespace DodgeEm.Model.Enemies
 
         private void addLevels(Canvas gameCanvas)
         {
-            this.levels.Add(new Level(LevelId.Level1, 25, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level2, 30, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level3, 35, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level1, 25, 0, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level2, 30, 2, gameCanvas));
+            this.levels.Add(new Level(LevelId.Level3, 35, 3, gameCanvas));
         }
 
     }

@@ -77,7 +77,7 @@ namespace DodgeEm.Model.Game
         /// <summary>
         /// The game point color
         /// </summary>
-        public static readonly Color GamePointColor = Colors.DarkGray;
+        public static readonly Color GamePointColor = Colors.DeepPink;
 
         /// <summary>
         ///     The color for the primary player ball.

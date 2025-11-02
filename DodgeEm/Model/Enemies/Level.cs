@@ -37,17 +37,20 @@ namespace DodgeEm.Model.Enemies
 
         private int elapsedMilliseconds;
 
+        public int gamePoint { get; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Level"/> class.
         /// </summary> IList<Color> enemyColors, IList<Object> pointObjects,
         /// <param name="levelNumber">The level number.</param>
         /// <param name="startLevelTime">The start level.</param>
         /// <param name="stopLevel">The stop level.</param>
-        public Level(LevelId levelNumber, int stopLevel, Canvas gameCanvas)
+        public Level(LevelId levelNumber, int stopLevel, int numOfGamePoint, Canvas gameCanvas)
         {
             this.waveManager = new WaveManager(gameCanvas, levelNumber);
             this.LevelNumber = levelNumber;
             this.stopLevel = stopLevel;
+            this.gamePoint = numOfGamePoint;
         }
 
         public LevelId GetLevelId()
@@ -76,7 +79,7 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         public void StartLevel()
         {
-               this.waveManager.startWaveWithLevel();
+            this.waveManager.startWaveWithLevel();
         }
 
         public void ResetLevel()

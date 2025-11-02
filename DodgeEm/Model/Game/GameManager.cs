@@ -63,6 +63,7 @@ namespace DodgeEm.Model.Game
         /// </summary>
         private WaveManager WaveManager { get; }
         private LevelManager LevelManager { get; }
+        private GamePointManager GamePointManager { get; }
 
         #endregion
 
@@ -89,6 +90,7 @@ namespace DodgeEm.Model.Game
 
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.LevelManager = new LevelManager(gameCanvas);
+            this.GamePointManager = new GamePointManager(gameCanvas, backgroundWidth, backgroundHeight);
 
             this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(this.LevelManager.GetLevelDuration());
 
@@ -99,6 +101,8 @@ namespace DodgeEm.Model.Game
             OnLevelChanged();
             this.mainTimer.Tick += (s, e) => this.onMainTick();
             this.mainTimer.Start();
+            this.spawnGamePoint();
+
         }
 
         #endregion
@@ -156,6 +160,7 @@ namespace DodgeEm.Model.Game
                 this.LevelManager.NextLevel();
                 this.restartGameTimer();
                 this.OnLevelChanged();
+                this.spawnGamePoint();
             }
 
             if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() == LevelId.Level3)
@@ -226,6 +231,12 @@ namespace DodgeEm.Model.Game
         private void onPlayerLivesChanged(int playerLives)
         {
             this.PlayerLivesChanged?.Invoke(this, playerLives);
+        }
+
+        private void spawnGamePoint()
+        {
+            
+            this.GamePointManager.AddGamePoints(this.LevelManager.GetCurrentLevelGamePoints(), this.LevelManager.GetLevelId());
         }
 
         
