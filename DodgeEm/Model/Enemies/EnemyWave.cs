@@ -60,7 +60,7 @@ namespace DodgeEm.Model.Enemies
         public EnemyWave(LevelId levelId,Color color, Direction direction, int startWave, Canvas gameCanvas, double width,
             double height)
         {
-            this.timer = new DispatcherTimer { Interval = this.tickInterval };
+            this.timer = null;
 
             this.ballColor = color;
             this.ballDirection = direction;
@@ -71,6 +71,8 @@ namespace DodgeEm.Model.Enemies
             this.canvasHeight = height;
             this.delayMilliseconds = startWave;
             this.currentDelay = startWave;
+
+            this.lastTickTime = DateTime.Now;
         }
 
         #endregion
@@ -99,6 +101,8 @@ namespace DodgeEm.Model.Enemies
             this.ticksUntilNextBall = 1;
             this.lastTickTime = DateTime.Now;
             this.timer = new DispatcherTimer { Interval = this.tickInterval };
+            this.timer.Tick += this.Timer_Tick;
+            this.timer.Start();
         }
 
         /// <summary>
@@ -121,10 +125,9 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         public void StartWave()
         {
-            if (this.timer != null)
+            if (this.timer == null)
             {
-                this.timer.Tick += this.Timer_Tick;
-                this.timer.Start();
+                this.RestartWaveTimer();
             }
         }
 

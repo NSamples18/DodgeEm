@@ -106,7 +106,7 @@ namespace DodgeEm.Model.Enemies
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == level)
+                if (wave.levelId == this.level)
                 {
                     wave.StartWave();
                 }
@@ -121,18 +121,16 @@ namespace DodgeEm.Model.Enemies
             return new[]
             {
                 (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.TopToBottom),
-                (LevelId.Level1, GameSettings.EastAndWestColor, Direction.LeftToRight),
-                (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.BottomToTop),
-                (LevelId.Level1, GameSettings.EastAndWestColor, Direction.RightToLeft),
+
                 (LevelId.Level1, GameSettings.FinalBlitzColor, Direction.VerticalMixed),
 
-                (LevelId.Level2, Colors.Pink, Direction.TopToBottom),
+                (LevelId.Level2, Colors.Yellow, Direction.TopToBottom),
                 (LevelId.Level2, Colors.Brown, Direction.LeftToRight),
                 (LevelId.Level2, Colors.CadetBlue, Direction.BottomToTop),
                 (LevelId.Level2, Colors.Bisque, Direction.RightToLeft),
-                (LevelId.Level2, Colors.Aqua, Direction.VerticalMixed),
+                (LevelId.Level2, Colors.Purple, Direction.VerticalMixed),
 
-                (LevelId.Level3, Colors.Blue, Direction.TopToBottom),
+                (LevelId.Level3, Colors.Orange, Direction.TopToBottom),
                 (LevelId.Level3, Colors.Green, Direction.LeftToRight),
                 (LevelId.Level3, Colors.Gray, Direction.BottomToTop),
                 (LevelId.Level3, GameSettings.EastAndWestColor, Direction.RightToLeft),
