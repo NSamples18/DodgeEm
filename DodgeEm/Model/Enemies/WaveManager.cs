@@ -96,7 +96,7 @@ namespace DodgeEm.Model.Enemies
             {
                 if (wave.levelId == level)
                 {
-                    wave.resetWave();
+                    wave.ResetWave();
                     wave.RemoveAllBalls();
                 }
             }
