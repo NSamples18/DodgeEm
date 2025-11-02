@@ -19,5 +19,8 @@
                    FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
         <TextBlock x:Name="playerLives" Width="75" Height="26" Canvas.Left="10" Canvas.Top="10" Text="Score: 3"
                    FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
+        <TextBlock x:Name="powerUpText" Width="150" Height="26" Canvas.Left="174" Canvas.Top="44" Text="Power-Up Active!"
+                   FontSize="20" Foreground="Yellow" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="100"
+                   Visibility="Collapsed"/>
     </Canvas>
 </Page>

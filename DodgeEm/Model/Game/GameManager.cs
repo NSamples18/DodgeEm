@@ -34,6 +34,8 @@ namespace DodgeEm.Model.Game
         /// <param name="playerLives">The player lives.</param>
         public delegate void PlayerLivesChangedHandler(object sender, int playerLives);
 
+        public delegate void PlayerPowerUpHandler(object sender, bool isHit);
+
         #endregion
 
         #region Data members
@@ -110,7 +112,7 @@ namespace DodgeEm.Model.Game
 
         #region Methods
 
-        public void OnLevelChanged()
+        private void OnLevelChanged()
         {
             var colors = this.LevelManager.GetCurrentLevelWaveColors();
             this.PlayerManager.UpdatePlayerColors(colors);
@@ -130,6 +132,8 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public event PlayerLivesChangedHandler PlayerLivesChanged;
 
+        public event PlayerPowerUpHandler PlayerPowerUp;
+
         private void onMainTick()
         {
             if (this.gameOverTriggered)
@@ -146,7 +150,7 @@ namespace DodgeEm.Model.Game
         {
             if (this.playerCollisionWithPowerUp())
             {
-                
+                this.PlayerPowerUp?.Invoke(this, true);
             }
         }
 

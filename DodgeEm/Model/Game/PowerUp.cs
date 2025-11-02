@@ -41,7 +41,6 @@ namespace DodgeEm.Model.Game
             this.canvasHeight = height;
 
             StartSpawnTimer();
-            StartRemoveTimer();
         }
 
         public void RestartPowerUp()
@@ -66,7 +65,7 @@ namespace DodgeEm.Model.Game
 
         private void StartSpawnTimer()
         {
-            spawnTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
+            spawnTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
             spawnTimer.Tick += SpawnTimer_Tick;
             spawnTimer.Start();
         }
@@ -91,9 +90,10 @@ namespace DodgeEm.Model.Game
 
             this.SetSpeed(3, 3);
 
-            moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) }; // ~60 FPS
+            moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
             moveTimer.Tick += MoveTimer_Tick;
             moveTimer.Start();
+            this.StartRemoveTimer();
         }
 
         private void MoveTimer_Tick(object sender, object e)
@@ -135,10 +135,7 @@ namespace DodgeEm.Model.Game
         {
             removeTimer.Stop();
             moveTimer?.Stop();
-            if (currentCanvas.Children.Contains(this.Sprite))
-            {
-                currentCanvas.Children.Remove(this.Sprite);
-            }
+            currentCanvas.Children.Remove(this.Sprite);
         }
     }
 }

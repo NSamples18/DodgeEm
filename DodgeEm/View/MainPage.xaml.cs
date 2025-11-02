@@ -28,6 +28,7 @@ namespace DodgeEm.View
 
         // Timer that moves the player while an arrow key is held
         private readonly DispatcherTimer moveTimer;
+        private readonly DispatcherTimer powerUpTextTimer;
 
         #endregion
 
@@ -59,6 +60,27 @@ namespace DodgeEm.View
             this.gameManager.GameOver += this.onGameOverEvent;
             this.gameManager.GameTimerTick += this.updateUiGameTimer;
             this.gameManager.PlayerLivesChanged += this.updateLifeCount;
+            this.gameManager.PlayerPowerUp += this.updatePlayerPowerUp;
+
+            this.powerUpTextTimer = new DispatcherTimer();
+            this.powerUpTextTimer.Interval = TimeSpan.FromSeconds(3);
+            this.powerUpTextTimer.Tick += PowerUpTextTimer_Tick;
+        }
+
+        private void updatePlayerPowerUp(object sender, bool isHit)
+        {
+            if (isHit)
+            {
+                this.powerUpText.Visibility = Visibility.Visible;
+                this.powerUpTextTimer.Stop();
+                this.powerUpTextTimer.Start();
+            }
+        }
+
+        private void PowerUpTextTimer_Tick(object sender, object e)
+        {
+            this.powerUpTextTimer.Stop();
+            this.powerUpText.Visibility = Visibility.Collapsed;
         }
 
         #endregion
