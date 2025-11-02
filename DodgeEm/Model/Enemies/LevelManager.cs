@@ -70,6 +70,11 @@ namespace DodgeEm.Model.Enemies
 
         }
 
+        public void RemoveAllBalls()
+        {
+            this.levels[this.currentLevelIndex].RemoveAllBalls();
+        }
+
         private void addLevels(Canvas gameCanvas)
         {
             this.levels.Add(new Level(LevelId.Level1, 25, 0, gameCanvas));

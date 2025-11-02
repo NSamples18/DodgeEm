@@ -40,11 +40,40 @@ namespace DodgeEm.Model.Game
             this.canvasWidth = width;
             this.canvasHeight = height;
 
-            spawnTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+            StartSpawnTimer();
+            StartRemoveTimer();
+        }
+
+        public void RestartPowerUp()
+        {
+
+            spawnTimer?.Stop();
+
+            moveTimer?.Stop();
+            removeTimer?.Stop();
+
+            if (currentCanvas.Children.Contains(this.Sprite))
+                currentCanvas.Children.Remove(this.Sprite);
+
+            StartSpawnTimer();
+            StartRemoveTimer();
+        }
+
+        public void RemovePowerUp()
+        {
+            this.currentCanvas.Children.Remove(this.Sprite);
+        }
+
+        private void StartSpawnTimer()
+        {
+            spawnTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(10) };
             spawnTimer.Tick += SpawnTimer_Tick;
             spawnTimer.Start();
+        }
 
-            int removeSeconds = random.Next(5, 11); // 5 to 10 seconds inclusive
+        private void StartRemoveTimer()
+        {
+            var removeSeconds = random.Next(8, 12);
             removeTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(removeSeconds) };
             removeTimer.Tick += RemoveTimer_Tick;
             removeTimer.Start();
@@ -74,7 +103,6 @@ namespace DodgeEm.Model.Game
             else
                 this.MoveLeft();
 
-            
             if (dirY > 0)
                 this.MoveDown();
             else
@@ -107,8 +135,10 @@ namespace DodgeEm.Model.Game
         {
             removeTimer.Stop();
             moveTimer?.Stop();
-            currentCanvas.Children.Remove(this.Sprite);
+            if (currentCanvas.Children.Contains(this.Sprite))
+            {
+                currentCanvas.Children.Remove(this.Sprite);
+            }
         }
-
     }
 }

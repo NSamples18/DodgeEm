@@ -54,7 +54,7 @@ namespace DodgeEm.Model.Enemies
 
         #region Methods
 
-        public void RemoveBallsFromAllWaves()
+        public void RemoveBallsFromAllWavesInLevel()
         {
             foreach (var wave in this.waves)
             {
@@ -62,6 +62,14 @@ namespace DodgeEm.Model.Enemies
                 {
                     wave.RemoveAllBalls();
                 }
+            }
+        }
+
+        public void RemoveAllBalls()
+        {
+            foreach (var wave in this.waves)
+            {
+                wave.RemoveAllBalls();
             }
         }
 

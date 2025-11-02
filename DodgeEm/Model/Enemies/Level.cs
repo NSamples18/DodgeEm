@@ -61,7 +61,7 @@ namespace DodgeEm.Model.Enemies
         public void NextLevel()
         {
             this.StopLevel();
-            this.waveManager.RemoveBallsFromAllWaves();
+            this.waveManager.RemoveBallsFromAllWavesInLevel();
         }
 
 
@@ -85,6 +85,11 @@ namespace DodgeEm.Model.Enemies
         public void ResetLevel()
         {
             this.waveManager.RestartWavesInLevel();
+        }
+
+        public void RemoveAllBalls()
+        {
+            this.waveManager.RemoveAllBalls();
         }
     }
 }

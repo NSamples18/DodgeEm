@@ -64,9 +64,7 @@ namespace DodgeEm.Model.Game
         private WaveManager WaveManager { get; }
         private LevelManager LevelManager { get; }
         private GamePointManager GamePointManager { get; }
-
-        private PowerUp PowerUp { get; }
-
+        private PowerUpManager PowerUpManager { get; }
         #endregion
 
         #region Constructors
@@ -93,7 +91,7 @@ namespace DodgeEm.Model.Game
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.LevelManager = new LevelManager(gameCanvas);
             this.GamePointManager = new GamePointManager(gameCanvas, backgroundWidth, backgroundHeight);
-            this.PowerUp = new PowerUp(gameCanvas, backgroundWidth, backgroundHeight);
+            this.PowerUpManager = new PowerUpManager(gameCanvas, backgroundWidth, backgroundHeight);
 
             this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(this.LevelManager.GetLevelDuration());
 
@@ -141,6 +139,15 @@ namespace DodgeEm.Model.Game
 
             this.updateTimerUi();
             this.handleGameEndConditions();
+            this.handlePowerUp();
+        }
+
+        private void handlePowerUp()
+        {
+            if (this.playerCollisionWithPowerUp())
+            {
+                
+            }
         }
 
         private void updateTimerUi()
@@ -151,22 +158,23 @@ namespace DodgeEm.Model.Game
 
         private void handleGameEndConditions()
         {
-            if (this.hasBallCollision() && !this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() == 0)
+            if (this.hasBallCollisionWithEnemy() && !this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() == 0)
             {
                 this.endGame(false);
                 return;
             }
 
-            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() < LevelId.Level3)
+            if (!this.hasBallCollisionWithEnemy() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() < LevelId.Level3)
             { 
 
                 this.LevelManager.NextLevel();
                 this.restartGameTimer();
                 this.OnLevelChanged();
                 this.spawnGamePoint();
+                this.PowerUpManager.SpawnPowerUp();
             }
 
-            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() == LevelId.Level3)
+            if (!this.hasBallCollisionWithEnemy() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() == LevelId.Level3)
             {
                 this.mainTimer.Stop();
                 this.LevelManager.StopLevel();
@@ -210,7 +218,7 @@ namespace DodgeEm.Model.Game
             this.mainTimer.Stop();
         }
 
-        private bool hasBallCollision()
+        private bool hasBallCollisionWithEnemy()
         {
             foreach (var enemyBall in this.LevelManager.GetEnemyBalls())
             {
@@ -219,6 +227,21 @@ namespace DodgeEm.Model.Game
                     this.LevelManager.RestartCurrentLevel();
                     this.restartGameTimer();
                     updatePlayerLives();
+                    this.PowerUpManager.RestartPowerUp();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool playerCollisionWithPowerUp()
+        {
+            foreach (var powerUp in this.PowerUpManager.PowerUps)
+            {
+                if (this.PlayerManager.IsPlayerTouchingEnemyBall(powerUp))
+                {
+                    this.PowerUpManager.RemovePowerUp(powerUp);
+                    this.LevelManager.RemoveAllBalls();
                     return true;
                 }
             }
