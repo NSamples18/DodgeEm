@@ -62,12 +62,51 @@ namespace DodgeEm.Model.Game
         /// <summary>
         ///     The color for North and South enemy balls.
         /// </summary>
-        public static readonly Color NorthAndSouthColor = Colors.Red;
+        public static readonly Color Level1NorthAndSouthColor = Colors.Red;
 
         /// <summary>
         ///     The color for East and West enemy balls.
         /// </summary>
-        public static readonly Color EastAndWestColor = Colors.Orange;
+        public static readonly Color Level1EastAndWestColor = Colors.Orange;
+
+        /// <summary>
+        ///     The color for North and South enemy balls.
+        /// </summary>
+        public static readonly Color Level2North = Colors.White;
+        /// <summary>
+        ///     The color for East and West enemy balls.
+        /// </summary>
+        public static readonly Color Level2East = Colors.Brown;
+
+        /// <summary>
+        ///     The color for South enemy balls.
+        /// </summary>
+        public static readonly Color Level2South = Colors.LightGreen;
+
+        /// <summary>
+        ///     The color for West enemy balls.
+        /// </summary>
+        public static readonly Color Level2West = Colors.LightBlue;
+
+        /// <summary>
+        ///     The color for North enemy balls.
+        /// </summary>
+        public static readonly Color Level3North = Colors.Green;
+
+        /// <summary>
+        ///     The color for East enemy balls.
+        /// </summary>
+        public static readonly Color Level3East = Colors.Gray;
+
+        /// <summary>
+        ///     The color for South enemy balls.
+        /// </summary>
+        public static readonly Color Level3South = Colors.Tan;
+
+        /// <summary>
+        ///     The color for West enemy balls.
+        /// </summary>
+        public static readonly Color Level3West = Colors.Teal;
 
         /// <summary>
         ///     The final blitz color
@@ -77,17 +116,7 @@ namespace DodgeEm.Model.Game
         /// <summary>
         /// The game point color
         /// </summary>
-        public static readonly Color GamePointColor = Colors.DeepPink;
-
-        /// <summary>
-        ///     The color for the primary player ball.
-        /// </summary>
-        public static readonly Color PrimaryPlayerBallColor = NorthAndSouthColor;
-
-        /// <summary>
-        ///     The color for the secondary player ball.
-        /// </summary>
-        public static readonly Color SecondaryPlayerBallColor = EastAndWestColor;
+        public static readonly Color GamePointColor = Colors.Yellow;
 
         #endregion
     }

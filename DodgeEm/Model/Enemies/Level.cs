@@ -79,7 +79,7 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         public void StartLevel()
         {
-            this.waveManager.startWaveWithLevel();
+            this.waveManager.StartWaveWithLevel();
         }
 
         public void ResetLevel()
