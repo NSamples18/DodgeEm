@@ -20,13 +20,10 @@ namespace DodgeEm.View
 
         private readonly GameManager gameManager;
 
-        
         private readonly HashSet<VirtualKey> keysDown = new HashSet<VirtualKey>();
 
-        
         private bool swapHandledOnCurrentSpacePress;
 
-        // Timer that moves the player while an arrow key is held
         private readonly DispatcherTimer moveTimer;
 
         #endregion
@@ -50,12 +47,12 @@ namespace DodgeEm.View
             Window.Current.CoreWindow.KeyDown += this.CoreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.CoreWindowOnKeyUp;
 
-        
             this.moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs) };
             this.moveTimer.Tick += this.MoveTimerOnTick;
             this.moveTimer.Start();
 
             this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
+            DataContext = this.gameManager.Scoreboard;
             this.gameManager.GameOver += this.onGameOverEvent;
             this.gameManager.GameTimerTick += this.updateUiGameTimer;
             this.gameManager.PlayerLivesChanged += this.updateLifeCount;
@@ -109,9 +106,7 @@ namespace DodgeEm.View
                     this.gameManager.PlayerManager.SwapPlayerBallColor();
                     this.swapHandledOnCurrentSpacePress = true;
                 }
-
             }
-
         }
 
         private void MoveTimerOnTick(object sender, object e)

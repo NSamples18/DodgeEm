@@ -1,8 +1,8 @@
-﻿using DodgeEm.Model.Core;
-using DodgeEm.Model.Game;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
+using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
 
 namespace DodgeEm.Model.Players
 {
@@ -19,11 +19,6 @@ namespace DodgeEm.Model.Players
         private Player player;
 
         #endregion
-
-        public void UpdatePlayerColors(IEnumerable<Color> colors)
-        {
-            this.player.SetAvailableColors(colors);
-        }
 
         #region Constructors
 
@@ -43,6 +38,11 @@ namespace DodgeEm.Model.Players
         #endregion
 
         #region Methods
+
+        public void UpdatePlayerColors(IEnumerable<Color> colors)
+        {
+            this.player.SetAvailableColors(colors);
+        }
 
         /// <summary>
         ///     Moves the player to the left.
@@ -124,6 +124,11 @@ namespace DodgeEm.Model.Players
             return this.player.IsTouchingEnemyBall(enemyBall);
         }
 
+        public bool IsPlayerTouchingGamePoint(GameObject point)
+        {
+            return this.player.isTouchingGamePoint(point);
+        }
+
         /// <summary>
         ///     Checks if the player has the same color as the enemy ball.
         ///     Precondition: enemyBall is not null.
@@ -141,7 +146,7 @@ namespace DodgeEm.Model.Players
 
         public int GetPlayerLives()
         {
-           return  this.player.GetPlayerLives();
+            return this.player.GetPlayerLives();
         }
 
         private bool IsPlayerOnRightEdge()

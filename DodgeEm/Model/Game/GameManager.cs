@@ -1,9 +1,9 @@
-﻿using DodgeEm.Model.Enemies;
-using DodgeEm.Model.Players;
-using System;
-using Windows.Media.PlayTo;
+﻿using System;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using DodgeEm.Model.Enemies;
+using DodgeEm.Model.Players;
 
 namespace DodgeEm.Model.Game
 {
@@ -27,6 +27,7 @@ namespace DodgeEm.Model.Game
         /// <param name="sender">The sender.</param>
         /// <param name="remainingTime">The remaining time.</param>
         public delegate void GameTimerTickHandler(object sender, TimeSpan remainingTime);
+
         /// <summary>
         ///     Delegate for the PlayerLivesChanged event.
         /// </summary>
@@ -43,7 +44,7 @@ namespace DodgeEm.Model.Game
 
         private bool gameOverTriggered;
 
-        private int level = 1;
+        private readonly int level = 1;
 
         #endregion
 
@@ -62,8 +63,17 @@ namespace DodgeEm.Model.Game
         ///     Postcondition: Returns the WaveManager instance.
         /// </summary>
         private WaveManager WaveManager { get; }
+
         private LevelManager LevelManager { get; }
         private GamePointManager GamePointManager { get; }
+
+        /// <summary>
+        ///     Gets the scoreboard.
+        /// </summary>
+        /// <value>
+        ///     The scoreboard.
+        /// </value>
+        public Scoreboard Scoreboard { get; }
 
         #endregion
 
@@ -92,23 +102,27 @@ namespace DodgeEm.Model.Game
             this.LevelManager = new LevelManager(gameCanvas);
             this.GamePointManager = new GamePointManager(gameCanvas, backgroundWidth, backgroundHeight);
 
+            this.Scoreboard = new Scoreboard();
+
             this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(this.LevelManager.GetLevelDuration());
 
             this.mainTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs)
             };
-            OnLevelChanged();
+            this.OnLevelChanged();
             this.mainTimer.Tick += (s, e) => this.onMainTick();
             this.mainTimer.Start();
             this.spawnGamePoint();
-
         }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        ///     Called when [level changed].
+        /// </summary>
         public void OnLevelChanged()
         {
             var colors = this.LevelManager.GetCurrentLevelWaveColors();
@@ -124,6 +138,7 @@ namespace DodgeEm.Model.Game
         ///     Event raised on each game timer tick.
         /// </summary>
         public event GameTimerTickHandler GameTimerTick;
+
         /// <summary>
         ///     Event raised when the player lives change.
         /// </summary>
@@ -136,8 +151,26 @@ namespace DodgeEm.Model.Game
                 return;
             }
 
+            this.handleGamePointCollisions();
+
             this.updateTimerUi();
             this.handleGameEndConditions();
+        }
+
+        private void handleGamePointCollisions()
+        {
+            var points = this.GamePointManager.GetGamePoints().ToList();
+            foreach (var gp in points)
+            {
+                if (this.PlayerManager.IsPlayerTouchingGamePoint(gp))
+                {
+                    this.Scoreboard.AddPoints(1);
+
+                    this.GamePointManager.RemoveGamePoint(gp);
+                }
+            }
+
+            this.GamePointManager.CleanupCollected();
         }
 
         private void updateTimerUi()
@@ -154,16 +187,17 @@ namespace DodgeEm.Model.Game
                 return;
             }
 
-            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() < LevelId.Level3)
-            { 
-
+            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 &&
+                this.LevelManager.GetLevelId() < LevelId.Level3)
+            {
                 this.LevelManager.NextLevel();
                 this.restartGameTimer();
                 this.OnLevelChanged();
                 this.spawnGamePoint();
             }
 
-            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 && this.LevelManager.GetLevelId() == LevelId.Level3)
+            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 &&
+                this.LevelManager.GetLevelId() == LevelId.Level3)
             {
                 this.mainTimer.Stop();
                 this.LevelManager.StopLevel();
@@ -211,14 +245,16 @@ namespace DodgeEm.Model.Game
         {
             foreach (var enemyBall in this.LevelManager.GetEnemyBalls())
             {
-                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) && !this.PlayerManager.HasSameColors(enemyBall))
+                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) &&
+                    !this.PlayerManager.HasSameColors(enemyBall))
                 {
                     this.LevelManager.RestartCurrentLevel();
                     this.restartGameTimer();
-                    updatePlayerLives();
+                    this.updatePlayerLives();
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -235,11 +271,9 @@ namespace DodgeEm.Model.Game
 
         private void spawnGamePoint()
         {
-            
-            this.GamePointManager.AddGamePoints(this.LevelManager.GetCurrentLevelGamePoints(), this.LevelManager.GetLevelId());
+            this.GamePointManager.AddGamePoints(this.LevelManager.GetCurrentLevelGamePoints(),
+                this.LevelManager.GetLevelId());
         }
-
-        
 
         #endregion
     }

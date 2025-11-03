@@ -14,9 +14,9 @@ namespace DodgeEm.Model.Enemies
     {
         #region Data members
 
-        private readonly Color ballColor;
-        private readonly Direction ballDirection;
         public readonly LevelId levelId;
+
+        private readonly Direction ballDirection;
 
         private readonly Canvas currentCanvas;
         private readonly double canvasWidth;
@@ -25,12 +25,12 @@ namespace DodgeEm.Model.Enemies
         private DispatcherTimer timer;
         private int tickCount;
         private int ticksUntilNextBall = 1;
-        private int delayMilliseconds;
+        private readonly int delayMilliseconds;
         private int currentDelay;
         private DateTime lastTickTime = DateTime.Now;
         private readonly TimeSpan tickInterval = TimeSpan.FromMilliseconds(20);
 
-        private bool stopGeneratingBalls = false;
+        private readonly bool stopGeneratingBalls = false;
 
         private readonly Random random = new Random();
 
@@ -43,7 +43,8 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         public IList<EnemyBall> EnemyBalls { get; } = new List<EnemyBall>();
 
-        public Color BallColor => this.ballColor;
+        public Color BallColor { get; }
+
         #endregion
 
         #region Constructors
@@ -57,12 +58,13 @@ namespace DodgeEm.Model.Enemies
         /// <param name="gameCanvas">The canvas to draw the enemy balls on.</param>
         /// <param name="width">The width of the game area.</param>
         /// <param name="height">The height of the game area.</param>
-        public EnemyWave(LevelId levelId,Color color, Direction direction, int startWave, Canvas gameCanvas, double width,
+        public EnemyWave(LevelId levelId, Color color, Direction direction, int startWave, Canvas gameCanvas,
+            double width,
             double height)
         {
             this.timer = new DispatcherTimer { Interval = this.tickInterval };
 
-            this.ballColor = color;
+            this.BallColor = color;
             this.ballDirection = direction;
             this.levelId = levelId;
 
@@ -83,6 +85,7 @@ namespace DodgeEm.Model.Enemies
             {
                 this.currentCanvas.Children.Remove(enemyBall.Sprite);
             }
+
             this.EnemyBalls.Clear();
         }
 
@@ -111,8 +114,6 @@ namespace DodgeEm.Model.Enemies
             this.timer.Stop();
             this.timer.Tick -= this.Timer_Tick;
         }
-
-
 
         /// <summary>
         ///     Starts the internal timer for the wave.
@@ -248,13 +249,12 @@ namespace DodgeEm.Model.Enemies
                     speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
                 }
 
-                var ball = new EnemyBall(this.ballColor, direction2, speed);
+                var ball = new EnemyBall(this.BallColor, direction2, speed);
 
                 this.EnemyBalls.Add(ball);
                 this.setInitialPositions(ball);
                 this.currentCanvas.Children.Add(ball.Sprite);
             }
-
         }
 
         private Direction randomBlitzDirection()
@@ -266,7 +266,8 @@ namespace DodgeEm.Model.Enemies
 
         private Direction randomDiagonalDirection()
         {
-            Direction[] diagonalDirections = {
+            Direction[] diagonalDirections =
+            {
                 Direction.NorthEast,
                 Direction.NorthWest,
                 Direction.SouthEast,
@@ -303,26 +304,26 @@ namespace DodgeEm.Model.Enemies
                     break;
                 case Direction.NorthEast:
                     // Bottom-left → move up-right
-                    ball.X = -ball.Width - this.random.Next(0, (int)ball.Width);                 // off-screen to the left
-                    ball.Y = this.canvasHeight + this.random.Next(0, (int)ball.Height);         // off-screen below
+                    ball.X = -ball.Width - this.random.Next(0, (int)ball.Width); // off-screen to the left
+                    ball.Y = this.canvasHeight + this.random.Next(0, (int)ball.Height); // off-screen below
                     break;
 
                 case Direction.NorthWest:
                     // Bottom-right → move up-left
-                    ball.X = this.canvasWidth + this.random.Next(0, (int)ball.Width);           // off-screen to the right
-                    ball.Y = this.canvasHeight + this.random.Next(0, (int)ball.Height);         // off-screen below
+                    ball.X = this.canvasWidth + this.random.Next(0, (int)ball.Width); // off-screen to the right
+                    ball.Y = this.canvasHeight + this.random.Next(0, (int)ball.Height); // off-screen below
                     break;
 
                 case Direction.SouthEast:
                     // Top-left → move down-right
-                    ball.X = -ball.Width - this.random.Next(0, (int)ball.Width);                // off-screen to the left
-                    ball.Y = -ball.Height - this.random.Next(0, (int)ball.Height);              // off-screen above
+                    ball.X = -ball.Width - this.random.Next(0, (int)ball.Width); // off-screen to the left
+                    ball.Y = -ball.Height - this.random.Next(0, (int)ball.Height); // off-screen above
                     break;
 
                 case Direction.SouthWest:
                     // Top-right → move down-left
-                    ball.X = this.canvasWidth + this.random.Next(0, (int)ball.Width);           // off-screen to the right
-                    ball.Y = -ball.Height - this.random.Next(0, (int)ball.Height);              // off-screen above
+                    ball.X = this.canvasWidth + this.random.Next(0, (int)ball.Width); // off-screen to the right
+                    ball.Y = -ball.Height - this.random.Next(0, (int)ball.Height); // off-screen above
                     break;
 
                 case Direction.VerticalMixed:

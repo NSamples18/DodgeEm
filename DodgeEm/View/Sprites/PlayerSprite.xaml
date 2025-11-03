@@ -15,13 +15,13 @@
         <Ellipse x:Name="outerEllipse"
                  Width="30"
                  Height="30"
-                 Fill="Red"/>
+                 Fill="Red" />
 
         <Ellipse x:Name="innerEllipse"
                  Width="15"
                  Height="15"
                  Canvas.Left="7.5"
                  Canvas.Top="7.5"
-                 Fill="Orange"/>
+                 Fill="Orange" />
     </Canvas>
 </sprites:BaseSprite>

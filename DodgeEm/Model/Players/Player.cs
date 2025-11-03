@@ -1,10 +1,10 @@
-﻿using DodgeEm.Model.Core;
-using DodgeEm.Model.Game;
-using DodgeEm.View.Sprites;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
+using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
+using DodgeEm.View.Sprites;
 
 namespace DodgeEm.Model.Players
 {
@@ -19,7 +19,7 @@ namespace DodgeEm.Model.Players
         private bool swapColor = true;
         private int playerLives = 3;
         private List<Color> availableColors = new List<Color>();
-        private int currentColorIndex = 0;
+        private int currentColorIndex;
 
         #endregion
 
@@ -40,17 +40,21 @@ namespace DodgeEm.Model.Players
 
         public void SetAvailableColors(IEnumerable<Color> colors)
         {
-            availableColors = colors.ToList();
-            availableColors.RemoveAt(availableColors.Count - 1);
-            currentColorIndex = 0;
-            SetPlayerColor(availableColors[currentColorIndex]);
+            this.availableColors = colors.ToList();
+            this.availableColors.RemoveAt(this.availableColors.Count - 1);
+            this.currentColorIndex = 0;
+            this.SetPlayerColor(this.availableColors[this.currentColorIndex]);
         }
 
         public void SwapToNextColor()
-         {
-            if (availableColors.Count == 0) return;
-            currentColorIndex = (currentColorIndex + 1) % availableColors.Count;
-            SetPlayerColor(availableColors[currentColorIndex]);
+        {
+            if (this.availableColors.Count == 0)
+            {
+                return;
+            }
+
+            this.currentColorIndex = (this.currentColorIndex + 1) % this.availableColors.Count;
+            this.SetPlayerColor(this.availableColors[this.currentColorIndex]);
         }
 
         private void SetPlayerColor(Color color)
@@ -84,7 +88,7 @@ namespace DodgeEm.Model.Players
         }
 
         public void PlayerLosesLife()
-        { 
+        {
             this.playerLives--;
         }
 
@@ -92,6 +96,7 @@ namespace DodgeEm.Model.Players
         {
             return this.playerLives;
         }
+
         #endregion
     }
 }

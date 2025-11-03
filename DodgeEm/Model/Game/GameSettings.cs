@@ -42,7 +42,7 @@ namespace DodgeEm.Model.Game
         /// <summary>
         ///     The maximum number of ticks until the next ball is generated (exclusive).
         /// </summary>
-        public static readonly int MaxTicksUntilNextBall = 25;
+        public static readonly int MaxTicksUntilNextBall = 40;
 
         /// <summary>
         ///     The number of ticks until the game ends.
@@ -75,9 +75,9 @@ namespace DodgeEm.Model.Game
         public static readonly Color FinalBlitzColor = Colors.Purple;
 
         /// <summary>
-        /// The game point color
+        ///     The game point color
         /// </summary>
-        public static readonly Color GamePointColor = Colors.DeepPink;
+        public static readonly Color GamePointColor = Colors.LightCoral;
 
         /// <summary>
         ///     The color for the primary player ball.
