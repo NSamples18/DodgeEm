@@ -4,7 +4,7 @@ using Windows.UI.Xaml.Controls;
 namespace DodgeEm.Model.Game
 {
     /// <summary>
-    /// Manages the spawning and removal of power-ups in the game.
+    ///     Manages the spawning and removal of power-ups in the game.
     /// </summary>
     public class PowerUpManager
     {
@@ -17,16 +17,18 @@ namespace DodgeEm.Model.Game
         #endregion
 
         #region Properties
+
         /// <summary>
-        /// Gets the list of active power-ups.
+        ///     Gets the list of active power-ups.
         /// </summary>
         public IList<PowerUp> PowerUps { get; }
 
         #endregion
 
         #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="PowerUpManager"/> class.
+        ///     Initializes a new instance of the <see cref="PowerUpManager" /> class.
         /// </summary>
         /// <param name="canvas">The canvas on which power-ups are drawn.</param>
         /// <param name="width">The width of the canvas.</param>
@@ -42,16 +44,18 @@ namespace DodgeEm.Model.Game
         #endregion
 
         #region Methods
+
         /// <summary>
-        /// Spawns a new power-up.
+        ///     Spawns a new power-up.
         /// </summary>
         public void SpawnPowerUp()
         {
             var powerUp = new PowerUp(this.currentCanvas, this.canvasWidth, this.canvasHeight);
             this.PowerUps.Add(powerUp);
         }
+
         /// <summary>
-        /// Restarts all active power-ups.
+        ///     Restarts all active power-ups.
         /// </summary>
         public void RestartPowerUp()
         {
@@ -60,13 +64,26 @@ namespace DodgeEm.Model.Game
                 powerUp.RestartPowerUp();
             }
         }
+
         /// <summary>
-        /// Removes a power-up from the game.
+        ///     Removes a power-up from the game.
         /// </summary>
         public void RemovePowerUp(PowerUp powerUp)
         {
             this.PowerUps.Remove(powerUp);
             powerUp.RemovePowerUp();
+        }
+        /// <summary>
+        ///     Removes all power-ups from the game.
+        /// </summary>
+        public void RemoveAllPowerUps()
+        {
+            foreach (var powerUp in this.PowerUps)
+            {
+                powerUp.RemovePowerUp();
+            }
+
+            this.PowerUps.Clear();
         }
 
         #endregion

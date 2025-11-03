@@ -47,6 +47,7 @@ namespace DodgeEm.View.Sprites
             this.InitializeComponent();
         }
 
+
         #endregion
     }
 }

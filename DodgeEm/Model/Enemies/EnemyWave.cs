@@ -28,7 +28,7 @@ namespace DodgeEm.Model.Enemies
         private readonly int delayMilliseconds;
         private int currentDelay;
         private DateTime lastTickTime;
-        private readonly TimeSpan tickInterval = TimeSpan.FromMilliseconds(20);
+        private readonly TimeSpan tickInterval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs);
 
         private readonly Random random = new Random();
 

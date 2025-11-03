@@ -45,19 +45,10 @@ namespace DodgeEm.Model.Game
         public static readonly int MaxTicksUntilNextBall = 25;
 
         /// <summary>
-        ///     The number of ticks until the game ends.
-        /// </summary>
-        public static readonly int GameEnds = 25;
-
-        /// <summary>
         ///     The duration of the game in seconds.
         /// </summary>
         public static readonly int TickIntervalMs = 20;
 
-        /// <summary>
-        ///     The delay for enemy waves.
-        /// </summary>
-        public static readonly int DelayInterval = 5000;
 
         /// <summary>
         ///     The color for North and South enemy balls.
