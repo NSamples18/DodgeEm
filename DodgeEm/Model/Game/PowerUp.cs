@@ -1,141 +1,168 @@
-﻿using DodgeEm.Model.Game;
-
-using DodgeEm.Model.Core;
-using DodgeEm.View.Sprites;
-using System;
+﻿using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.UI;
-using Windows.UI.Xaml.Shapes;
+using DodgeEm.Model.Core;
+using DodgeEm.View.Sprites;
 
 namespace DodgeEm.Model.Game
 {
+    /// <summary>
+    /// Represents a power-up item in the game.
+    /// </summary>
     public class PowerUp : GameObject
     {
+        #region Data members
+
         private readonly Random random = new Random();
         private DispatcherTimer spawnTimer;
         private DispatcherTimer moveTimer;
         private DispatcherTimer removeTimer;
 
-        private Canvas currentCanvas;
-        private double canvasWidth;
-        private double canvasHeight;
+        private readonly Canvas currentCanvas;
+        private readonly double canvasWidth;
+        private readonly double canvasHeight;
 
         private int dirX = 1;
         private int dirY = 1;
 
+        #endregion
+
+        #region Constructors
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PowerUp"/> class.
+        /// </summary>
         public PowerUp(Canvas canvas, double width, double height)
         {
             this.currentCanvas = canvas;
             this.canvasWidth = width;
             this.canvasHeight = height;
 
-            var powerUpSprite = new PowerUpSprite()
+            var powerUpSprite = new PowerUpSprite
             {
                 Fill = new SolidColorBrush(GameSettings.GamePointColor)
             };
-            this.Sprite = powerUpSprite;
+            Sprite = powerUpSprite;
 
             this.canvasWidth = width;
             this.canvasHeight = height;
 
-            StartSpawnTimer();
+            this.startSpawnTimer();
         }
 
+        #endregion
+
+        #region Methods        
+        /// <summary>
+        /// Restarts the power up.
+        /// </summary>
         public void RestartPowerUp()
         {
+            this.spawnTimer?.Stop();
 
-            spawnTimer?.Stop();
+            this.moveTimer?.Stop();
+            this.removeTimer?.Stop();
 
-            moveTimer?.Stop();
-            removeTimer?.Stop();
+            if (this.currentCanvas.Children.Contains(Sprite))
+            {
+                this.currentCanvas.Children.Remove(Sprite);
+            }
 
-            if (currentCanvas.Children.Contains(this.Sprite))
-                currentCanvas.Children.Remove(this.Sprite);
-
-            StartSpawnTimer();
-            StartRemoveTimer();
+            this.startSpawnTimer();
+            this.startRemoveTimer();
         }
 
+        /// <summary>
+        /// Removes the power up from the game.
+        /// </summary>
         public void RemovePowerUp()
         {
-            this.currentCanvas.Children.Remove(this.Sprite);
+            this.currentCanvas.Children.Remove(Sprite);
         }
 
-        private void StartSpawnTimer()
+        private void startSpawnTimer()
         {
-            spawnTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
-            spawnTimer.Tick += SpawnTimer_Tick;
-            spawnTimer.Start();
+            this.spawnTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+            this.spawnTimer.Tick += this.spawnTimer_Tick;
+            this.spawnTimer.Start();
         }
 
-        private void StartRemoveTimer()
+        private void startRemoveTimer()
         {
-            var removeSeconds = random.Next(8, 12);
-            removeTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(removeSeconds) };
-            removeTimer.Tick += RemoveTimer_Tick;
-            removeTimer.Start();
+            var removeSeconds = this.random.Next(8, 12);
+            this.removeTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(removeSeconds) };
+            this.removeTimer.Tick += this.removeTimer_Tick;
+            this.removeTimer.Start();
         }
 
-        private void SpawnTimer_Tick(object sender, object e)
+        private void spawnTimer_Tick(object sender, object e)
         {
-            spawnTimer.Stop();
+            this.spawnTimer.Stop();
 
-            this.X = random.NextDouble() * (canvasWidth - 30);
-            this.Y = random.NextDouble() * (canvasHeight - 30);
+            X = this.random.NextDouble() * (this.canvasWidth - 30);
+            Y = this.random.NextDouble() * (this.canvasHeight - 30);
 
-            this.Sprite.RenderAt(this.X, this.Y);
-            currentCanvas.Children.Add(this.Sprite);
+            Sprite.RenderAt(X, Y);
+            this.currentCanvas.Children.Add(Sprite);
 
-            this.SetSpeed(3, 3);
+            SetSpeed(3, 3);
 
-            moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
-            moveTimer.Tick += MoveTimer_Tick;
-            moveTimer.Start();
-            this.StartRemoveTimer();
+            this.moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
+            this.moveTimer.Tick += this.moveTimer_Tick;
+            this.moveTimer.Start();
+            this.startRemoveTimer();
         }
 
-        private void MoveTimer_Tick(object sender, object e)
+        private void moveTimer_Tick(object sender, object e)
         {
-            if (dirX > 0)
-                this.MoveRight();
+            if (this.dirX > 0)
+            {
+                MoveRight();
+            }
             else
-                this.MoveLeft();
+            {
+                MoveLeft();
+            }
 
-            if (dirY > 0)
-                this.MoveDown();
+            if (this.dirY > 0)
+            {
+                MoveDown();
+            }
             else
-                this.MoveUp();
-
-            if (this.X <= 0)
             {
-                this.X = 0;
-                dirX = 1;
-            }
-            else if (this.X + this.Width >= canvasWidth)
-            {
-                this.X = canvasWidth - this.Width;
-                dirX = -1;
+                MoveUp();
             }
 
-            if (this.Y <= 0)
+            if (X <= 0)
             {
-                this.Y = 0;
-                dirY = 1;
+                X = 0;
+                this.dirX = 1;
             }
-            else if (this.Y + this.Height >= canvasHeight)
+            else if (X + Width >= this.canvasWidth)
             {
-                this.Y = canvasHeight - this.Height;
-                dirY = -1;
+                X = this.canvasWidth - Width;
+                this.dirX = -1;
+            }
+
+            if (Y <= 0)
+            {
+                Y = 0;
+                this.dirY = 1;
+            }
+            else if (Y + Height >= this.canvasHeight)
+            {
+                Y = this.canvasHeight - Height;
+                this.dirY = -1;
             }
         }
 
-        private void RemoveTimer_Tick(object sender, object e)
+        private void removeTimer_Tick(object sender, object e)
         {
-            removeTimer.Stop();
-            moveTimer?.Stop();
-            currentCanvas.Children.Remove(this.Sprite);
+            this.removeTimer.Stop();
+            this.moveTimer?.Stop();
+            this.currentCanvas.Children.Remove(Sprite);
         }
+
+        #endregion
     }
 }
