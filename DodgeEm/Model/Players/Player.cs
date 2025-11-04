@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
+using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
+using DodgeEm.View.Sprites;
 
 namespace DodgeEm.Model.Players
 {

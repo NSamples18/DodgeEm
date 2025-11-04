@@ -46,7 +46,7 @@ namespace DodgeEm.Model.Game
         /// <summary>
         ///     The maximum number of ticks until the next ball is generated (exclusive).
         /// </summary>
-        public static readonly int MaxTicksUntilNextBall = 25;
+        public static readonly int MaxTicksUntilNextBall = 40;
 
         /// <summary>
         ///     The minimum number of seconds until a power-up is removed.

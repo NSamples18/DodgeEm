@@ -39,6 +39,11 @@ namespace DodgeEm.Model.Players
 
         #region Methods
 
+        public void UpdatePlayerColors(IEnumerable<Color> colors)
+        {
+            this.player.SetAvailableColors(colors);
+        }
+
         /// <summary>
         ///     Updates the player's available colors.
         /// </summary>
@@ -125,6 +130,11 @@ namespace DodgeEm.Model.Players
         public bool IsPlayerTouchingEnemyBall(GameObject enemyBall)
         {
             return this.player.IsTouchingEnemyBall(enemyBall);
+        }
+
+        public bool IsPlayerTouchingGamePoint(GameObject point)
+        {
+            return this.player.isTouchingGamePoint(point);
         }
 
         /// <summary>
