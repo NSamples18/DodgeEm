@@ -25,14 +25,18 @@ namespace DodgeEm.Model.Game
         public static readonly int BlitzSpeed = 8;
 
         /// <summary>
-        ///     The speed of the player ball in the X Direction.
+        ///     The speed of the player ball in the XCord Direction.
         /// </summary>
         public static readonly int PlayerSpeedXDirection = 3;
 
         /// <summary>
-        ///     The speed of the player ball in the Y Direction.
+        ///     The speed of the player ball in the YCord Direction.
         /// </summary>
         public static readonly int PlayerSpeedYDirection = 3;
+        /// <summary>
+        ///     The number of lives the player has.
+        /// </summary>
+        public static readonly int PlayerLives = 3;
 
         /// <summary>
         ///     The minimum number of ticks until the next ball is generated.
@@ -45,9 +49,29 @@ namespace DodgeEm.Model.Game
         public static readonly int MaxTicksUntilNextBall = 25;
 
         /// <summary>
+        ///     The minimum number of seconds until a power-up is removed.
+        /// </summary>
+        public static readonly int MinSecondsUntilPowerUpRemoved = 8;
+
+        /// <summary>
+        ///     The maximum number of seconds until a power-up is removed.
+        /// </summary>
+        public static readonly int MaxSecondsUntilPowerUpRemoved = 12;
+
+        /// <summary>
+        ///     The time until a power-up spawns.
+        /// </summary>
+        public static readonly int TimeUntilPowerUpSpawns = 5;
+
+        /// <summary>
         ///     The duration of the game in seconds.
         /// </summary>
         public static readonly int TickIntervalMs = 20;
+
+        /// <summary>
+        ///     The interval for the player's death animation.
+        /// </summary>
+        public static readonly int DeathAnimationIntervalMs = 250;
 
 
         /// <summary>

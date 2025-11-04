@@ -14,8 +14,6 @@ namespace DodgeEm.Model.Enemies
     {
         #region Data members
 
-        public readonly LevelId levelId;
-
         private readonly Direction ballDirection;
 
         private readonly Canvas currentCanvas;
@@ -37,6 +35,14 @@ namespace DodgeEm.Model.Enemies
         #region Properties
 
         /// <summary>
+        ///     Gets the level identifier.
+        /// </summary>
+        /// <value>
+        ///     The level identifier.
+        /// </value>
+        public LevelId LevelId { get; private set; }
+
+        /// <summary>
         ///     Gets the list of enemy balls in the wave.
         /// </summary>
         public IList<EnemyBall> EnemyBalls { get; } = new List<EnemyBall>();
@@ -53,6 +59,7 @@ namespace DodgeEm.Model.Enemies
         /// <summary>
         ///     Initializes a new instance of the <see cref="EnemyWave" /> class.
         /// </summary>
+        /// <param name="levelId">The level identifier.</param>
         /// <param name="color">The color of the enemy balls.</param>
         /// <param name="direction">The Direction of the enemy balls.</param>
         /// <param name="startWave">The starting wave number.</param>
@@ -67,14 +74,13 @@ namespace DodgeEm.Model.Enemies
 
             this.BallColor = color;
             this.ballDirection = direction;
-            this.levelId = levelId;
+            this.LevelId = levelId;
 
             this.currentCanvas = gameCanvas;
             this.canvasWidth = width;
             this.canvasHeight = height;
             this.delayMilliseconds = startWave;
             this.currentDelay = startWave;
-
         }
 
         #endregion
@@ -207,24 +213,24 @@ namespace DodgeEm.Model.Enemies
             switch (ball.Direction)
             {
                 case Direction.TopToBottom:
-                    return ball.Y > height;
+                    return ball.YCord > height;
 
                 case Direction.BottomToTop:
-                    return ball.Y + ball.Height < 0;
+                    return ball.YCord + ball.Height < 0;
 
                 case Direction.LeftToRight:
-                    return ball.X > width;
+                    return ball.XCord > width;
 
                 case Direction.RightToLeft:
-                    return ball.X + ball.Width < 0;
+                    return ball.XCord + ball.Width < 0;
                 case Direction.NorthEast:
-                    return ball.Y + ball.Height < 0 || ball.X > width;
+                    return ball.YCord + ball.Height < 0 || ball.XCord > width;
                 case Direction.NorthWest:
-                    return ball.Y + ball.Height < 0 || ball.X + ball.Width < 0;
+                    return ball.YCord + ball.Height < 0 || ball.XCord + ball.Width < 0;
                 case Direction.SouthEast:
-                    return ball.Y > height || ball.X > width;
+                    return ball.YCord > height || ball.XCord > width;
                 case Direction.SouthWest:
-                    return ball.Y > height || ball.X + ball.Width < 0;
+                    return ball.YCord > height || ball.XCord + ball.Width < 0;
 
                 case Direction.VerticalMixed:
                 case Direction.DiagonalMixed:
@@ -292,46 +298,46 @@ namespace DodgeEm.Model.Enemies
             switch (ball.Direction)
             {
                 case Direction.TopToBottom:
-                    ball.X = this.random.Next((int)ball.Width, (int)marginX);
-                    ball.Y = -ball.Height;
+                    ball.XCord = this.random.Next((int)ball.Width, (int)marginX);
+                    ball.YCord = -ball.Height;
                     break;
 
                 case Direction.BottomToTop:
-                    ball.X = this.random.Next((int)ball.Width, (int)marginX);
-                    ball.Y = this.canvasHeight + ball.Height;
+                    ball.XCord = this.random.Next((int)ball.Width, (int)marginX);
+                    ball.YCord = this.canvasHeight + ball.Height;
                     break;
 
                 case Direction.RightToLeft:
-                    ball.X = this.canvasWidth + ball.Width;
-                    ball.Y = this.random.Next((int)ball.Height, (int)marginY);
+                    ball.XCord = this.canvasWidth + ball.Width;
+                    ball.YCord = this.random.Next((int)ball.Height, (int)marginY);
                     break;
 
                 case Direction.LeftToRight:
-                    ball.X = -ball.Width;
-                    ball.Y = this.random.Next((int)ball.Height, (int)marginY);
+                    ball.XCord = -ball.Width;
+                    ball.YCord = this.random.Next((int)ball.Height, (int)marginY);
                     break;
                 case Direction.NorthEast:
 
-                    ball.X = -ball.Width - this.random.Next(0, (int)ball.Width);
-                    ball.Y = this.canvasHeight + this.random.Next(0, (int)ball.Height);
+                    ball.XCord = -ball.Width - this.random.Next(0, (int)ball.Width);
+                    ball.YCord = this.canvasHeight + this.random.Next(0, (int)ball.Height);
                     break;
 
                 case Direction.NorthWest:
 
-                    ball.X = this.canvasWidth + this.random.Next(0, (int)ball.Width);
-                    ball.Y = this.canvasHeight + this.random.Next(0, (int)ball.Height);
+                    ball.XCord = this.canvasWidth + this.random.Next(0, (int)ball.Width);
+                    ball.YCord = this.canvasHeight + this.random.Next(0, (int)ball.Height);
                     break;
 
                 case Direction.SouthEast:
 
-                    ball.X = -ball.Width - this.random.Next(0, (int)ball.Width);
-                    ball.Y = -ball.Height - this.random.Next(0, (int)ball.Height);
+                    ball.XCord = -ball.Width - this.random.Next(0, (int)ball.Width);
+                    ball.YCord = -ball.Height - this.random.Next(0, (int)ball.Height);
                     break;
 
                 case Direction.SouthWest:
 
-                    ball.X = this.canvasWidth + this.random.Next(0, (int)ball.Width);
-                    ball.Y = -ball.Height - this.random.Next(0, (int)ball.Height);
+                    ball.XCord = this.canvasWidth + this.random.Next(0, (int)ball.Width);
+                    ball.YCord = -ball.Height - this.random.Next(0, (int)ball.Height);
                     break;
 
                 case Direction.VerticalMixed:

@@ -1,8 +1,8 @@
-﻿using DodgeEm.Model.Core;
-using DodgeEm.Model.Game;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
+using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
 
 namespace DodgeEm.Model.Players
 {
@@ -19,11 +19,6 @@ namespace DodgeEm.Model.Players
         private Player player;
 
         #endregion
-
-        public void UpdatePlayerColors(IEnumerable<Color> colors)
-        {
-            this.player.SetAvailableColors(colors);
-        }
 
         #region Constructors
 
@@ -43,6 +38,14 @@ namespace DodgeEm.Model.Players
         #endregion
 
         #region Methods
+
+        /// <summary>
+        ///     Updates the player's available colors.
+        /// </summary>
+        public void UpdatePlayerColors(IEnumerable<Color> colors)
+        {
+            this.player.SetAvailableColors(colors);
+        }
 
         /// <summary>
         ///     Moves the player to the left.
@@ -66,7 +69,7 @@ namespace DodgeEm.Model.Players
         /// </summary>
         public void MovePlayerRight()
         {
-            if (this.IsPlayerOnRightEdge())
+            if (this.isPlayerOnRightEdge())
             {
                 return;
             }
@@ -134,34 +137,40 @@ namespace DodgeEm.Model.Players
             return this.player.IsSameColor(enemyBall);
         }
 
+        /// <summary>
+        ///     Called when the player loses a life.
+        /// </summary>
         public void PlayerLosesLife()
         {
             this.player.PlayerLosesLife();
         }
 
+        /// <summary>
+        ///     Gets the number of lives the player has left.
+        /// </summary>
         public int GetPlayerLives()
         {
-           return  this.player.GetPlayerLives();
+            return this.player.GetPlayerLives();
         }
 
-        private bool IsPlayerOnRightEdge()
+        private bool isPlayerOnRightEdge()
         {
-            return this.player.X + this.player.Width + GameSettings.PlayerSpeedXDirection >= this.backgroundWidth;
+            return this.player.XCord + this.player.Width + GameSettings.PlayerSpeedXDirection >= this.backgroundWidth;
         }
 
         private bool IsPlayerOnLeftEdge()
         {
-            return this.player.X - GameSettings.PlayerSpeedXDirection <= 0;
+            return this.player.XCord - GameSettings.PlayerSpeedXDirection <= 0;
         }
 
         private bool IsPlayerOnTopEdge()
         {
-            return this.player.Y - GameSettings.PlayerSpeedYDirection <= 0;
+            return this.player.YCord - GameSettings.PlayerSpeedYDirection <= 0;
         }
 
         private bool IsPlayerOnBottomEdge()
         {
-            return this.player.Y + this.player.Height + GameSettings.PlayerSpeedYDirection >= this.backgroundHeight;
+            return this.player.YCord + this.player.Height + GameSettings.PlayerSpeedYDirection >= this.backgroundHeight;
         }
 
         private void createAndPlacePlayer(Canvas background)
@@ -174,8 +183,8 @@ namespace DodgeEm.Model.Players
 
         private void placePlayerCenteredInGameArena()
         {
-            this.player.X = this.backgroundWidth / 2 - this.player.Width / 2.0;
-            this.player.Y = this.backgroundHeight / 2 - this.player.Height / 2.0;
+            this.player.XCord = this.backgroundWidth / 2 - this.player.Width / 2.0;
+            this.player.YCord = this.backgroundHeight / 2 - this.player.Height / 2.0;
         }
 
         #endregion

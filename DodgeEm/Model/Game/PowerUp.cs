@@ -46,7 +46,7 @@ namespace DodgeEm.Model.Game
 
             this.canvasWidth = width;
             this.canvasHeight = height;
-
+            SetSpeed(GameSettings.PlayerSpeedXDirection, GameSettings.PlayerSpeedYDirection);
             this.startSpawnTimer();
         }
 
@@ -82,14 +82,14 @@ namespace DodgeEm.Model.Game
 
         private void startSpawnTimer()
         {
-            this.spawnTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+            this.spawnTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(GameSettings.TimeUntilPowerUpSpawns) };
             this.spawnTimer.Tick += this.spawnTimer_Tick;
             this.spawnTimer.Start();
         }
 
         private void startRemoveTimer()
         {
-            var removeSeconds = this.random.Next(8, 12);
+            var removeSeconds = this.random.Next(GameSettings.MinSecondsUntilPowerUpRemoved, GameSettings.MaxSecondsUntilPowerUpRemoved);
             this.removeTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(removeSeconds) };
             this.removeTimer.Tick += this.removeTimer_Tick;
             this.removeTimer.Start();
@@ -99,15 +99,14 @@ namespace DodgeEm.Model.Game
         {
             this.spawnTimer.Stop();
 
-            X = this.random.NextDouble() * (this.canvasWidth - 30);
-            Y = this.random.NextDouble() * (this.canvasHeight - 30);
+            XCord = this.random.NextDouble() * (this.canvasWidth - this.Width);
+            YCord = this.random.NextDouble() * (this.canvasHeight - this.Height);
 
-            Sprite.RenderAt(X, Y);
+            Sprite.RenderAt(XCord, YCord);
             this.currentCanvas.Children.Add(Sprite);
 
-            SetSpeed(3, 3);
 
-            this.moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
+            this.moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs) };
             this.moveTimer.Tick += this.moveTimer_Tick;
             this.moveTimer.Start();
             this.startRemoveTimer();
@@ -133,25 +132,25 @@ namespace DodgeEm.Model.Game
                 MoveUp();
             }
 
-            if (X <= 0)
+            if (XCord <= 0)
             {
-                X = 0;
+                XCord = 0;
                 this.dirX = 1;
             }
-            else if (X + Width >= this.canvasWidth)
+            else if (XCord + Width >= this.canvasWidth)
             {
-                X = this.canvasWidth - Width;
+                XCord = this.canvasWidth - Width;
                 this.dirX = -1;
             }
 
-            if (Y <= 0)
+            if (YCord <= 0)
             {
-                Y = 0;
+                YCord = 0;
                 this.dirY = 1;
             }
-            else if (Y + Height >= this.canvasHeight)
+            else if (YCord + Height >= this.canvasHeight)
             {
-                Y = this.canvasHeight - Height;
+                YCord = this.canvasHeight - Height;
                 this.dirY = -1;
             }
         }

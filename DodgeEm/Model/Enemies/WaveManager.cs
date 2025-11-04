@@ -13,7 +13,7 @@ namespace DodgeEm.Model.Enemies
     {
         #region Data members
 
-        private readonly List<EnemyWave> waves;
+        private readonly ICollection<EnemyWave> waves;
         private readonly LevelId level;
 
         #endregion
@@ -53,7 +53,7 @@ namespace DodgeEm.Model.Enemies
         public IEnumerable<Color> GetCurrentLevelWaveColors()
         {
             return this.waves
-                .Where(w => w.levelId == this.level)
+                .Where(w => w.LevelId == this.level)
                 .Select(w => w.BallColor)
                 .Distinct();
         }
@@ -65,7 +65,7 @@ namespace DodgeEm.Model.Enemies
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == this.level)
+                if (wave.LevelId == this.level)
                 {
                     wave.RemoveAllBalls();
                 }
@@ -92,7 +92,7 @@ namespace DodgeEm.Model.Enemies
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == this.level)
+                if (wave.LevelId == this.level)
                 {
                     wave.StopTimer();
                 }
@@ -106,7 +106,7 @@ namespace DodgeEm.Model.Enemies
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == this.level)
+                if (wave.LevelId == this.level)
                 {
                     wave.ResetWave();
                     wave.RemoveAllBalls();
@@ -121,7 +121,7 @@ namespace DodgeEm.Model.Enemies
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == this.level)
+                if (wave.LevelId == this.level)
                 {
                     wave.StartWave();
                 }

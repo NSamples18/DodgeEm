@@ -64,10 +64,10 @@ namespace DodgeEm.Model.Game
             var maxX = canvasWidth - this.Width;
             var maxY = canvasHeight - this.Height;
 
-            this.X = random.NextDouble() * maxX;
-            this.Y = random.NextDouble() * maxY;
+            this.XCord = random.NextDouble() * maxX;
+            this.YCord = random.NextDouble() * maxY;
 
-            Sprite?.RenderAt(this.X, this.Y);
+            Sprite?.RenderAt(this.XCord, this.YCord);
         }
     }
 }
