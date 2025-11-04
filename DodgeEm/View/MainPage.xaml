@@ -31,5 +31,13 @@
                    FontSize="20" Foreground="White"
                    HorizontalAlignment="Left" VerticalAlignment="Top"
                    Canvas.ZIndex="100" />
+
+        <MenuBar Height="44" Width="150" Canvas.Top="456" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <MenuBarItem>
+                <MenuFlyoutItem Click="showLeaderboard">
+                    Leaderboard
+                </MenuFlyoutItem>
+            </MenuBarItem>
+        </MenuBar>
     </Canvas>
 </Page>

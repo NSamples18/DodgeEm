@@ -131,11 +131,13 @@
     <Compile Include="Model\Game\GamePoint.cs" />
     <Compile Include="Model\Game\GamePointManager.cs" />
     <Compile Include="Model\Game\GameSettings.cs" />
+    <Compile Include="Model\Game\Leaderboard.cs" />
     <Compile Include="Model\Game\LevelId.cs" />
     <Compile Include="Model\Game\Scoreboard.cs" />
     <Compile Include="Model\Players\Player.cs" />
     <Compile Include="Model\Players\PlayerManager.cs" />
     <Compile Include="Model\Enemies\WaveManager.cs" />
+    <Compile Include="View\LeaderboardDialog.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

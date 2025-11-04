@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using DodgeEm.Model.Game;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+using Windows.Storage;
+using System.IO;
+using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.View
 {
@@ -19,6 +21,7 @@ namespace DodgeEm.View
         #region Data members
 
         private readonly GameManager gameManager;
+        private readonly Leaderboard leaderboard;
 
         private readonly HashSet<VirtualKey> keysDown = new HashSet<VirtualKey>();
 
@@ -52,7 +55,15 @@ namespace DodgeEm.View
             this.moveTimer.Start();
 
             this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
+
+            // DataContext bound to the live scoreboard for UI updates
             DataContext = this.gameManager.Scoreboard;
+
+            // Create leaderboard stored in app local folder
+            var localPath = ApplicationData.Current.LocalFolder.Path;
+            var savePath = Path.Combine(localPath, "leaderboard.txt");
+            this.leaderboard = new Leaderboard(savePath);
+
             this.gameManager.GameOver += this.onGameOverEvent;
             this.gameManager.GameTimerTick += this.updateUiGameTimer;
             this.gameManager.PlayerLivesChanged += this.updateLifeCount;
@@ -62,8 +73,33 @@ namespace DodgeEm.View
 
         #region Methods
 
-        private void onGameOverEvent(object sender, bool didWin)
+        /// <summary>
+        /// GameOver handler — delegate name prompt + insertion to LeaderboardDialog.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="didWin">if set to <c>true</c> [did win].</param>
+        private async void onGameOverEvent(object sender, bool didWin)
         {
+            var finalScore = this.gameManager.Scoreboard.CurrentScore;
+
+            try
+            {
+                // LeaderboardDialog handles checking IsTopTen and prompting the user.
+                await LeaderboardDialog.PromptForNameAndInsertIfTopTenAsync(this.leaderboard, finalScore);
+            }
+            catch
+            {
+                
+                try
+                {
+                    this.leaderboard.AddScore(finalScore);
+                }
+                catch
+                {
+                    Debug.Print("Failed to add score to leaderboard.");
+                }
+            }
+
             if (didWin)
             {
                 this.win.Visibility = Visibility.Visible;
@@ -136,6 +172,28 @@ namespace DodgeEm.View
             else if (this.keysDown.Contains(VirtualKey.Right))
             {
                 this.gameManager.PlayerManager.MovePlayerRight();
+            }
+        }
+
+        /// <summary>
+        /// Show the leaderboard — keep a simple guard and delegate rendering to LeaderboardDialog.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private async void showLeaderboard(object sender, RoutedEventArgs e)
+        {
+            if (this.keysDown.Contains(VirtualKey.Space))
+            {
+                return;
+            }
+
+            try
+            {
+                await LeaderboardDialog.ShowLeaderboardAsync(this.leaderboard);
+            }
+            catch
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to show leaderboard dialog.");
             }
         }
 
