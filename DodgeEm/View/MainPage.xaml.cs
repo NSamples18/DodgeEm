@@ -19,7 +19,7 @@ namespace DodgeEm.View
     {
         #region Data members
 
-        private readonly GameManager gameManager;
+        private GameManager gameManager;
         private readonly Leaderboard leaderboard;
 
         private readonly HashSet<VirtualKey> keysDown = new HashSet<VirtualKey>();
@@ -54,18 +54,11 @@ namespace DodgeEm.View
             this.moveTimer.Tick += this.MoveTimerOnTick;
             this.moveTimer.Start();
 
-            this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
-
-            DataContext = this.gameManager.Scoreboard;
-
             var localPath = ApplicationData.Current.LocalFolder.Path;
             var savePath = Path.Combine(localPath, "leaderboard.txt");
             this.leaderboard = new Leaderboard(savePath);
 
-            this.gameManager.GameOver += this.onGameOverEvent;
-            this.gameManager.GameTimerTick += this.updateUiGameTimer;
-            this.gameManager.PlayerLivesChanged += this.updateLifeCount;
-            this.gameManager.PlayerPowerUp += this.updatePlayerPowerUp;
+            
 
             this.powerUpTextTimer = new DispatcherTimer
             {
@@ -214,6 +207,21 @@ namespace DodgeEm.View
             {
                 Debug.WriteLine("Failed to show leaderboard dialog.");
             }
+        }
+
+        private void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            var applicationWidth = (double)Application.Current.Resources["CanvasWidth"];
+            var applicationHeight = (double)Application.Current.Resources["CanvasHeight"];
+            this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
+            DataContext = this.gameManager.Scoreboard;
+
+            this.gameManager.GameOver += this.onGameOverEvent;
+            this.gameManager.GameTimerTick += this.updateUiGameTimer;
+            this.gameManager.PlayerLivesChanged += this.updateLifeCount;
+            this.gameManager.PlayerPowerUp += this.updatePlayerPowerUp;
+
+            this.StartButton.Visibility = Visibility.Collapsed;
         }
 
         #endregion
