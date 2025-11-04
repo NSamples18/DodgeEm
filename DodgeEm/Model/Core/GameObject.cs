@@ -156,30 +156,6 @@ namespace DodgeEm.Model.Core
             this.SpeedY = speedY;
         }
 
-        /// <summary>
-        ///     Determines whether [is touching game point] [the specified game point].
-        /// </summary>
-        /// <param name="gamePoint">The game point.</param>
-        /// <returns>
-        ///     <c>true</c> if [is touching game point] [the specified game point]; otherwise, <c>false</c>.
-        /// </returns>
-        public virtual bool isTouchingGamePoint(GameObject gamePoint)
-        {
-            var playerCenterX = this.X + this.Width / 2.0;
-            var playerCenterY = this.Y + this.Height / 2.0;
-            var gamePointCenterX = gamePoint.X + gamePoint.Width / 2.0;
-            var gamePointCenterY = gamePoint.Y + gamePoint.Height / 2.0;
-
-            var playerRadius = this.Width / 2.0;
-            var gamePointRadius = gamePoint.Width / 2.0;
-
-            var dx = playerCenterX - gamePointCenterX;
-            var dy = playerCenterY - gamePointCenterY;
-            var distance = Math.Sqrt(dx * dx + dy * dy);
-
-            return distance <= playerRadius + gamePointRadius;
-        }
-
         private void moveX(int x)
         {
             this.XCord += x;

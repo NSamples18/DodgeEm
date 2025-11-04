@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using Windows.Foundation;
+using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using DodgeEm.Model.Game;
-using Windows.Storage;
-using System.IO;
-using Windows.UI.Xaml.Controls;
 
 namespace DodgeEm.View
 {
@@ -57,10 +56,8 @@ namespace DodgeEm.View
 
             this.gameManager = new GameManager(applicationHeight, applicationWidth, this.canvas);
 
-            // DataContext bound to the live scoreboard for UI updates
             DataContext = this.gameManager.Scoreboard;
 
-            // Create leaderboard stored in app local folder
             var localPath = ApplicationData.Current.LocalFolder.Path;
             var savePath = Path.Combine(localPath, "leaderboard.txt");
             this.leaderboard = new Leaderboard(savePath);
@@ -70,10 +67,16 @@ namespace DodgeEm.View
             this.gameManager.PlayerLivesChanged += this.updateLifeCount;
             this.gameManager.PlayerPowerUp += this.updatePlayerPowerUp;
 
-            this.powerUpTextTimer = new DispatcherTimer();
-            this.powerUpTextTimer.Interval = TimeSpan.FromSeconds(3);
-            this.powerUpTextTimer.Tick += PowerUpTextTimer_Tick;
+            this.powerUpTextTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(3)
+            };
+            this.powerUpTextTimer.Tick += this.PowerUpTextTimer_Tick;
         }
+
+        #endregion
+
+        #region Methods
 
         private void updatePlayerPowerUp(object sender, bool isHit)
         {
@@ -91,12 +94,8 @@ namespace DodgeEm.View
             this.powerUpText.Visibility = Visibility.Collapsed;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        /// GameOver handler — delegate name prompt + insertion to LeaderboardDialog.
+        ///     GameOver handler — delegate name prompt + insertion to LeaderboardDialog.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="didWin">if set to <c>true</c> [did win].</param>
@@ -106,12 +105,10 @@ namespace DodgeEm.View
 
             try
             {
-                // LeaderboardDialog handles checking IsTopTen and prompting the user.
                 await LeaderboardDialog.PromptForNameAndInsertIfTopTenAsync(this.leaderboard, finalScore);
             }
             catch
             {
-                
                 try
                 {
                     this.leaderboard.AddScore(finalScore);
@@ -198,10 +195,10 @@ namespace DodgeEm.View
         }
 
         /// <summary>
-        /// Show the leaderboard — keep a simple guard and delegate rendering to LeaderboardDialog.
+        ///     Show the leaderboard — keep a simple guard and delegate rendering to LeaderboardDialog.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private async void showLeaderboard(object sender, RoutedEventArgs e)
         {
             if (this.keysDown.Contains(VirtualKey.Space))
@@ -215,7 +212,7 @@ namespace DodgeEm.View
             }
             catch
             {
-                System.Diagnostics.Debug.WriteLine("Failed to show leaderboard dialog.");
+                Debug.WriteLine("Failed to show leaderboard dialog.");
             }
         }
 

@@ -176,7 +176,7 @@ namespace DodgeEm.Model.Game
             var points = this.GamePointManager.GetGamePoints().ToList();
             foreach (var gp in points)
             {
-                if (this.PlayerManager.IsPlayerTouchingGamePoint(gp))
+                if (this.PlayerManager.HasPlayerCollidedWithBall(gp))
                 {
                     this.Scoreboard.AddPoints(1);
 
@@ -264,7 +264,7 @@ namespace DodgeEm.Model.Game
         {
             foreach (var enemyBall in this.LevelManager.GetEnemyBalls())
             {
-                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) &&
+                if (this.PlayerManager.HasPlayerCollidedWithBall(enemyBall) &&
                     !this.PlayerManager.HasSameColors(enemyBall))
                 {
                     this.LevelManager.RestartCurrentLevel();
@@ -282,7 +282,7 @@ namespace DodgeEm.Model.Game
         {
             foreach (var powerUp in this.PowerUpManager.PowerUps)
             {
-                if (this.PlayerManager.IsPlayerTouchingEnemyBall(powerUp))
+                if (this.PlayerManager.HasPlayerCollidedWithBall(powerUp))
                 {
                     this.PowerUpManager.RemovePowerUp(powerUp);
                     this.LevelManager.RemoveAllBalls();
