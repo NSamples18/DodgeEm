@@ -62,12 +62,6 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public PlayerManager PlayerManager { get; }
 
-        /// <summary>
-        ///     Gets the wave manager.
-        ///     Precondition: None.
-        ///     Postcondition: Returns the WaveManager instance.
-        /// </summary>
-        private WaveManager WaveManager { get; }
 
         private LevelManager LevelManager { get; }
         private GamePointManager GamePointManager { get; }
