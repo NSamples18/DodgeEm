@@ -14,6 +14,8 @@ namespace DodgeEm.Model.Enemies
     {
         #region Data members
 
+        public readonly LevelId levelId;
+
         private readonly Direction ballDirection;
 
         private readonly Canvas currentCanvas;

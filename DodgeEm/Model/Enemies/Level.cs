@@ -33,6 +33,10 @@ namespace DodgeEm.Model.Enemies
 
         #region Constructors
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Level" /> class.
         /// </summary>

@@ -11,16 +11,39 @@
             Height="{StaticResource CanvasHeight}">
         <TextBlock x:Name="win" Width="200" Height="40" Canvas.Left="146" Canvas.Top="228" Text="You Win!"
                    FontSize="20" Foreground="Gold" Visibility="Collapsed" TextAlignment="Center"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="99" RenderTransformOrigin="0.525,0" />
-        <TextBlock x:Name="lose" Width="84" Height="40" Canvas.Left="208" Canvas.Top="228" Canvas.ZIndex="100" Text="You Lose!"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="99"
+                   RenderTransformOrigin="0.525,0" />
+        <TextBlock x:Name="lose" Width="84" Height="40" Canvas.Left="208" Canvas.Top="228" Canvas.ZIndex="100"
+                   Text="You Lose!"
                    FontSize="20" Foreground="Red" Visibility="Collapsed"
-                   HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                   HorizontalAlignment="Left" VerticalAlignment="Top" />
         <TextBlock x:Name="gameTimer" Width="100" Height="26" Canvas.Left="390" Canvas.Top="10" Text="Time: 25.00"
                    FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
-        <TextBlock x:Name="playerLives" Width="75" Height="26" Canvas.Left="10" Canvas.Top="10" Text="Score: 3"
-                   FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
+        
         <TextBlock x:Name="powerUpText" Width="150" Height="26" Canvas.Left="174" Canvas.Top="44" Text="Power-Up Active!"
                    FontSize="20" Foreground="Yellow" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="100"
                    Visibility="Collapsed"/>
+                   FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"
+                   Canvas.ZIndex="100" />
+      
+        <TextBlock x:Name="playerLives" Width="75" Height="26" Canvas.Left="10" Canvas.Top="10" Text="Lives: 3"
+                   FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"
+                   Canvas.ZIndex="100" />
+
+        <TextBlock x:Name="scoreText"
+                   Text="{Binding ScoreDisplay, Mode=OneWay}"
+                   Width="75" Height="26"
+                   Canvas.Left="215" Canvas.Top="10"
+                   FontSize="20" Foreground="White"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Canvas.ZIndex="100" />
+
+        <MenuBar Height="44" Width="150" Canvas.Top="456" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <MenuBarItem>
+                <MenuFlyoutItem Click="showLeaderboard">
+                    Leaderboard
+                </MenuFlyoutItem>
+            </MenuBarItem>
+        </MenuBar>
     </Canvas>
 </Page>

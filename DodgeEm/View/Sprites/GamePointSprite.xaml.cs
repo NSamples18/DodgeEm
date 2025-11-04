@@ -1,21 +1,21 @@
-﻿
-using Windows.UI.Xaml.Media;
+﻿using Windows.UI.Xaml.Media;
 
 namespace DodgeEm.View.Sprites
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <seealso cref="DodgeEm.View.Sprites.BaseSprite" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class GamePointSprite : BaseSprite
     {
+        #region Properties
+
         /// <summary>
-        /// Gets or sets the fill.
+        ///     Gets or sets the fill.
         /// </summary>
         /// <value>
-        /// The fill.
+        ///     The fill.
         /// </value>
         public Brush Fill
         {
@@ -23,12 +23,18 @@ namespace DodgeEm.View.Sprites
             set => this.pointEllipse.Fill = value;
         }
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="GamePointSprite"/> class.
+        ///     Initializes a new instance of the <see cref="GamePointSprite" /> class.
         /// </summary>
         public GamePointSprite()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

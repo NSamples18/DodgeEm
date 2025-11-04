@@ -51,7 +51,7 @@
         DiagonalMixed,
 
         /// <summary>
-        ///    Indicates mixed vertical movement.
+        ///     Indicates mixed vertical movement.
         /// </summary>
         VerticalMixed
     }

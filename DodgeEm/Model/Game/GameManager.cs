@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using DodgeEm.Model.Enemies;
@@ -49,7 +50,7 @@ namespace DodgeEm.Model.Game
 
         private bool gameOverTriggered;
 
-        private int level = 1;
+        private readonly int level = 1;
 
         #endregion
 
@@ -66,6 +67,14 @@ namespace DodgeEm.Model.Game
         private LevelManager LevelManager { get; }
         private GamePointManager GamePointManager { get; }
         private PowerUpManager PowerUpManager { get; }
+
+        /// <summary>
+        ///     Gets the scoreboard.
+        /// </summary>
+        /// <value>
+        ///     The scoreboard.
+        /// </value>
+        public Scoreboard Scoreboard { get; }
 
         #endregion
 
@@ -94,6 +103,8 @@ namespace DodgeEm.Model.Game
             this.LevelManager = new LevelManager(gameCanvas);
             this.GamePointManager = new GamePointManager(gameCanvas, backgroundWidth, backgroundHeight);
             this.PowerUpManager = new PowerUpManager(gameCanvas, backgroundWidth, backgroundHeight);
+
+            this.Scoreboard = new Scoreboard();
 
             this.gameEndTimeUtc = DateTime.UtcNow.AddSeconds(this.LevelManager.GetLevelDuration());
 
@@ -144,6 +155,8 @@ namespace DodgeEm.Model.Game
                 return;
             }
 
+            this.handleGamePointCollisions();
+
             this.updateTimerUi();
             this.handleGameEndConditions();
             this.handlePowerUp();
@@ -156,6 +169,22 @@ namespace DodgeEm.Model.Game
             {
                 this.PlayerPowerUp?.Invoke(this, true);
             }
+        }
+
+        private void handleGamePointCollisions()
+        {
+            var points = this.GamePointManager.GetGamePoints().ToList();
+            foreach (var gp in points)
+            {
+                if (this.PlayerManager.IsPlayerTouchingGamePoint(gp))
+                {
+                    this.Scoreboard.AddPoints(1);
+
+                    this.GamePointManager.RemoveGamePoint(gp);
+                }
+            }
+
+            this.GamePointManager.CleanupCollected();
         }
 
         private void updateTimerUi()
