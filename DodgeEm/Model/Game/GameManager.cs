@@ -16,41 +16,6 @@ namespace DodgeEm.Model.Game
         #region Types and Delegates
 
         /// <summary>
-        ///     Delegate for the GameOver event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="didWin">Indicates if the player won.</param>
-        public delegate void GameOverHandler(object sender, bool didWin);
-
-        /// <summary>
-        ///     Delegate for the GameTimerTick event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="remainingTime">The remaining time.</param>
-        public delegate void GameTimerTickHandler(object sender, TimeSpan remainingTime);
-
-        /// <summary>
-        ///     Delegate for the LevelStarted event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="levelId">The new level id.</param>
-        public delegate void LevelStartedHandler(object sender, LevelId levelId);
-
-        /// <summary>
-        ///     Delegate for the PlayerLivesChanged event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="playerLives">The player lives.</param>
-        public delegate void PlayerLivesChangedHandler(object sender, int playerLives);
-
-        /// <summary>
-        ///     Delegate for the PlayerPowerUp event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="isHit">Indicates if the player was hit by a power-up.</param>
-        public delegate void PlayerPowerUpHandler(object sender, bool isHit);
-
-        /// <summary>
         ///     Raised when a wave starts (forwarded from LevelManager).
         /// </summary>
         public delegate void WaveStartedHandler(object sender);
@@ -158,7 +123,7 @@ namespace DodgeEm.Model.Game
         /// <summary>
         ///     Event raised when a level starts (or changes).
         /// </summary>
-        public event LevelStartedHandler LevelStarted;
+        public event EventHandler<LevelId> LevelStarted;
 
         /// <summary>
         ///     Event raised when a wave starts (forwarded from LevelManager).
@@ -186,6 +151,7 @@ namespace DodgeEm.Model.Game
             this.handleGameEndConditions();
             this.handlePowerUp();
             this.nextLevel();
+            this.restartLevel();
         }
 
         private void handlePowerUp()
@@ -292,17 +258,24 @@ namespace DodgeEm.Model.Game
                 if (this.PlayerManager.HasPlayerCollidedWithBall(enemyBall) &&
                     !this.PlayerManager.HasSameColors(enemyBall))
                 {
-                    this.LevelManager.RestartCurrentLevel();
-                    this.restartGameTimer();
-                    this.updatePlayerLives();
-                    this.PowerUpManager.RestartPowerUp();
-                    this.GamePointManager.RemoveAllGamePoints();
-                    this.spawnGamePoint();
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private void restartLevel()
+        {
+            if (this.hasBallCollisionWithEnemy() && this.PlayerManager.GetPlayerLives() >= 1)
+            {
+                this.LevelManager.RestartCurrentLevel();
+                this.restartGameTimer();
+                this.updatePlayerLives();
+                this.PowerUpManager.RestartPowerUp();
+                this.GamePointManager.RemoveAllGamePoints();
+                this.spawnGamePoint();
+            }
         }
 
         private bool playerCollisionWithPowerUp()

@@ -55,15 +55,15 @@ namespace DodgeEm.Model.Game
 
         private void randomRemoveGamePoint()
         {
+
             var seconds = GameSettings.LevelOneDuration;
             if (this.levelId == LevelId.Level2)
             {
-                seconds = this.random.Next(15, 20);
+                seconds = this.random.Next(GameSettings.MinSecondsUntilPointObjectRemoved, GameSettings.MaxSecondsUntilPointObjectRemoved);
             }
-
-            if (this.levelId == LevelId.Level3)
+            else if (this.levelId == LevelId.Level3)
             {
-                seconds = this.random.Next(10, 15);
+                seconds = this.random.Next(GameSettings.MinSecondsUntilPointObjectRemoved / 2, GameSettings.MaxSecondsUntilPointObjectRemoved / 2);
             }
 
             this.removalTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(seconds) };

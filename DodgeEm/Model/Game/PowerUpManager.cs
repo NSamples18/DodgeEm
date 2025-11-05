@@ -21,7 +21,7 @@ namespace DodgeEm.Model.Game
         /// <summary>
         ///     Gets the list of active power-ups.
         /// </summary>
-        public IList<PowerUp> PowerUps { get; }
+        public ICollection<PowerUp> PowerUps { get; }
 
         #endregion
 

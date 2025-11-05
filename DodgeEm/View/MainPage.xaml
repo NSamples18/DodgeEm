@@ -31,7 +31,7 @@
                    FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"
                    Canvas.ZIndex="100" />
 
-        <TextBlock x:Name="scoreText"
+        <TextBlock 
                    Text="{Binding ScoreDisplay, Mode=OneWay}"
                    Width="75" Height="26"
                    Canvas.Left="215" Canvas.Top="10"

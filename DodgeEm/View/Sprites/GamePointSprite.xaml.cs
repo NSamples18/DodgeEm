@@ -7,7 +7,7 @@ namespace DodgeEm.View.Sprites
     /// <seealso cref="DodgeEm.View.Sprites.BaseSprite" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
-    public sealed partial class GamePointSprite : BaseSprite
+    public sealed partial class GamePointSprite
     {
         #region Properties
 

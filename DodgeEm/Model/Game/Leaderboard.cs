@@ -55,7 +55,7 @@ namespace DodgeEm.Model.Game
     {
         #region Data members
 
-        private readonly LeaderboardEntry[] topten;
+        private readonly LeaderboardEntry[] topTen;
         private readonly string saveFilePath;
 
         #endregion
@@ -69,7 +69,7 @@ namespace DodgeEm.Model.Game
         /// <value>
         ///     The top ten.
         /// </value>
-        public LeaderboardEntry[] TopTen => this.topten.ToArray();
+        public LeaderboardEntry[] TopTen => this.topTen.ToArray();
 
         #endregion
 
@@ -81,7 +81,7 @@ namespace DodgeEm.Model.Game
         /// <param name="saveFilePath">The save file path.</param>
         public Leaderboard(string saveFilePath = null)
         {
-            this.topten = new LeaderboardEntry[10];
+            this.topTen = new LeaderboardEntry[10];
             this.saveFilePath = saveFilePath;
 
             if (!string.IsNullOrWhiteSpace(this.saveFilePath))
@@ -116,8 +116,8 @@ namespace DodgeEm.Model.Game
                 return false;
             }
 
-            var existing = this.topten.Where(e => e != null).Select(e => e.Score).ToList();
-            if (existing.Count < this.topten.Length)
+            var existing = this.topTen.Where(e => e != null).Select(e => e.Score).ToList();
+            if (existing.Count < this.topTen.Length)
             {
                 return true;
             }
@@ -145,13 +145,13 @@ namespace DodgeEm.Model.Game
                 Score = score
             };
 
-            var list = this.topten.Where(e => e != null).ToList();
+            var list = this.topTen.Where(e => e != null).ToList();
             list.Add(entry);
 
             var top = list
                 .OrderByDescending(e => e.Score)
                 .ThenBy(e => e.Name, StringComparer.OrdinalIgnoreCase)
-                .Take(this.topten.Length)
+                .Take(this.topTen.Length)
                 .ToList();
 
             if (!top.Contains(entry))
@@ -159,9 +159,9 @@ namespace DodgeEm.Model.Game
                 return null;
             }
 
-            for (var i = 0; i < this.topten.Length; i++)
+            for (var i = 0; i < this.topTen.Length; i++)
             {
-                this.topten[i] = i < top.Count ? top[i] : null;
+                this.topTen[i] = i < top.Count ? top[i] : null;
             }
 
             if (!string.IsNullOrWhiteSpace(this.saveFilePath))
@@ -176,7 +176,7 @@ namespace DodgeEm.Model.Game
                 }
             }
 
-            return Array.FindIndex(this.topten, e => e == entry);
+            return Array.FindIndex(this.topTen, e => e == entry);
         }
 
         /// <summary>
@@ -192,18 +192,18 @@ namespace DodgeEm.Model.Game
             }
 
             var lines = File.ReadAllLines(path);
-            for (var i = 0; i < this.topten.Length; i++)
+            for (var i = 0; i < this.topTen.Length; i++)
             {
                 if (i >= lines.Length)
                 {
-                    this.topten[i] = null;
+                    this.topTen[i] = null;
                     continue;
                 }
 
                 var line = lines[i].Trim();
                 if (string.IsNullOrWhiteSpace(line))
                 {
-                    this.topten[i] = null;
+                    this.topTen[i] = null;
                     continue;
                 }
 
@@ -214,7 +214,7 @@ namespace DodgeEm.Model.Game
                     var scorePart = line.Substring(pipeIndex + 1).Trim();
                     if (int.TryParse(scorePart, out var sc))
                     {
-                        this.topten[i] = new LeaderboardEntry { Name = namePart, Score = sc };
+                        this.topTen[i] = new LeaderboardEntry { Name = namePart, Score = sc };
                         continue;
                     }
                 }
@@ -226,18 +226,18 @@ namespace DodgeEm.Model.Game
                     var scorePart = line.Substring(dashIndex + 1).Trim();
                     if (int.TryParse(scorePart, out var sc2))
                     {
-                        this.topten[i] = new LeaderboardEntry { Name = namePart, Score = sc2 };
+                        this.topTen[i] = new LeaderboardEntry { Name = namePart, Score = sc2 };
                         continue;
                     }
                 }
 
                 if (int.TryParse(line, out var sc3))
                 {
-                    this.topten[i] = new LeaderboardEntry { Name = "Anonymous", Score = sc3 };
+                    this.topTen[i] = new LeaderboardEntry { Name = "Anonymous", Score = sc3 };
                 }
                 else
                 {
-                    this.topten[i] = null;
+                    this.topTen[i] = null;
                 }
             }
         }
@@ -264,7 +264,7 @@ namespace DodgeEm.Model.Game
             }
 
             var temp = target + ".tmp";
-            var lines = this.topten.Select(e => e == null ? string.Empty : $"{e.Name}|{e.Score}").ToArray();
+            var lines = this.topTen.Select(e => e == null ? string.Empty : $"{e.Name}|{e.Score}").ToArray();
             File.WriteAllLines(temp, lines);
 
             if (File.Exists(target))
@@ -282,9 +282,9 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public void Reset()
         {
-            for (var i = 0; i < this.topten.Length; i++)
+            for (var i = 0; i < this.topTen.Length; i++)
             {
-                this.topten[i] = null;
+                this.topTen[i] = null;
             }
 
             if (!string.IsNullOrWhiteSpace(this.saveFilePath))
@@ -299,12 +299,6 @@ namespace DodgeEm.Model.Game
                 }
             }
         }
-
-        internal void AddScore(int finalScore)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
     }
 }

@@ -122,15 +122,15 @@ namespace DodgeEm.Model.Enemies
 
         private void addLevels(Canvas gameCanvas)
         {
-            var lvl1 = new Level(LevelId.Level1, 25, 1, gameCanvas);
+            var lvl1 = new Level(LevelId.Level1, GameSettings.LevelOneDuration, 1, gameCanvas);
             lvl1.WaveStarted += s => this.WaveStarted?.Invoke(this);
             this.levels.Add(lvl1);
 
-            var lvl2 = new Level(LevelId.Level2, 30, 2, gameCanvas);
+            var lvl2 = new Level(LevelId.Level2, GameSettings.LevelTwoDuration, 2, gameCanvas);
             lvl2.WaveStarted += s => this.WaveStarted?.Invoke(this);
             this.levels.Add(lvl2);
 
-            var lvl3 = new Level(LevelId.Level3, 35, 3, gameCanvas);
+            var lvl3 = new Level(LevelId.Level3, GameSettings.LevelThreeDuration, 3, gameCanvas);
             lvl3.WaveStarted += s => this.WaveStarted?.Invoke(this);
             this.levels.Add(lvl3);
         }

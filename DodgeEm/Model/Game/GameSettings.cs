@@ -60,9 +60,24 @@ namespace DodgeEm.Model.Game
         public static readonly int MaxSecondsUntilPowerUpRemoved = 12;
 
         /// <summary>
+        ///     The minimum number of seconds until a point object is removed.
+        /// </summary>
+        public static readonly int MinSecondsUntilPointObjectRemoved = 15;
+
+        /// <summary>
+        ///     The maximum number of seconds until a point object is removed.
+        /// </summary>
+        public static readonly int MaxSecondsUntilPointObjectRemoved = 20;
+
+        /// <summary>
         ///     The time until a power-up spawns.
         /// </summary>
         public static readonly int TimeUntilPowerUpSpawns = 5;
+
+        /// <summary>
+        ///     The delay between enemy waves.
+        /// </summary>
+        public static readonly int DelayBetweenWave = 5000;
 
         /// <summary>
         ///     The duration of the game in seconds.

@@ -4,10 +4,9 @@ namespace DodgeEm.View.Sprites
 {
     /// <summary>
     /// </summary>
-    /// <seealso cref="DodgeEm.View.Sprites.BaseSprite" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
-    public sealed partial class PowerUpSprite : BaseSprite
+    public sealed partial class PowerUpSprite
     {
         #region Properties
 

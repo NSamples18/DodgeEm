@@ -25,6 +25,7 @@ namespace DodgeEm.View
         private readonly HashSet<VirtualKey> keysDown = new HashSet<VirtualKey>();
 
         private bool swapHandledOnCurrentSpacePress;
+        private bool gameStarted;
 
         private readonly DispatcherTimer moveTimer;
         private readonly DispatcherTimer powerUpTextTimer;
@@ -100,16 +101,10 @@ namespace DodgeEm.View
             {
                 await LeaderboardDialog.PromptForNameAndInsertIfTopTenAsync(this.leaderboard, finalScore);
             }
+
             catch
             {
-                try
-                {
-                    this.leaderboard.AddScore(finalScore);
-                }
-                catch
-                {
-                    Debug.Print("Failed to add score to leaderboard.");
-                }
+                Debug.Print("Failed to add score to leaderboard.");
             }
 
             if (didWin)
@@ -147,14 +142,17 @@ namespace DodgeEm.View
 
         private void CoreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
-            this.keysDown.Add(args.VirtualKey);
-
-            if (args.VirtualKey == VirtualKey.Space)
+            if (this.gameStarted)
             {
-                if (!this.swapHandledOnCurrentSpacePress)
+                this.keysDown.Add(args.VirtualKey);
+
+                if (args.VirtualKey == VirtualKey.Space)
                 {
-                    this.gameManager.PlayerManager.SwapPlayerBallColor();
-                    this.swapHandledOnCurrentSpacePress = true;
+                    if (!this.swapHandledOnCurrentSpacePress)
+                    {
+                        this.gameManager.PlayerManager.SwapPlayerBallColor();
+                        this.swapHandledOnCurrentSpacePress = true;
+                    }
                 }
             }
         }
@@ -245,6 +243,8 @@ namespace DodgeEm.View
 
             this.startButton.Visibility = Visibility.Collapsed;
             this.leaderboardButton.Visibility = Visibility.Collapsed;
+
+            this.gameStarted = true;
 
             _ = AudioHelper.PlayAsync("mixkit-retro-game-notification-212.wav");
         }

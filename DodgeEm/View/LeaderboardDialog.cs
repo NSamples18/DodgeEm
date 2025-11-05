@@ -92,14 +92,7 @@ namespace DodgeEm.View
             }
             catch
             {
-                try
-                {
-                    leaderboard.AddScore(score);
-                }
-                catch
-                {
-                    Debug.Print("Failed to add score to leaderboard.");
-                }
+                Debug.Print("Failed to add score to leaderboard.");
             }
         }
 

@@ -142,6 +142,7 @@ namespace DodgeEm.Model.Players
         /// </summary>
         public void PlayerLosesLife()
         {
+            this.placePlayerCenteredInGameArena();
             this.player.PlayerLosesLife();
         }
 

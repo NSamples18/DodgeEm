@@ -163,7 +163,7 @@ namespace DodgeEm.Model.Enemies
 
                 foreach (var (levelId, color, direction) in levelGroup)
                 {
-                    var delay = 3000 * index;
+                    var delay = GameSettings.DelayBetweenWave * index;
                     var wave = createWave(levelId, gameCanvas, color, direction, delay);
 
                     wave.WaveStarted += s => this.WaveStarted?.Invoke(this);

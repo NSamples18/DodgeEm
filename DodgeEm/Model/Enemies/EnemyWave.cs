@@ -31,7 +31,6 @@ namespace DodgeEm.Model.Enemies
 
         private readonly Random random = new Random();
 
-        // track whether this wave has actually started (delay expired)
         private bool hasStarted;
 
         #endregion
