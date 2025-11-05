@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -14,7 +15,6 @@ namespace DodgeEm.Model.Enemies
     {
         #region Data members
 
-        public readonly LevelId levelId;
 
         private readonly Direction ballDirection;
 
@@ -31,6 +31,9 @@ namespace DodgeEm.Model.Enemies
         private readonly TimeSpan tickInterval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs);
 
         private readonly Random random = new Random();
+
+        // track whether this wave has actually started (delay expired)
+        private bool hasStarted;
 
         #endregion
 
@@ -61,13 +64,6 @@ namespace DodgeEm.Model.Enemies
         /// <summary>
         ///     Initializes a new instance of the <see cref="EnemyWave" /> class.
         /// </summary>
-        /// <param name="levelId">The level identifier.</param>
-        /// <param name="color">The color of the enemy balls.</param>
-        /// <param name="direction">The Direction of the enemy balls.</param>
-        /// <param name="startWave">The starting wave number.</param>
-        /// <param name="gameCanvas">The canvas to draw the enemy balls on.</param>
-        /// <param name="width">The width of the game area.</param>
-        /// <param name="height">The height of the game area.</param>
         public EnemyWave(LevelId levelId, Color color, Direction direction, int startWave, Canvas gameCanvas,
             double width,
             double height)
@@ -83,6 +79,7 @@ namespace DodgeEm.Model.Enemies
             this.canvasHeight = height;
             this.delayMilliseconds = startWave;
             this.currentDelay = startWave;
+            this.hasStarted = false;
         }
 
         #endregion
@@ -123,23 +120,28 @@ namespace DodgeEm.Model.Enemies
             this.timer = new DispatcherTimer { Interval = this.tickInterval };
             this.timer.Tick += this.Timer_Tick;
             this.timer.Start();
+
+            this.hasStarted = false;
         }
 
         /// <summary>
         ///     Stops the internal timer for the wave.
-        ///     Precondition: None.
-        ///     Postcondition: Timer is stopped and no further ticks will occur.
         /// </summary>
         public void StopTimer()
         {
-            this.timer.Stop();
-            this.timer.Tick -= this.Timer_Tick;
+            this.timer?.Stop();
+            try
+            {
+                this.timer.Tick -= this.Timer_Tick;
+            }
+            catch (NullReferenceException ex)
+            {
+                Debug.WriteLine($"[EnemyWave] StopTimer failed: {ex}");
+            }
         }
 
         /// <summary>
         ///     Starts the internal timer for the wave.
-        ///     Precondition: None.
-        ///     Postcondition: Timer is running and ticks will occur.
         /// </summary>
         public void StartWave()
         {
@@ -179,9 +181,21 @@ namespace DodgeEm.Model.Enemies
             if (this.currentDelay > 0)
             {
                 this.currentDelay -= (int)timerTotalMilliseconds;
+                if (this.currentDelay <= 0 && !this.hasStarted)
+                {
+                    this.hasStarted = true;
+                    this.WaveStarted?.Invoke(this);
+                    this.OnTick();
+                }
             }
             else
             {
+                if (!this.hasStarted)
+                {
+                    this.hasStarted = true;
+                    this.WaveStarted?.Invoke(this);
+                }
+
                 this.OnTick();
             }
         }
@@ -457,6 +471,21 @@ namespace DodgeEm.Model.Enemies
             ball.XCord = this.random.Next((int)(this.canvasWidth / 2), (int)this.canvasWidth);
             ball.YCord = -ball.Height;
         }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        public delegate void WaveStartedHandler(object sender);
+
+        /// <summary>
+        /// Occurs when [wave started].
+        /// </summary>
+        public event WaveStartedHandler WaveStarted;
 
         #endregion
     }
