@@ -122,11 +122,6 @@ namespace DodgeEm.Model.Enemies
 
         private void addLevels(Canvas gameCanvas)
         {
-<<<<<<< HEAD
-            this.levels.Add(new Level(LevelId.Level1, GameSettings.LevelOneDuration, 1, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level2, GameSettings.LevelTwoDuration, 2, gameCanvas));
-            this.levels.Add(new Level(LevelId.Level3, GameSettings.LevelThreeDuration, 3, gameCanvas));
-=======
             var lvl1 = new Level(LevelId.Level1, 25, 1, gameCanvas);
             lvl1.WaveStarted += s => this.WaveStarted?.Invoke(this);
             this.levels.Add(lvl1);
@@ -138,7 +133,6 @@ namespace DodgeEm.Model.Enemies
             var lvl3 = new Level(LevelId.Level3, 35, 3, gameCanvas);
             lvl3.WaveStarted += s => this.WaveStarted?.Invoke(this);
             this.levels.Add(lvl3);
->>>>>>> feature-sound-effects
         }
 
         #endregion
@@ -151,7 +145,7 @@ namespace DodgeEm.Model.Enemies
         public delegate void WaveStartedHandler(object sender);
 
         /// <summary>
-        /// Occurs when [wave started].
+        ///     Occurs when [wave started].
         /// </summary>
         public event WaveStartedHandler WaveStarted;
 

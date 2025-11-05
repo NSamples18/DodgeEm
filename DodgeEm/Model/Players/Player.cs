@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
+using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
+using DodgeEm.View.Sprites;
 
 namespace DodgeEm.Model.Players
 {
@@ -76,23 +79,13 @@ namespace DodgeEm.Model.Players
         /// </summary>
         public virtual bool IsTouchingEnemyBall(GameObject ball)
         {
-<<<<<<< HEAD
-            var playerCenterX = this.XCord + this.Width / 2.0;
-            var playerCenterY = this.YCord + this.Height / 2.0;
+            var playerCenterX = XCord + Width / 2.0;
+            var playerCenterY = YCord + Height / 2.0;
             var enemyCenterX = ball.XCord + ball.Width / 2.0;
             var enemyCenterY = ball.YCord + ball.Height / 2.0;
 
-            var playerRadius = this.Width / 2.0;
-            var enemyRadius = ball.Width / 2.0;
-=======
-            var playerCenterX = XCord + Width / 2.0;
-            var playerCenterY = YCord + Height / 2.0;
-            var enemyCenterX = enemyBall.XCord + enemyBall.Width / 2.0;
-            var enemyCenterY = enemyBall.YCord + enemyBall.Height / 2.0;
-
             var playerRadius = Width / 2.0;
-            var enemyRadius = enemyBall.Width / 2.0;
->>>>>>> feature-sound-effects
+            var enemyRadius = ball.Width / 2.0;
 
             var dx = playerCenterX - enemyCenterX;
             var dy = playerCenterY - enemyCenterY;
@@ -101,10 +94,6 @@ namespace DodgeEm.Model.Players
             return distance <= playerRadius + enemyRadius;
         }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> feature-sound-effects
         /// <summary>
         ///     Checks if the player has the same color as the enemy ball.
         ///     Precondition: enemyBall is not null.

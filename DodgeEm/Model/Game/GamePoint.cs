@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -87,8 +86,9 @@ namespace DodgeEm.Model.Game
 
             Sprite?.RenderAt(XCord, YCord);
         }
+
         /// <summary>
-        /// Removes the game point from the canvas.
+        ///     Removes the game point from the canvas.
         /// </summary>
         public void RemoveGamePoint()
         {
@@ -105,26 +105,11 @@ namespace DodgeEm.Model.Game
             {
                 return;
             }
+
             this.IsCollected = true;
-<<<<<<< HEAD
+
             this.removalTimer?.Stop();
             this.RemoveGamePoint();
-            
-=======
-
-            try
-            {
-                this.removalTimer?.Stop();
-                if (this.currentCanvas != null && Sprite != null && this.currentCanvas.Children.Contains(Sprite))
-                {
-                    this.currentCanvas.Children.Remove(Sprite);
-                }
-            }
-            catch
-            {
-                Debug.WriteLine("[GamePoint] Collect failed");
-            }
->>>>>>> feature-sound-effects
         }
 
         #endregion

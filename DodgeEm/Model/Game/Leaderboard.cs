@@ -277,6 +277,29 @@ namespace DodgeEm.Model.Game
             }
         }
 
+        /// <summary>
+        ///     Reset the leaderboard in-memory and persist the empty leaderboard if a save path is configured.
+        /// </summary>
+        public void Reset()
+        {
+            for (var i = 0; i < this.topten.Length; i++)
+            {
+                this.topten[i] = null;
+            }
+
+            if (!string.IsNullOrWhiteSpace(this.saveFilePath))
+            {
+                try
+                {
+                    this.SaveToFile(this.saveFilePath);
+                }
+                catch
+                {
+                    Debug.Print("Failed to save (reset) leaderboard.");
+                }
+            }
+        }
+
         internal void AddScore(int finalScore)
         {
             throw new NotImplementedException();

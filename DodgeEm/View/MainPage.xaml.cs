@@ -211,6 +211,23 @@ namespace DodgeEm.View
             }
         }
 
+        private void resetLeaderboard(object sender, RoutedEventArgs e)
+        {
+            if (this.keysDown.Contains(VirtualKey.Space))
+            {
+                return;
+            }
+
+            try
+            {
+                this.leaderboard.Reset();
+            }
+            catch
+            {
+                Debug.WriteLine("Failed to reset leaderboard.");
+            }
+        }
+
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             var applicationWidth = (double)Application.Current.Resources["CanvasWidth"];
@@ -227,6 +244,8 @@ namespace DodgeEm.View
             this.gameManager.WaveStarted += this.onWaveStarted;
 
             this.startButton.Visibility = Visibility.Collapsed;
+            this.leaderboardButton.Visibility = Visibility.Collapsed;
+
             _ = AudioHelper.PlayAsync("mixkit-retro-game-notification-212.wav");
         }
 
@@ -246,7 +265,6 @@ namespace DodgeEm.View
         {
             try
             {
-                
                 await AudioHelper.PlaySoundEffectAsync("mixkit-arcade-game-jump-coin-216.wav");
             }
             catch (Exception ex)

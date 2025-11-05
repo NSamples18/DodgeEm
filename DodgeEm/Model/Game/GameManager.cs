@@ -64,7 +64,6 @@ namespace DodgeEm.Model.Game
 
         private bool gameOverTriggered;
 
-
         #endregion
 
         #region Properties
@@ -247,7 +246,6 @@ namespace DodgeEm.Model.Game
                 this.OnLevelChanged();
                 this.spawnGamePoint();
                 this.PowerUpManager.SpawnPowerUp();
-
             }
         }
 

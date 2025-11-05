@@ -32,7 +32,7 @@ namespace DodgeEm.Model.Enemies
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WaveManager" /> class.
+        ///     Initializes a new instance of the <see cref="WaveManager" /> class.
         /// </summary>
         /// <param name="gameCanvas">The canvas on which the game is rendered.</param>
         /// <param name="level">The level.</param>
@@ -192,13 +192,12 @@ namespace DodgeEm.Model.Enemies
         #region Events
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="sender">The sender.</param>
         public delegate void WaveStartedHandler(object sender);
 
         /// <summary>
-        /// Occurs when [wave started].
+        ///     Occurs when [wave started].
         /// </summary>
         public event WaveStartedHandler WaveStarted;
 

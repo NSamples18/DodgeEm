@@ -7,8 +7,6 @@ using Windows.Storage;
 
 namespace DodgeEm.Model.Game
 {
-
-
     /// <summary>
     ///     Provides audio playback functionality.
     /// </summary>
@@ -23,7 +21,7 @@ namespace DodgeEm.Model.Game
         #region Methods
 
         /// <summary>
-        /// Plays the asynchronous.
+        ///     Plays the asynchronous.
         /// </summary>
         /// <param name="assetFileName">Name of the asset file.</param>
         public static async Task PlayAsync(string assetFileName)
@@ -49,7 +47,7 @@ namespace DodgeEm.Model.Game
         }
 
         /// <summary>
-        /// Plays the sound effect asynchronous.
+        ///     Plays the sound effect asynchronous.
         /// </summary>
         /// <param name="assetFileName">Name of the asset file.</param>
         public static async Task PlaySoundEffectAsync(string assetFileName)

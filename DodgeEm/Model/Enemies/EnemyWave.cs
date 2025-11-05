@@ -15,7 +15,6 @@ namespace DodgeEm.Model.Enemies
     {
         #region Data members
 
-
         private readonly Direction ballDirection;
 
         private readonly Canvas currentCanvas;
@@ -477,13 +476,12 @@ namespace DodgeEm.Model.Enemies
         #region Events
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="sender">The sender.</param>
         public delegate void WaveStartedHandler(object sender);
 
         /// <summary>
-        /// Occurs when [wave started].
+        ///     Occurs when [wave started].
         /// </summary>
         public event WaveStartedHandler WaveStarted;
 
