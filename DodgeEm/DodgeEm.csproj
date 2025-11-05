@@ -124,6 +124,7 @@
     <Compile Include="Model\Enemies\EnemyBall.cs" />
     <Compile Include="Model\Enemies\Level.cs" />
     <Compile Include="Model\Enemies\LevelManager.cs" />
+    <Compile Include="Model\Game\AudioHelper.cs" />
     <Compile Include="Model\Game\Direction.cs" />
     <Compile Include="Model\Enemies\EnemyWave.cs" />
     <Compile Include="Model\Game\GameManager.cs" />

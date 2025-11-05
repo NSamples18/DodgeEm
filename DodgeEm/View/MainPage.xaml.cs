@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Windows.Foundation;
+using Windows.Media.Audio;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
@@ -119,6 +120,7 @@ namespace DodgeEm.View
             else
             {
                 this.lose.Visibility = Visibility.Visible;
+                AudioHelper.Play("vine-boom-sound-effect(chosic.com)");
             }
         }
 
