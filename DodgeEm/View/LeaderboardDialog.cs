@@ -9,21 +9,22 @@ using DodgeEm.Model.Game;
 namespace DodgeEm.View
 {
     /// <summary>
-    /// Stores methods to show leaderboard dialogs.
+    ///     Stores methods to show leaderboard dialogs.
     /// </summary>
     public static class LeaderboardDialog
     {
+        #region Methods
 
         /// <summary>
-        /// Shows the leaderboard asynchronous.
-        /// Shows the read-only leaderboard (used from menu)
+        ///     Shows the leaderboard asynchronous.
+        ///     Shows the read-only leaderboard (used from menu)
         /// </summary>
         /// <param name="leaderboard">The leaderboard.</param>
         public static async Task ShowLeaderboardAsync(Leaderboard leaderboard)
         {
             var entries = leaderboard.TopTen
                 .Where(e => e != null)
-                .Select((e, idx) => formatEntry(e, idx))
+                .Select(formatEntry)
                 .ToArray();
 
             var content = entries.Length > 0 ? string.Join("\n", entries) : "No scores yet.";
@@ -33,11 +34,9 @@ namespace DodgeEm.View
             await dlg.ShowAsync();
         }
 
-
-
         /// <summary>
-        /// Prompts for name and insert if top ten asynchronous.
-        /// If `leaderboard` exposes IsTopTen and InsertScore, prompt for name and insert.
+        ///     Prompts for name and insert if top ten asynchronous.
+        ///     If `leaderboard` exposes IsTopTen and InsertScore, prompt for name and insert.
         /// </summary>
         /// <param name="leaderboard">The leaderboard.</param>
         /// <param name="score">The score.</param>
@@ -48,7 +47,7 @@ namespace DodgeEm.View
                 return;
             }
 
-            bool qualifies = false;
+            var qualifies = false;
             try
             {
                 qualifies = leaderboard.IsTopTen(score);
@@ -87,8 +86,12 @@ namespace DodgeEm.View
                 ? nameBox.Text.Trim()
                 : "Anonymous";
 
-            try { leaderboard.InsertScore(score, name); }
-            catch {
+            try
+            {
+                leaderboard.InsertScore(score, name);
+            }
+            catch
+            {
                 try
                 {
                     leaderboard.AddScore(score);
@@ -106,6 +109,7 @@ namespace DodgeEm.View
             {
                 return null;
             }
+
             var type = entry.GetType();
             var nameProp = type.GetProperty("Name");
             var scoreProp = type.GetProperty("Score");
@@ -118,5 +122,7 @@ namespace DodgeEm.View
 
             return $"{index + 1}. {entry}";
         }
+
+        #endregion
     }
 }

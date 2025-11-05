@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 namespace DodgeEm.Model.Game
 {
     /// <summary>
-    /// 
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class Scoreboard : INotifyPropertyChanged
@@ -18,10 +17,10 @@ namespace DodgeEm.Model.Game
         #region Properties
 
         /// <summary>
-        /// Gets or sets the current score.
+        ///     Gets or sets the current score.
         /// </summary>
         /// <value>
-        /// The current score.
+        ///     The current score.
         /// </value>
         public int CurrentScore
         {
@@ -40,10 +39,10 @@ namespace DodgeEm.Model.Game
         }
 
         /// <summary>
-        /// Gets the score display.
+        ///     Gets the score display.
         /// </summary>
         /// <value>
-        /// The score display.
+        ///     The score display.
         /// </value>
         public string ScoreDisplay => $"Score: {this.CurrentScore}";
 
@@ -52,13 +51,13 @@ namespace DodgeEm.Model.Game
         #region Methods
 
         /// <summary>
-        /// Occurs when a property value changes.
+        ///     Occurs when a property value changes.
         /// </summary>
         /// <returns></returns>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Adds the points.
+        ///     Adds the points.
         /// </summary>
         /// <param name="points">The points.</param>
         public void AddPoints(int points)
@@ -72,7 +71,7 @@ namespace DodgeEm.Model.Game
         }
 
         /// <summary>
-        /// Called when [property changed].
+        ///     Called when [property changed].
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

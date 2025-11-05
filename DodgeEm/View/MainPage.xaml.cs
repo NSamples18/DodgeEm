@@ -58,8 +58,6 @@ namespace DodgeEm.View
             var savePath = Path.Combine(localPath, "leaderboard.txt");
             this.leaderboard = new Leaderboard(savePath);
 
-            
-
             this.powerUpTextTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(3)
@@ -71,13 +69,15 @@ namespace DodgeEm.View
 
         #region Methods
 
-        private void updatePlayerPowerUp(object sender, bool isHit)
+        private async void updatePlayerPowerUp(object sender, bool isHit)
         {
             if (isHit)
             {
                 this.powerUpText.Visibility = Visibility.Visible;
                 this.powerUpTextTimer.Stop();
                 this.powerUpTextTimer.Start();
+
+                await AudioHelper.PlayAsync("mixkit-arcade-bonus-alert-767.wav");
             }
         }
 
@@ -115,10 +115,12 @@ namespace DodgeEm.View
             if (didWin)
             {
                 this.win.Visibility = Visibility.Visible;
+                await AudioHelper.PlayAsync("roblox-old-winning-sound-effect.mp3");
             }
             else
             {
                 this.lose.Visibility = Visibility.Visible;
+                await AudioHelper.PlayAsync("vine-boom-sound-effect(chosic.com).mp3");
             }
         }
 
@@ -221,7 +223,36 @@ namespace DodgeEm.View
             this.gameManager.PlayerLivesChanged += this.updateLifeCount;
             this.gameManager.PlayerPowerUp += this.updatePlayerPowerUp;
 
-            this.StartButton.Visibility = Visibility.Collapsed;
+            this.gameManager.LevelStarted += this.onLevelStarted;
+            this.gameManager.WaveStarted += this.onWaveStarted;
+
+            this.startButton.Visibility = Visibility.Collapsed;
+            _ = AudioHelper.PlayAsync("mixkit-retro-game-notification-212.wav");
+        }
+
+        private async void onLevelStarted(object sender, LevelId levelId)
+        {
+            try
+            {
+                await AudioHelper.PlayAsync("mixkit-retro-game-notification-212.wav");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Failed to play level start sound: {ex}");
+            }
+        }
+
+        private async void onWaveStarted(object sender)
+        {
+            try
+            {
+                
+                await AudioHelper.PlaySoundEffectAsync("mixkit-arcade-game-jump-coin-216.wav");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Failed to play wave-start SFX: {ex}");
+            }
         }
 
         #endregion
