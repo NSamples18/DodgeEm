@@ -23,7 +23,7 @@ namespace DodgeEm.Model.Core
         /// <value>
         ///     The x.
         /// </value>
-        public double X
+        public double XCord
         {
             get => this.location.X;
             set
@@ -39,7 +39,7 @@ namespace DodgeEm.Model.Core
         /// <value>
         ///     The y.
         /// </value>
-        public double Y
+        public double YCord
         {
             get => this.location.Y;
             set
@@ -96,7 +96,7 @@ namespace DodgeEm.Model.Core
         /// <summary>
         ///     Moves the game object right.
         ///     Precondition: None
-        ///     Postcondition: X == X@prev + SpeedX
+        ///     Postcondition: XCord == XCord@prev + SpeedX
         /// </summary>
         public void MoveRight()
         {
@@ -106,7 +106,7 @@ namespace DodgeEm.Model.Core
         /// <summary>
         ///     Moves the game object left.
         ///     Precondition: None
-        ///     Postcondition: X == X@prev + SpeedX
+        ///     Postcondition: XCord == XCord@prev + SpeedX
         /// </summary>
         public void MoveLeft()
         {
@@ -116,7 +116,7 @@ namespace DodgeEm.Model.Core
         /// <summary>
         ///     Moves the game object up.
         ///     Precondition: None
-        ///     Postcondition: Y == Y@prev - SpeedY
+        ///     Postcondition: YCord == YCord@prev - SpeedY
         /// </summary>
         public void MoveUp()
         {
@@ -126,7 +126,7 @@ namespace DodgeEm.Model.Core
         /// <summary>
         ///     Moves the game object down.
         ///     Precondition: None
-        ///     Postcondition: Y == Y@prev + SpeedY
+        ///     Postcondition: YCord == YCord@prev + SpeedY
         /// </summary>
         public void MoveDown()
         {
@@ -156,68 +156,21 @@ namespace DodgeEm.Model.Core
             this.SpeedY = speedY;
         }
 
-        /// <summary>
-        ///     Checks if the player is touching an enemy ball.
-        ///     Precondition: enemyBall is not null.
-        ///     Postcondition: Returns true if the player is touching the enemy ball, otherwise false.
-        ///     <param name="enemyBall">The enemy ball to check for collision.</param>
-        /// </summary>
-        public virtual bool IsTouchingEnemyBall(GameObject enemyBall)
-        {
-            var playerCenterX = this.X + this.Width / 2.0;
-            var playerCenterY = this.Y + this.Height / 2.0;
-            var enemyCenterX = enemyBall.X + enemyBall.Width / 2.0;
-            var enemyCenterY = enemyBall.Y + enemyBall.Height / 2.0;
-
-            var playerRadius = this.Width / 2.0;
-            var enemyRadius = enemyBall.Width / 2.0;
-
-            var dx = playerCenterX - enemyCenterX;
-            var dy = playerCenterY - enemyCenterY;
-            var distance = Math.Sqrt(dx * dx + dy * dy);
-
-            return distance <= playerRadius + enemyRadius;
-        }
-
-        /// <summary>
-        ///     Determines whether [is touching game point] [the specified game point].
-        /// </summary>
-        /// <param name="gamePoint">The game point.</param>
-        /// <returns>
-        ///     <c>true</c> if [is touching game point] [the specified game point]; otherwise, <c>false</c>.
-        /// </returns>
-        public virtual bool isTouchingGamePoint(GameObject gamePoint)
-        {
-            var playerCenterX = this.X + this.Width / 2.0;
-            var playerCenterY = this.Y + this.Height / 2.0;
-            var gamePointCenterX = gamePoint.X + gamePoint.Width / 2.0;
-            var gamePointCenterY = gamePoint.Y + gamePoint.Height / 2.0;
-
-            var playerRadius = this.Width / 2.0;
-            var gamePointRadius = gamePoint.Width / 2.0;
-
-            var dx = playerCenterX - gamePointCenterX;
-            var dy = playerCenterY - gamePointCenterY;
-            var distance = Math.Sqrt(dx * dx + dy * dy);
-
-            return distance <= playerRadius + gamePointRadius;
-        }
-
         private void moveX(int x)
         {
-            this.X += x;
+            this.XCord += x;
         }
 
         private void moveY(int y)
         {
-            this.Y += y;
+            this.YCord += y;
         }
 
         private void render()
         {
             ISpriteRenderer render = this.Sprite;
 
-            render?.RenderAt(this.X, this.Y);
+            render?.RenderAt(this.XCord, this.YCord);
         }
 
         #endregion

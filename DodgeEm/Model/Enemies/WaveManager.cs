@@ -13,7 +13,7 @@ namespace DodgeEm.Model.Enemies
     {
         #region Data members
 
-        private readonly List<EnemyWave> waves;
+        private readonly ICollection<EnemyWave> waves;
         private readonly LevelId level;
 
         #endregion
@@ -48,29 +48,38 @@ namespace DodgeEm.Model.Enemies
         #region Methods
 
         /// <summary>
-        ///     Gets the current level wave colors.
+        ///     Gets the colors of the enemy balls in the current level.
         /// </summary>
-        /// <param name="levelId">The level identifier.</param>
-        /// <returns></returns>
-        public IEnumerable<Color> GetCurrentLevelWaveColors(LevelId levelId)
+        public IEnumerable<Color> GetCurrentLevelWaveColors()
         {
             return this.waves
-                .Where(w => w.levelId == this.level)
+                .Where(w => w.LevelId == this.level)
                 .Select(w => w.BallColor)
                 .Distinct();
         }
 
         /// <summary>
-        ///     Removes the balls from all waves.
+        ///     Removes all enemy balls from all waves in the current level.
         /// </summary>
-        public void RemoveBallsFromAllWaves()
+        public void RemoveBallsFromAllWavesInLevel()
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == this.level)
+                if (wave.LevelId == this.level)
                 {
                     wave.RemoveAllBalls();
                 }
+            }
+        }
+
+        /// <summary>
+        ///     Removes all enemy balls from all waves.
+        /// </summary>
+        public void RemoveAllBalls()
+        {
+            foreach (var wave in this.waves)
+            {
+                wave.RemoveAllBalls();
             }
         }
 
@@ -83,7 +92,7 @@ namespace DodgeEm.Model.Enemies
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == this.level)
+                if (wave.LevelId == this.level)
                 {
                     wave.StopTimer();
                 }
@@ -91,64 +100,58 @@ namespace DodgeEm.Model.Enemies
         }
 
         /// <summary>
-        ///     Restarts the waves in level.
+        ///     Restarts all waves in the current level.
         /// </summary>
         public void RestartWavesInLevel()
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == this.level)
+                if (wave.LevelId == this.level)
                 {
-                    wave.resetWave();
+                    wave.ResetWave();
                     wave.RemoveAllBalls();
                 }
             }
         }
 
         /// <summary>
-        ///     Starts the wave with level.
+        ///     Starts all waves in the current level.
         /// </summary>
-        public void startWaveWithLevel()
+        public void StartWaveWithLevel()
         {
             foreach (var wave in this.waves)
             {
-                if (wave.levelId == this.level)
+                if (wave.LevelId == this.level)
                 {
                     wave.StartWave();
                 }
             }
         }
 
-        /// <summary>
-        ///     Returns the definitions for all waves (color + direction).
-        /// </summary>
         private static (LevelId levelId, Color color, Direction direction)[] getWaveDefinitions()
         {
             return new[]
             {
-                (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.TopToBottom),
-                (LevelId.Level1, GameSettings.EastAndWestColor, Direction.LeftToRight),
-                (LevelId.Level1, GameSettings.NorthAndSouthColor, Direction.BottomToTop),
-                (LevelId.Level1, GameSettings.EastAndWestColor, Direction.RightToLeft),
+                (LevelId.Level1, GameSettings.Level1NorthAndSouthColor, Direction.TopToBottom),
+                (LevelId.Level1, GameSettings.Level1EastAndWestColor, Direction.LeftToRight),
+                (LevelId.Level1, GameSettings.Level1NorthAndSouthColor, Direction.BottomToTop),
+                (LevelId.Level1, GameSettings.Level1EastAndWestColor, Direction.RightToLeft),
                 (LevelId.Level1, GameSettings.FinalBlitzColor, Direction.VerticalMixed),
 
-                (LevelId.Level2, Colors.Violet, Direction.TopToBottom),
-                (LevelId.Level2, Colors.Brown, Direction.LeftToRight),
-                (LevelId.Level2, Colors.CadetBlue, Direction.BottomToTop),
-                (LevelId.Level2, Colors.White, Direction.RightToLeft),
-                (LevelId.Level2, Colors.Aqua, Direction.VerticalMixed),
+                (LevelId.Level2, GameSettings.Level2North, Direction.TopToBottom),
+                (LevelId.Level2, GameSettings.Level2East, Direction.LeftToRight),
+                (LevelId.Level2, GameSettings.Level2South, Direction.BottomToTop),
+                (LevelId.Level2, GameSettings.Level2West, Direction.RightToLeft),
+                (LevelId.Level2, GameSettings.FinalBlitzColor, Direction.VerticalMixed),
 
-                (LevelId.Level3, Colors.Blue, Direction.TopToBottom),
-                (LevelId.Level3, Colors.Green, Direction.LeftToRight),
-                (LevelId.Level3, Colors.Gray, Direction.BottomToTop),
-                (LevelId.Level3, GameSettings.EastAndWestColor, Direction.RightToLeft),
+                (LevelId.Level3, GameSettings.Level3North, Direction.TopToBottom),
+                (LevelId.Level3, GameSettings.Level3East, Direction.LeftToRight),
+                (LevelId.Level3, GameSettings.Level3South, Direction.BottomToTop),
+                (LevelId.Level3, GameSettings.Level3West, Direction.RightToLeft),
                 (LevelId.Level3, GameSettings.FinalBlitzColor, Direction.DiagonalMixed)
             };
         }
 
-        /// <summary>
-        ///     Creates and adds waves based on definitions and calculated delays.
-        /// </summary>
         private void addWaves(Canvas gameCanvas, (LevelId levelId, Color color, Direction direction)[] waveDefinitions)
         {
             var groupedByLevel = waveDefinitions.GroupBy(w => w.levelId);
@@ -168,9 +171,6 @@ namespace DodgeEm.Model.Enemies
             }
         }
 
-        /// <summary>
-        ///     Creates an individual enemy wave.
-        /// </summary>
         private static EnemyWave createWave(LevelId level, Canvas gameCanvas, Color color, Direction direction,
             int delay)
         {

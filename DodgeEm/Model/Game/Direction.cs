@@ -28,22 +28,22 @@
         /// <summary>
         ///     Indicates movement to the northeast.
         /// </summary>
-        NorthEast,
+        BottomLeft,
 
         /// <summary>
         ///     Indicates movement to the northwest.
         /// </summary>
-        NorthWest,
+        BottomRight,
 
         /// <summary>
         ///     Indicates movement to the southeast.
         /// </summary>
-        SouthEast,
+        TopLeft,
 
         /// <summary>
         ///     Indicates movement to the southwest.
         /// </summary>
-        SouthWest,
+        TopRight,
 
         /// <summary>
         ///     Indicates mixed diagonal movement.

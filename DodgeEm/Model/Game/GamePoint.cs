@@ -55,7 +55,11 @@ namespace DodgeEm.Model.Game
 
         private void randomRemoveGamePoint()
         {
-            var seconds = this.random.Next(15, 20);
+            var seconds = GameSettings.LevelOneDuration;
+            if (this.levelId == LevelId.Level2)
+            {
+                seconds = this.random.Next(15, 20);
+            }
 
             if (this.levelId == LevelId.Level3)
             {
@@ -77,10 +81,17 @@ namespace DodgeEm.Model.Game
             var maxX = canvasWidth - Width;
             var maxY = canvasHeight - Height;
 
-            X = this.random.NextDouble() * maxX;
-            Y = this.random.NextDouble() * maxY;
+            this.XCord = random.NextDouble() * maxX;
+            this.YCord = random.NextDouble() * maxY;
 
-            Sprite?.RenderAt(X, Y);
+            Sprite?.RenderAt(this.XCord, this.YCord);
+        }
+        /// <summary>
+        /// Removes the game point from the canvas.
+        /// </summary>
+        public void RemoveGamePoint()
+        {
+            this.currentCanvas.Children.Remove(Sprite);
         }
 
         /// <summary>
@@ -93,20 +104,10 @@ namespace DodgeEm.Model.Game
             {
                 return;
             }
-
             this.IsCollected = true;
-
-            try
-            {
-                this.removalTimer?.Stop();
-                if (this.currentCanvas != null && Sprite != null && this.currentCanvas.Children.Contains(Sprite))
-                {
-                    this.currentCanvas.Children.Remove(Sprite);
-                }
-            }
-            catch
-            {
-            }
+            this.removalTimer?.Stop();
+            this.RemoveGamePoint();
+            
         }
 
         #endregion

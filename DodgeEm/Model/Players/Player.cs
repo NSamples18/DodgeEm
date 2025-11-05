@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
+using DodgeEm.View.Sprites;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Windows.UI;
 using Windows.UI.Xaml.Media;
-using DodgeEm.Model.Core;
-using DodgeEm.Model.Game;
-using DodgeEm.View.Sprites;
 
 namespace DodgeEm.Model.Players
 {
@@ -16,8 +17,7 @@ namespace DodgeEm.Model.Players
     {
         #region Data members
 
-        private bool swapColor = true;
-        private int playerLives = 3;
+        private int playerLives = GameSettings.PlayerLives;
         private List<Color> availableColors = new List<Color>();
         private int currentColorIndex;
 
@@ -37,15 +37,28 @@ namespace DodgeEm.Model.Players
         #endregion
 
         #region Methods
-
+        /// <summary>
+        ///     Sets the available colors for the player.
+        /// </summary>
         public void SetAvailableColors(IEnumerable<Color> colors)
         {
             this.availableColors = colors.ToList();
             this.availableColors.RemoveAt(this.availableColors.Count - 1);
             this.currentColorIndex = 0;
-            this.SetPlayerColor(this.availableColors[this.currentColorIndex]);
+            this.setPlayerColor();
         }
 
+        private void setPlayerColor()
+        {
+            if (Sprite is PlayerSprite playerSprite)
+            {
+                playerSprite.setPlayerColor(this.availableColors[this.currentColorIndex]);
+            }
+        }
+
+        /// <summary>
+        ///     Swaps the player's color to the next available color.
+        /// </summary>
         public void SwapToNextColor()
         {
             if (this.availableColors.Count == 0)
@@ -54,17 +67,32 @@ namespace DodgeEm.Model.Players
             }
 
             this.currentColorIndex = (this.currentColorIndex + 1) % this.availableColors.Count;
-            this.SetPlayerColor(this.availableColors[this.currentColorIndex]);
+            this.setPlayerColor();
         }
 
-        private void SetPlayerColor(Color color)
+        /// <summary>
+        ///     Checks if the player is touching an enemy ball.
+        ///     Precondition: ball is not null.
+        ///     Postcondition: Returns true if the player is touching the enemy ball, otherwise false.
+        ///     <param name="ball">The enemy ball to check for collision.</param>
+        /// </summary>
+        public virtual bool IsTouchingEnemyBall(GameObject ball)
         {
-            if (Sprite is PlayerSprite playerSprite)
-            {
-                playerSprite.InnerFill = new SolidColorBrush(Colors.Blue);
-                playerSprite.OuterFill = new SolidColorBrush(color);
-            }
+            var playerCenterX = this.XCord + this.Width / 2.0;
+            var playerCenterY = this.YCord + this.Height / 2.0;
+            var enemyCenterX = ball.XCord + ball.Width / 2.0;
+            var enemyCenterY = ball.YCord + ball.Height / 2.0;
+
+            var playerRadius = this.Width / 2.0;
+            var enemyRadius = ball.Width / 2.0;
+
+            var dx = playerCenterX - enemyCenterX;
+            var dy = playerCenterY - enemyCenterY;
+            var distance = Math.Sqrt(dx * dx + dy * dy);
+
+            return distance <= playerRadius + enemyRadius;
         }
+
 
         /// <summary>
         ///     Checks if the player has the same color as the enemy ball.
@@ -86,12 +114,20 @@ namespace DodgeEm.Model.Players
 
             return false;
         }
-
+        /// <summary>
+        ///     Called when the player loses a life.
+        /// </summary>
         public void PlayerLosesLife()
         {
             this.playerLives--;
+            if (Sprite is PlayerSprite playerSprite)
+            {
+                playerSprite.PlayDeathAnimation();
+            }
         }
-
+        /// <summary>
+        ///     Gets the number of lives the player has left.
+        /// </summary>
         public int GetPlayerLives()
         {
             return this.playerLives;

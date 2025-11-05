@@ -34,6 +34,12 @@ namespace DodgeEm.Model.Game
         /// <param name="sender">The sender.</param>
         /// <param name="playerLives">The player lives.</param>
         public delegate void PlayerLivesChangedHandler(object sender, int playerLives);
+        /// <summary>
+        ///     Delegate for the PlayerPowerUp event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="isHit">Indicates if the player was hit by a power-up.</param>
+        public delegate void PlayerPowerUpHandler(object sender, bool isHit);
 
         #endregion
 
@@ -57,15 +63,10 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public PlayerManager PlayerManager { get; }
 
-        /// <summary>
-        ///     Gets the wave manager.
-        ///     Precondition: None.
-        ///     Postcondition: Returns the WaveManager instance.
-        /// </summary>
-        private WaveManager WaveManager { get; }
 
         private LevelManager LevelManager { get; }
         private GamePointManager GamePointManager { get; }
+        private PowerUpManager PowerUpManager { get; }
 
         /// <summary>
         ///     Gets the scoreboard.
@@ -101,6 +102,7 @@ namespace DodgeEm.Model.Game
             this.PlayerManager = new PlayerManager(backgroundHeight, backgroundWidth, gameCanvas);
             this.LevelManager = new LevelManager(gameCanvas);
             this.GamePointManager = new GamePointManager(gameCanvas, backgroundWidth, backgroundHeight);
+            this.PowerUpManager = new PowerUpManager(gameCanvas, backgroundWidth, backgroundHeight);
 
             this.Scoreboard = new Scoreboard();
 
@@ -121,15 +123,6 @@ namespace DodgeEm.Model.Game
         #region Methods
 
         /// <summary>
-        ///     Called when [level changed].
-        /// </summary>
-        public void OnLevelChanged()
-        {
-            var colors = this.LevelManager.GetCurrentLevelWaveColors();
-            this.PlayerManager.UpdatePlayerColors(colors);
-        }
-
-        /// <summary>
         ///     Event raised when the game is over.
         /// </summary>
         public event GameOverHandler GameOver;
@@ -144,6 +137,17 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public event PlayerLivesChangedHandler PlayerLivesChanged;
 
+        /// <summary>
+        ///     Event raised when the player power-up state changes.
+        /// </summary>
+        public event PlayerPowerUpHandler PlayerPowerUp;
+
+        private void OnLevelChanged()
+        {
+            var colors = this.LevelManager.GetCurrentLevelWaveColors();
+            this.PlayerManager.UpdatePlayerColors(colors);
+        }
+
         private void onMainTick()
         {
             if (this.gameOverTriggered)
@@ -155,6 +159,16 @@ namespace DodgeEm.Model.Game
 
             this.updateTimerUi();
             this.handleGameEndConditions();
+            this.handlePowerUp();
+            this.nextLevel();
+        }
+
+        private void handlePowerUp()
+        {
+            if (this.playerCollisionWithPowerUp())
+            {
+                this.PlayerPowerUp?.Invoke(this, true);
+            }
         }
 
         private void handleGamePointCollisions()
@@ -162,7 +176,7 @@ namespace DodgeEm.Model.Game
             var points = this.GamePointManager.GetGamePoints().ToList();
             foreach (var gp in points)
             {
-                if (this.PlayerManager.IsPlayerTouchingGamePoint(gp))
+                if (this.PlayerManager.HasPlayerCollidedWithBall(gp))
                 {
                     this.Scoreboard.AddPoints(1);
 
@@ -181,27 +195,33 @@ namespace DodgeEm.Model.Game
 
         private void handleGameEndConditions()
         {
-            if (this.hasBallCollision() && !this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() == 0)
+            if (this.hasBallCollisionWithEnemy() && !this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() == 0)
             {
                 this.endGame(false);
                 return;
             }
 
-            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 &&
+            if (!this.hasBallCollisionWithEnemy() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 &&
+                this.LevelManager.GetLevelId() == LevelId.Level3)
+            {
+                this.PowerUpManager.RemoveAllPowerUps();
+                this.mainTimer.Stop();
+                this.LevelManager.StopLevel();
+                this.endGame(true);
+            }
+        }
+
+        private void nextLevel()
+        {
+            if (!this.hasBallCollisionWithEnemy() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 &&
                 this.LevelManager.GetLevelId() < LevelId.Level3)
             {
                 this.LevelManager.NextLevel();
                 this.restartGameTimer();
                 this.OnLevelChanged();
                 this.spawnGamePoint();
-            }
+                this.PowerUpManager.SpawnPowerUp();
 
-            if (!this.hasBallCollision() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 &&
-                this.LevelManager.GetLevelId() == LevelId.Level3)
-            {
-                this.mainTimer.Stop();
-                this.LevelManager.StopLevel();
-                this.endGame(true);
             }
         }
 
@@ -241,16 +261,34 @@ namespace DodgeEm.Model.Game
             this.mainTimer.Stop();
         }
 
-        private bool hasBallCollision()
+        private bool hasBallCollisionWithEnemy()
         {
             foreach (var enemyBall in this.LevelManager.GetEnemyBalls())
             {
-                if (this.PlayerManager.IsPlayerTouchingEnemyBall(enemyBall) &&
+                if (this.PlayerManager.HasPlayerCollidedWithBall(enemyBall) &&
                     !this.PlayerManager.HasSameColors(enemyBall))
                 {
                     this.LevelManager.RestartCurrentLevel();
                     this.restartGameTimer();
                     this.updatePlayerLives();
+                    this.PowerUpManager.RestartPowerUp();
+                    this.GamePointManager.RemoveAllGamePoints();
+                    this.spawnGamePoint();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool playerCollisionWithPowerUp()
+        {
+            foreach (var powerUp in this.PowerUpManager.PowerUps)
+            {
+                if (this.PlayerManager.HasPlayerCollidedWithBall(powerUp))
+                {
+                    this.PowerUpManager.RemovePowerUp(powerUp);
+                    this.LevelManager.RemoveAllBalls();
                     return true;
                 }
             }

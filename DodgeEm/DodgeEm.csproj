@@ -133,6 +133,8 @@
     <Compile Include="Model\Game\GameSettings.cs" />
     <Compile Include="Model\Game\Leaderboard.cs" />
     <Compile Include="Model\Game\LevelId.cs" />
+    <Compile Include="Model\Game\PowerUp.cs" />
+    <Compile Include="Model\Game\PowerUpManager.cs" />
     <Compile Include="Model\Game\Scoreboard.cs" />
     <Compile Include="Model\Players\Player.cs" />
     <Compile Include="Model\Players\PlayerManager.cs" />
@@ -148,9 +150,16 @@
     <Compile Include="View\Sprites\EnemyBallSprite.xaml.cs">
       <DependentUpon>EnemyBallSprite.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\Sprites\PowerUpSprite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\Sprites\GamePointSprite.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Compile Include="View\Sprites\PowerUpSprite.xaml.cs">
+      <DependentUpon>PowerUpSprite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\GamePointSprite.xaml.cs">
       <DependentUpon>GamePointSprite.xaml</DependentUpon>
     </Compile>

@@ -67,22 +67,22 @@ namespace DodgeEm.Model.Enemies
                 case Direction.RightToLeft:
                     MoveLeft();
                     break;
-                case Direction.NorthEast:
+                case Direction.BottomLeft:
                     MoveUp();
                     MoveRight();
                     break;
 
-                case Direction.NorthWest:
+                case Direction.BottomRight:
                     MoveUp();
                     MoveLeft();
                     break;
 
-                case Direction.SouthEast:
+                case Direction.TopLeft:
                     MoveDown();
                     MoveRight();
                     break;
 
-                case Direction.SouthWest:
+                case Direction.TopRight:
                     MoveDown();
                     MoveLeft();
                     break;

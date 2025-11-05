@@ -18,8 +18,12 @@
                    FontSize="20" Foreground="Red" Visibility="Collapsed"
                    HorizontalAlignment="Left" VerticalAlignment="Top" />
         <TextBlock x:Name="gameTimer" Width="100" Height="26" Canvas.Left="390" Canvas.Top="10" Text="Time: 25.00"
-                   FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"
-                   Canvas.ZIndex="100" />
+                   FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.ZIndex="100"/>
+
+        <TextBlock x:Name="powerUpText" Width="150" Height="26" Canvas.Left="174" Canvas.Top="44" Text="Power-Up Active!"
+                   FontSize="20" Foreground="Yellow" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.ZIndex="100"
+                   Visibility="Collapsed"/>
+
         <TextBlock x:Name="playerLives" Width="75" Height="26" Canvas.Left="10" Canvas.Top="10" Text="Lives: 3"
                    FontSize="20" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"
                    Canvas.ZIndex="100" />
@@ -31,6 +35,32 @@
                    FontSize="20" Foreground="White"
                    HorizontalAlignment="Left" VerticalAlignment="Top"
                    Canvas.ZIndex="100" />
+
+        <Button x:Name="StartButton"
+                Content="Start"
+                Click="StartButton_Click" 
+                Foreground="White" 
+                Background="Blue"
+                VerticalAlignment="Top" 
+                Canvas.Left="224" 
+                Canvas.Top="145" Height="28" Width="52">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter HorizontalAlignment="Center" 
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
 
         <MenuBar Height="44" Width="150" Canvas.Top="456" HorizontalAlignment="Left" VerticalAlignment="Center">
             <MenuBarItem>

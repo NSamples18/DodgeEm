@@ -14,20 +14,24 @@ namespace DodgeEm.Model.Enemies
 
         private readonly WaveManager waveManager;
 
-        /// <summary>
-        ///     Gets the level number.
-        /// </summary>
         private readonly LevelId levelNumber;
-
-        private readonly int elapsedMilliseconds;
 
         #endregion
 
         #region Properties
 
-        public int stopLevel { get; }
+        /// <summary>
+        ///     Gets the stop level timer.
+        /// </summary>
+        public int StopLevelTimer { get; }
+        /// <summary>
+        ///     Gets the game points.
+        /// </summary>
+        public int GamePoint { get; }
 
-        public int gamePoint { get; }
+        #endregion
+
+        #region Constructors
 
         #endregion
 
@@ -39,61 +43,56 @@ namespace DodgeEm.Model.Enemies
         /// IList
         /// <Color>
         ///     enemyColors, IList
-        ///     <Object>
-        ///         pointObjects,
-        ///         <param name="levelNumber">The level number.</param>
-        ///         <param name="startLevelTime">The start level.</param>
-        ///         <param name="stopLevel">The stop level.</param>
-        public Level(LevelId levelNumber, int stopLevel, int numOfGamePoint, Canvas gameCanvas)
+        /// </Color>
+        /// <Object>
+        ///     pointObjects,
+        /// </Object>
+        /// <param name="levelNumber">The level number.</param>
+        /// <param name="stopLevelTimer">The stop level timer.</param>
+        /// <param name="numOfGamePoint">The number of game points.</param>
+        /// <param name="gameCanvas">The game canvas.</param>
+        public Level(LevelId levelNumber, int stopLevelTimer, int numOfGamePoint, Canvas gameCanvas)
         {
             this.waveManager = new WaveManager(gameCanvas, levelNumber);
             this.levelNumber = levelNumber;
-            this.stopLevel = stopLevel;
-            this.gamePoint = numOfGamePoint;
+            this.StopLevelTimer = stopLevelTimer;
+            this.GamePoint = numOfGamePoint;
         }
 
         #endregion
 
         #region Methods
-
         /// <summary>
-        ///     Gets the enemy balls.
+        ///     Gets all enemy balls in the level.
         /// </summary>
-        /// <returns></returns>
         public IEnumerable<EnemyBall> GetEnemyBalls()
         {
             return this.waveManager.EnemyBalls;
         }
-
         /// <summary>
-        ///     Gets the wave colors.
+        ///     Gets the wave colors for the current level.
         /// </summary>
-        /// <returns></returns>
         public IEnumerable<Color> GetWaveColors()
         {
-            return this.waveManager.GetCurrentLevelWaveColors(this.levelNumber);
+            return this.waveManager.GetCurrentLevelWaveColors();
         }
-
         /// <summary>
-        ///     Gets the level identifier.
+        ///     Gets the level ID.
         /// </summary>
-        /// <returns></returns>
         public LevelId GetLevelId()
         {
             return this.levelNumber;
         }
-
         /// <summary>
-        ///     Nexts the level.
+        ///     Proceeds to the next level.
         /// </summary>
         public void NextLevel()
         {
             this.StopLevel();
-            this.waveManager.RemoveBallsFromAllWaves();
+            this.waveManager.RemoveBallsFromAllWavesInLevel();
         }
-
         /// <summary>
-        ///     Stops the level.
+        ///     Stops the current level.
         /// </summary>
         public void StopLevel()
         {
@@ -107,15 +106,21 @@ namespace DodgeEm.Model.Enemies
         /// </summary>
         public void StartLevel()
         {
-            this.waveManager.startWaveWithLevel();
+            this.waveManager.StartWaveWithLevel();
         }
-
         /// <summary>
-        ///     Resets the level.
+        ///     Resets the current level.
         /// </summary>
         public void ResetLevel()
         {
             this.waveManager.RestartWavesInLevel();
+        }
+        /// <summary>
+        ///     Removes all enemy balls from the level.
+        /// </summary>
+        public void RemoveAllBalls()
+        {
+            this.waveManager.RemoveAllBalls();
         }
 
         #endregion
