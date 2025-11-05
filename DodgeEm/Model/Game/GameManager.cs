@@ -138,22 +138,22 @@ namespace DodgeEm.Model.Game
         /// <summary>
         ///     Event raised when the game is over.
         /// </summary>
-        public event GameOverHandler GameOver;
+        public event EventHandler<bool> GameOver;
 
         /// <summary>
         ///     Event raised on each game timer tick.
         /// </summary>
-        public event GameTimerTickHandler GameTimerTick;
+        public event EventHandler<TimeSpan> GameTimerTick;
 
         /// <summary>
         ///     Event raised when the player lives change.
         /// </summary>
-        public event PlayerLivesChangedHandler PlayerLivesChanged;
+        public event EventHandler<int> PlayerLivesChanged;
 
         /// <summary>
         ///     Event raised when the player power-up state changes.
         /// </summary>
-        public event PlayerPowerUpHandler PlayerPowerUp;
+        public event EventHandler<bool> PlayerPowerUp;
 
         /// <summary>
         ///     Event raised when a level starts (or changes).
@@ -264,7 +264,7 @@ namespace DodgeEm.Model.Game
         private TimeSpan getRemainingTime()
         {
             var remaining = this.gameEndTimeUtc - DateTime.UtcNow;
-            return remaining < TimeSpan.Zero ? TimeSpan.Zero : remaining;
+            return (remaining < TimeSpan.Zero) ? TimeSpan.Zero : remaining;
         }
 
         private void endGame(bool didWin)
