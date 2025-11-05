@@ -11,6 +11,7 @@ namespace DodgeEm.Model.Game
         #region Data members
 
         private readonly List<GamePoint> gamePoints;
+        private readonly int currentPointIndex = 0;
         private readonly double canvasWidth;
         private readonly double canvasHeight;
         private readonly Canvas currentCanvas;

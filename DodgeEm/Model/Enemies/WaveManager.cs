@@ -32,10 +32,9 @@ namespace DodgeEm.Model.Enemies
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WaveManager" /> class.
+        ///     Initializes a new instance of the <see cref="WaveManager" /> class.
         /// </summary>
         /// <param name="gameCanvas">The canvas on which the game is rendered.</param>
-        /// <param name="level">The level.</param>
         public WaveManager(Canvas gameCanvas, LevelId level)
         {
             this.waves = new List<EnemyWave>();
@@ -166,8 +165,6 @@ namespace DodgeEm.Model.Enemies
                     var delay = 3000 * index;
                     var wave = createWave(levelId, gameCanvas, color, direction, delay);
 
-                    wave.WaveStarted += s => this.WaveStarted?.Invoke(this);
-
                     this.waves.Add(wave);
                     index++;
                 }
@@ -186,21 +183,6 @@ namespace DodgeEm.Model.Enemies
                 gameCanvas.Width,
                 gameCanvas.Height);
         }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        public delegate void WaveStartedHandler(object sender);
-
-        /// <summary>
-        /// Occurs when [wave started].
-        /// </summary>
-        public event WaveStartedHandler WaveStarted;
 
         #endregion
     }

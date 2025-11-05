@@ -73,7 +73,6 @@ namespace DodgeEm.Model.Game
             this.PowerUps.Remove(powerUp);
             powerUp.RemovePowerUp();
         }
-
         /// <summary>
         ///     Removes all power-ups from the game.
         /// </summary>

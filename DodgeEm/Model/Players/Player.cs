@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DodgeEm.Model.Core;
+using DodgeEm.Model.Game;
+using DodgeEm.View.Sprites;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.UI;
@@ -34,7 +37,6 @@ namespace DodgeEm.Model.Players
         #endregion
 
         #region Methods
-
         /// <summary>
         ///     Sets the available colors for the player.
         /// </summary>
@@ -76,7 +78,6 @@ namespace DodgeEm.Model.Players
         /// </summary>
         public virtual bool IsTouchingEnemyBall(GameObject ball)
         {
-<<<<<<< HEAD
             var playerCenterX = this.XCord + this.Width / 2.0;
             var playerCenterY = this.YCord + this.Height / 2.0;
             var enemyCenterX = ball.XCord + ball.Width / 2.0;
@@ -84,15 +85,6 @@ namespace DodgeEm.Model.Players
 
             var playerRadius = this.Width / 2.0;
             var enemyRadius = ball.Width / 2.0;
-=======
-            var playerCenterX = XCord + Width / 2.0;
-            var playerCenterY = YCord + Height / 2.0;
-            var enemyCenterX = enemyBall.XCord + enemyBall.Width / 2.0;
-            var enemyCenterY = enemyBall.YCord + enemyBall.Height / 2.0;
-
-            var playerRadius = Width / 2.0;
-            var enemyRadius = enemyBall.Width / 2.0;
->>>>>>> feature-sound-effects
 
             var dx = playerCenterX - enemyCenterX;
             var dy = playerCenterY - enemyCenterY;
@@ -101,10 +93,7 @@ namespace DodgeEm.Model.Players
             return distance <= playerRadius + enemyRadius;
         }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> feature-sound-effects
         /// <summary>
         ///     Checks if the player has the same color as the enemy ball.
         ///     Precondition: enemyBall is not null.
@@ -125,7 +114,6 @@ namespace DodgeEm.Model.Players
 
             return false;
         }
-
         /// <summary>
         ///     Called when the player loses a life.
         /// </summary>
@@ -137,7 +125,6 @@ namespace DodgeEm.Model.Players
                 playerSprite.PlayDeathAnimation();
             }
         }
-
         /// <summary>
         ///     Gets the number of lives the player has left.
         /// </summary>

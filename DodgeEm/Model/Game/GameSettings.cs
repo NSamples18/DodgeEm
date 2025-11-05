@@ -33,7 +33,6 @@ namespace DodgeEm.Model.Game
         ///     The speed of the player ball in the YCord Direction.
         /// </summary>
         public static readonly int PlayerSpeedYDirection = 3;
-
         /// <summary>
         ///     The number of lives the player has.
         /// </summary>
@@ -74,7 +73,6 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public static readonly int DeathAnimationIntervalMs = 250;
 
-<<<<<<< HEAD
         /// <summary>
         /// The level one duration
         /// </summary>
@@ -90,8 +88,6 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public static readonly int LevelThreeDuration = 35;
 
-=======
->>>>>>> feature-sound-effects
         /// <summary>
         ///     The color for North and South enemy balls.
         /// </summary>
@@ -106,7 +102,6 @@ namespace DodgeEm.Model.Game
         ///     The color for North and South enemy balls.
         /// </summary>
         public static readonly Color Level2North = Colors.White;
-
         /// <summary>
         ///     The color for East and West enemy balls.
         /// </summary>
@@ -148,7 +143,7 @@ namespace DodgeEm.Model.Game
         public static readonly Color FinalBlitzColor = Colors.Purple;
 
         /// <summary>
-        ///     The game point color
+        /// The game point color
         /// </summary>
         public static readonly Color GamePointColor = Colors.Yellow;
 

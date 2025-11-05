@@ -8,7 +8,7 @@ using DodgeEm.View.Sprites;
 namespace DodgeEm.Model.Game
 {
     /// <summary>
-    ///     Represents a power-up item in the game.
+    /// Represents a power-up item in the game.
     /// </summary>
     public class PowerUp : GameObject
     {
@@ -29,9 +29,8 @@ namespace DodgeEm.Model.Game
         #endregion
 
         #region Constructors
-
         /// <summary>
-        ///     Initializes a new instance of the <see cref="PowerUp" /> class.
+        /// Initializes a new instance of the <see cref="PowerUp"/> class.
         /// </summary>
         public PowerUp(Canvas canvas, double width, double height)
         {
@@ -53,10 +52,9 @@ namespace DodgeEm.Model.Game
 
         #endregion
 
-        #region Methods
-
+        #region Methods        
         /// <summary>
-        ///     Restarts the power up.
+        /// Restarts the power up.
         /// </summary>
         public void RestartPowerUp()
         {
@@ -75,7 +73,7 @@ namespace DodgeEm.Model.Game
         }
 
         /// <summary>
-        ///     Removes the power up from the game.
+        /// Removes the power up from the game.
         /// </summary>
         public void RemovePowerUp()
         {
@@ -84,16 +82,14 @@ namespace DodgeEm.Model.Game
 
         private void startSpawnTimer()
         {
-            this.spawnTimer = new DispatcherTimer
-                { Interval = TimeSpan.FromSeconds(GameSettings.TimeUntilPowerUpSpawns) };
+            this.spawnTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(GameSettings.TimeUntilPowerUpSpawns) };
             this.spawnTimer.Tick += this.spawnTimer_Tick;
             this.spawnTimer.Start();
         }
 
         private void startRemoveTimer()
         {
-            var removeSeconds = this.random.Next(GameSettings.MinSecondsUntilPowerUpRemoved,
-                GameSettings.MaxSecondsUntilPowerUpRemoved);
+            var removeSeconds = this.random.Next(GameSettings.MinSecondsUntilPowerUpRemoved, GameSettings.MaxSecondsUntilPowerUpRemoved);
             this.removeTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(removeSeconds) };
             this.removeTimer.Tick += this.removeTimer_Tick;
             this.removeTimer.Start();
@@ -103,11 +99,12 @@ namespace DodgeEm.Model.Game
         {
             this.spawnTimer.Stop();
 
-            XCord = this.random.NextDouble() * (this.canvasWidth - Width);
-            YCord = this.random.NextDouble() * (this.canvasHeight - Height);
+            XCord = this.random.NextDouble() * (this.canvasWidth - this.Width);
+            YCord = this.random.NextDouble() * (this.canvasHeight - this.Height);
 
             Sprite.RenderAt(XCord, YCord);
             this.currentCanvas.Children.Add(Sprite);
+
 
             this.moveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(GameSettings.TickIntervalMs) };
             this.moveTimer.Tick += this.moveTimer_Tick;

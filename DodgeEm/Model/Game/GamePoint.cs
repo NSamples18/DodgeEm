@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -82,10 +81,10 @@ namespace DodgeEm.Model.Game
             var maxX = canvasWidth - Width;
             var maxY = canvasHeight - Height;
 
-            XCord = this.random.NextDouble() * maxX;
-            YCord = this.random.NextDouble() * maxY;
+            this.XCord = random.NextDouble() * maxX;
+            this.YCord = random.NextDouble() * maxY;
 
-            Sprite?.RenderAt(XCord, YCord);
+            Sprite?.RenderAt(this.XCord, this.YCord);
         }
         /// <summary>
         /// Removes the game point from the canvas.
@@ -106,25 +105,9 @@ namespace DodgeEm.Model.Game
                 return;
             }
             this.IsCollected = true;
-<<<<<<< HEAD
             this.removalTimer?.Stop();
             this.RemoveGamePoint();
             
-=======
-
-            try
-            {
-                this.removalTimer?.Stop();
-                if (this.currentCanvas != null && Sprite != null && this.currentCanvas.Children.Contains(Sprite))
-                {
-                    this.currentCanvas.Children.Remove(Sprite);
-                }
-            }
-            catch
-            {
-                Debug.WriteLine("[GamePoint] Collect failed");
-            }
->>>>>>> feature-sound-effects
         }
 
         #endregion

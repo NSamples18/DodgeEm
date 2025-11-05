@@ -43,7 +43,6 @@ namespace DodgeEm.View.Sprites
         #endregion
 
         #region Constructors
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerSprite" /> class.
         /// </summary>
@@ -58,7 +57,7 @@ namespace DodgeEm.View.Sprites
 
         /// <summary>
         ///     Sets the color of the player sprite.
-        ///     <param name="color">The color to set.</param>
+        /// <param name="color">The color to set.</param>
         /// </summary>
         public void setPlayerColor(Color color)
         {
@@ -83,6 +82,7 @@ namespace DodgeEm.View.Sprites
             this.deathTimer.Tick += this.onDeathAnimationTick;
             this.deathTimer.Start();
         }
+
 
         private void onDeathAnimationTick(object sender, object e)
         {
@@ -109,6 +109,7 @@ namespace DodgeEm.View.Sprites
                     break;
             }
         }
+
 
         private void setColor(Color color)
         {

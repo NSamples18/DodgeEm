@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -30,30 +29,17 @@ namespace DodgeEm.Model.Game
         public delegate void GameTimerTickHandler(object sender, TimeSpan remainingTime);
 
         /// <summary>
-        ///     Delegate for the LevelStarted event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="levelId">The new level id.</param>
-        public delegate void LevelStartedHandler(object sender, LevelId levelId);
-
-        /// <summary>
         ///     Delegate for the PlayerLivesChanged event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="playerLives">The player lives.</param>
         public delegate void PlayerLivesChangedHandler(object sender, int playerLives);
-
         /// <summary>
         ///     Delegate for the PlayerPowerUp event.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="isHit">Indicates if the player was hit by a power-up.</param>
         public delegate void PlayerPowerUpHandler(object sender, bool isHit);
-
-        /// <summary>
-        ///     Raised when a wave starts (forwarded from LevelManager).
-        /// </summary>
-        public delegate void WaveStartedHandler(object sender);
 
         #endregion
 
@@ -64,6 +50,7 @@ namespace DodgeEm.Model.Game
 
         private bool gameOverTriggered;
 
+        private readonly int level = 1;
 
         #endregion
 
@@ -75,6 +62,7 @@ namespace DodgeEm.Model.Game
         ///     Postcondition: Returns the PlayerManager instance.
         /// </summary>
         public PlayerManager PlayerManager { get; }
+
 
         private LevelManager LevelManager { get; }
         private GamePointManager GamePointManager { get; }
@@ -128,8 +116,6 @@ namespace DodgeEm.Model.Game
             this.mainTimer.Tick += (s, e) => this.onMainTick();
             this.mainTimer.Start();
             this.spawnGamePoint();
-
-            this.LevelManager.WaveStarted += sender => this.WaveStarted?.Invoke(sender);
         }
 
         #endregion
@@ -156,22 +142,10 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public event PlayerPowerUpHandler PlayerPowerUp;
 
-        /// <summary>
-        ///     Event raised when a level starts (or changes).
-        /// </summary>
-        public event LevelStartedHandler LevelStarted;
-
-        /// <summary>
-        ///     Event raised when a wave starts (forwarded from LevelManager).
-        /// </summary>
-        public event WaveStartedHandler WaveStarted;
-
         private void OnLevelChanged()
         {
             var colors = this.LevelManager.GetCurrentLevelWaveColors();
             this.PlayerManager.UpdatePlayerColors(colors);
-
-            this.LevelStarted?.Invoke(this, this.LevelManager.GetLevelId());
         }
 
         private void onMainTick()
@@ -326,10 +300,6 @@ namespace DodgeEm.Model.Game
         {
             this.PlayerManager.PlayerLosesLife();
             this.onPlayerLivesChanged(this.PlayerManager.GetPlayerLives());
-
-            Debug.WriteLine(
-                $"[GameManager] Player lost a life. Lives now: {this.PlayerManager.GetPlayerLives()} - playing SFX");
-            _ = AudioHelper.PlaySoundEffectAsync("erro.mp3");
         }
 
         private void onPlayerLivesChanged(int playerLives)
