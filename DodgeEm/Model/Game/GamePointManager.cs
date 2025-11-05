@@ -78,6 +78,19 @@ namespace DodgeEm.Model.Game
         }
 
         /// <summary>
+        /// Removes all game points from the game.
+        /// </summary>
+        public void RemoveAllGamePoints()
+        {
+            foreach (var point in this.gamePoints.ToList())
+            {
+                point.RemoveGamePoint();
+            }
+            this.gamePoints.Clear();
+        }
+
+
+        /// <summary>
         ///     Cleanups the collected.
         /// </summary>
         public void CleanupCollected()

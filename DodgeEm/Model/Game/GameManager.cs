@@ -160,7 +160,7 @@ namespace DodgeEm.Model.Game
             this.updateTimerUi();
             this.handleGameEndConditions();
             this.handlePowerUp();
-            this.restartLevel();
+            this.nextLevel();
         }
 
         private void handlePowerUp()
@@ -211,7 +211,7 @@ namespace DodgeEm.Model.Game
             }
         }
 
-        private void restartLevel()
+        private void nextLevel()
         {
             if (!this.hasBallCollisionWithEnemy() && this.hasTimeExpired() && this.PlayerManager.GetPlayerLives() > 0 &&
                 this.LevelManager.GetLevelId() < LevelId.Level3)
@@ -221,6 +221,7 @@ namespace DodgeEm.Model.Game
                 this.OnLevelChanged();
                 this.spawnGamePoint();
                 this.PowerUpManager.SpawnPowerUp();
+
             }
         }
 
@@ -271,6 +272,8 @@ namespace DodgeEm.Model.Game
                     this.restartGameTimer();
                     this.updatePlayerLives();
                     this.PowerUpManager.RestartPowerUp();
+                    this.GamePointManager.RemoveAllGamePoints();
+                    this.spawnGamePoint();
                     return true;
                 }
             }

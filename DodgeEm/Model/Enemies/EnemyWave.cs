@@ -225,13 +225,13 @@ namespace DodgeEm.Model.Enemies
 
                 case Direction.RightToLeft:
                     return ball.XCord + ball.Width < 0;
-                case Direction.NorthEast:
+                case Direction.BottomLeft:
                     return ball.YCord + ball.Height < 0 || ball.XCord > width;
-                case Direction.NorthWest:
+                case Direction.BottomRight:
                     return ball.YCord + ball.Height < 0 || ball.XCord + ball.Width < 0;
-                case Direction.SouthEast:
+                case Direction.TopLeft:
                     return ball.YCord > height || ball.XCord > width;
-                case Direction.SouthWest:
+                case Direction.TopRight:
                     return ball.YCord > height || ball.XCord + ball.Width < 0;
 
                 case Direction.VerticalMixed:
@@ -254,20 +254,20 @@ namespace DodgeEm.Model.Enemies
 
         private void generateEnemyBall()
         {
-            var direction2 = this.ballDirection;
+            var direction = this.ballDirection;
             var speed = this.random.Next(GameSettings.MinSpeed, GameSettings.MaxSpeed);
             if (this.ballDirection == Direction.VerticalMixed)
             {
-                direction2 = this.randomBlitzDirection();
+                direction = this.randomBlitzDirection();
                 speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
             }
             else if (this.ballDirection == Direction.DiagonalMixed)
             {
-                direction2 = this.randomDiagonalDirection();
+                direction = this.randomDiagonalDirection();
                 speed = this.random.Next(GameSettings.MinSpeed, GameSettings.BlitzSpeed);
             }
 
-            var ball = new EnemyBall(this.BallColor, direction2, speed);
+            var ball = new EnemyBall(this.BallColor, direction, speed);
 
             this.EnemyBalls.Add(ball);
             this.setInitialPositions(ball);
@@ -285,10 +285,10 @@ namespace DodgeEm.Model.Enemies
         {
             Direction[] diagonalDirections =
             {
-                Direction.NorthEast,
-                Direction.NorthWest,
-                Direction.SouthEast,
-                Direction.SouthWest
+                Direction.BottomLeft,
+                Direction.BottomRight,
+                Direction.TopLeft,
+                Direction.TopRight
             };
             return diagonalDirections[this.random.Next(diagonalDirections.Length)];
         }
@@ -297,59 +297,165 @@ namespace DodgeEm.Model.Enemies
         {
             var marginX = this.canvasWidth - ball.Width;
             var marginY = this.canvasHeight - ball.Height;
+
             switch (ball.Direction)
             {
                 case Direction.TopToBottom:
-                    ball.XCord = this.random.Next((int)ball.Width, (int)marginX);
-                    ball.YCord = -ball.Height;
+                    this.setTopSpawn(ball, marginX);
                     break;
-
                 case Direction.BottomToTop:
-                    ball.XCord = this.random.Next((int)ball.Width, (int)marginX);
-                    ball.YCord = this.canvasHeight + ball.Height;
+                    this.setBottomSpawn(ball, marginX);
                     break;
-
                 case Direction.RightToLeft:
-                    ball.XCord = this.canvasWidth + ball.Width;
-                    ball.YCord = this.random.Next((int)ball.Height, (int)marginY);
+                    this.setRightSpawn(ball, marginY);
                     break;
-
                 case Direction.LeftToRight:
-                    ball.XCord = -ball.Width;
-                    ball.YCord = this.random.Next((int)ball.Height, (int)marginY);
+                    this.setLeftSpawn(ball, marginY);
                     break;
-                case Direction.NorthEast:
-
-                    ball.XCord = -ball.Width - this.random.Next(0, (int)ball.Width);
-                    ball.YCord = this.canvasHeight + this.random.Next(0, (int)ball.Height);
+                case Direction.BottomLeft:
+                    this.setBottomLeftCornerSpawn(ball);
                     break;
-
-                case Direction.NorthWest:
-
-                    ball.XCord = this.canvasWidth + this.random.Next(0, (int)ball.Width);
-                    ball.YCord = this.canvasHeight + this.random.Next(0, (int)ball.Height);
+                case Direction.BottomRight:
+                    this.setBottomRightCornerSpawn(ball);
                     break;
-
-                case Direction.SouthEast:
-
-                    ball.XCord = -ball.Width - this.random.Next(0, (int)ball.Width);
-                    ball.YCord = -ball.Height - this.random.Next(0, (int)ball.Height);
+                case Direction.TopLeft:
+                    this.setTopLeftCornerSpawn(ball);
                     break;
-
-                case Direction.SouthWest:
-
-                    ball.XCord = this.canvasWidth + this.random.Next(0, (int)ball.Width);
-                    ball.YCord = -ball.Height - this.random.Next(0, (int)ball.Height);
+                case Direction.TopRight:
+                    this.setTopRightCornerSpawn(ball);
                     break;
-
                 case Direction.VerticalMixed:
                 case Direction.DiagonalMixed:
                     throw new InvalidOperationException(
                         $"{ball.Direction} should be replaced with a specific direction before calling Move().");
-
                 default:
                     throw new InvalidOperationException("Unknown Direction");
             }
+        }
+
+        private void setTopSpawn(EnemyBall ball, double marginX)
+        {
+            ball.XCord = this.random.Next((int)ball.Width, (int)marginX);
+            ball.YCord = -ball.Height;
+        }
+
+        private void setBottomSpawn(EnemyBall ball, double marginX)
+        {
+            ball.XCord = this.random.Next((int)ball.Width, (int)marginX);
+            ball.YCord = this.canvasHeight + ball.Height;
+        }
+
+        private void setRightSpawn(EnemyBall ball, double marginY)
+        {
+            ball.XCord = this.canvasWidth + ball.Width;
+            ball.YCord = this.random.Next((int)ball.Height, (int)marginY);
+        }
+
+        private void setLeftSpawn(EnemyBall ball, double marginY)
+        {
+            ball.XCord = -ball.Width;
+            ball.YCord = this.random.Next((int)ball.Height, (int)marginY);
+        }
+
+        private void setBottomLeftCornerSpawn(EnemyBall ball)
+        {
+            if (this.shouldSpawnFromPrimarySide())
+            {
+                this.setLeftSideBottomHalfSpawn(ball);
+            }
+            else
+            {
+                this.setBottomSideLeftHalfSpawn(ball);
+            }
+        }
+
+        private void setBottomRightCornerSpawn(EnemyBall ball)
+        {
+            if (this.shouldSpawnFromPrimarySide())
+            {
+                this.setRightSideBottomHalfSpawn(ball);
+            }
+            else
+            {
+                this.setBottomSideRightHalfSpawn(ball);
+            }
+        }
+
+        private void setTopLeftCornerSpawn(EnemyBall ball)
+        {
+            if (this.shouldSpawnFromPrimarySide())
+            {
+                this.setLeftSideTopHalfSpawn(ball);
+            }
+            else
+            {
+                this.setTopSideLeftHalfSpawn(ball);
+            }
+        }
+
+        private void setTopRightCornerSpawn(EnemyBall ball)
+        {
+            if (this.shouldSpawnFromPrimarySide())
+            {
+                this.setRightSideTopHalfSpawn(ball);
+            }
+            else
+            {
+                this.setTopSideRightHalfSpawn(ball);
+            }
+        }
+
+        private bool shouldSpawnFromPrimarySide()
+        {
+            return this.random.Next(0, 2) == 0;
+        }
+
+        private void setLeftSideBottomHalfSpawn(EnemyBall ball)
+        {
+            ball.XCord = -ball.Width;
+            ball.YCord = this.random.Next((int)(this.canvasHeight / 2), (int)this.canvasHeight);
+        }
+
+        private void setBottomSideLeftHalfSpawn(EnemyBall ball)
+        {
+            ball.XCord = this.random.Next(0, (int)(this.canvasWidth / 2));
+            ball.YCord = this.canvasHeight + ball.Height;
+        }
+
+        private void setRightSideBottomHalfSpawn(EnemyBall ball)
+        {
+            ball.XCord = this.canvasWidth + ball.Width;
+            ball.YCord = this.random.Next((int)(this.canvasHeight / 2), (int)this.canvasHeight);
+        }
+
+        private void setBottomSideRightHalfSpawn(EnemyBall ball)
+        {
+            ball.XCord = this.random.Next((int)(this.canvasWidth / 2), (int)this.canvasWidth);
+            ball.YCord = this.canvasHeight + ball.Height;
+        }
+
+        private void setLeftSideTopHalfSpawn(EnemyBall ball)
+        {
+            ball.XCord = -ball.Width;
+            ball.YCord = this.random.Next(0, (int)(this.canvasHeight / 2));
+        }
+
+        private void setTopSideLeftHalfSpawn(EnemyBall ball)
+        {
+            ball.XCord = this.random.Next(0, (int)(this.canvasWidth / 2));
+            ball.YCord = -ball.Height;
+        }
+
+        private void setRightSideTopHalfSpawn(EnemyBall ball)
+        {
+            ball.XCord = this.canvasWidth + ball.Width;
+            ball.YCord = this.random.Next(0, (int)(this.canvasHeight / 2));
+        }
+
+        private void setTopSideRightHalfSpawn(EnemyBall ball)
+        {
+            ball.XCord = this.random.Next((int)(this.canvasWidth / 2), (int)this.canvasWidth);
+            ball.YCord = -ball.Height;
         }
 
         #endregion

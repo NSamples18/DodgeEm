@@ -73,6 +73,20 @@ namespace DodgeEm.Model.Game
         /// </summary>
         public static readonly int DeathAnimationIntervalMs = 250;
 
+        /// <summary>
+        /// The level one duration
+        /// </summary>
+        public static readonly int LevelOneDuration = 25;
+
+        /// <summary>
+        /// The level two duration  
+        /// </summary>
+        public static readonly int LevelTwoDuration = 30;
+
+        /// <summary>
+        /// The level three duration
+        /// </summary>
+        public static readonly int LevelThreeDuration = 35;
 
         /// <summary>
         ///     The color for North and South enemy balls.
