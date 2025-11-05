@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -77,10 +78,10 @@ namespace DodgeEm.Model.Game
             var maxX = canvasWidth - Width;
             var maxY = canvasHeight - Height;
 
-            this.XCord = random.NextDouble() * maxX;
-            this.YCord = random.NextDouble() * maxY;
+            XCord = this.random.NextDouble() * maxX;
+            YCord = this.random.NextDouble() * maxY;
 
-            Sprite?.RenderAt(this.XCord, this.YCord);
+            Sprite?.RenderAt(XCord, YCord);
         }
 
         /// <summary>
@@ -106,6 +107,7 @@ namespace DodgeEm.Model.Game
             }
             catch
             {
+                Debug.WriteLine("[GamePoint] Collect failed");
             }
         }
 

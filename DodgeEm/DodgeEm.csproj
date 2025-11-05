@@ -175,6 +175,13 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\erro.mp3" />
+    <Content Include="Assets\mixkit-arcade-game-explosion-1699.wav" />
+    <Content Include="Assets\mixkit-arcade-game-jump-coin-216.wav" />
+    <Content Include="Assets\mixkit-retro-arcade-lose-2027.wav" />
+    <Content Include="Assets\mixkit-retro-game-notification-212.wav" />
+    <Content Include="Assets\mixkit-arcade-bonus-alert-767.wav" />
+    <Content Include="Assets\roblox-old-winning-sound-effect.mp3" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -183,6 +190,7 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\vine-boom-sound-effect%28chosic.com%29.mp3" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
